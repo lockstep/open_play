@@ -1,24 +1,20 @@
-# README
+# Open Play
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Open Play MVP
 
-Things you may want to cover:
+## Install
 
-* Ruby version
+Ensure you have PostgreSQL installed and running, and install foreman
+with `gem install foreman` in order to run Procfile.dev. ENV variables
+will be defined in `.rbenv-vars` so grab that from somebody or create
+your own based on `.rbenv-vars.example`.
 
-* System dependencies
+```
+bundle
+rake db:migrate
+rspec
+./bin/local_server
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Deployment is automatic via CircleCI when pushing to `development` (staging)
+and `master` (production).
