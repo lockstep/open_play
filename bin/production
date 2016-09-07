@@ -1,0 +1,2 @@
+#!/bin/sh
+HEROKU_APP=openplay-production HKAPP=openplay-production exec "${HEROKU_COMMAND:-heroku}" "$@"
