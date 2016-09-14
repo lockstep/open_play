@@ -1,0 +1,2 @@
+describe Business do
+end
