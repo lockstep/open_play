@@ -37,6 +37,8 @@ end
 group :test do
   gem 'webmock'
   gem 'database_cleaner'
+  gem 'capybara'
+  gem 'capybara-webkit'
 end
 
 group :production do

@@ -7,8 +7,8 @@
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag 'application'
   %body
-    .container
-      = render 'layouts/shared/navbar'
+    = render 'layouts/shared/navbar'
+    #main-container.container
       - if notice || alert
         = render 'layouts/shared/alert'
       = yield

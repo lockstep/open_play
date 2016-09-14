@@ -1,0 +1,2 @@
+describe ActivitiesController do
+end
