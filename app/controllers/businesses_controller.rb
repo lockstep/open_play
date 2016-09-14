@@ -1,6 +1,10 @@
 class BusinessesController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @businesses = current_user.businesses
+  end
+
   def new
     @business = current_user.businesses.build
   end
@@ -8,7 +12,7 @@ class BusinessesController < ApplicationController
   def create
     @business = current_user.businesses.build(business_params)
     if @business.save
-      redirect_to activities_path, :notice => "Successfully created business"
+      redirect_to businesses_path, :notice => 'Successfully created business'
     else
       render :new
     end
