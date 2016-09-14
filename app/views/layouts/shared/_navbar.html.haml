@@ -2,7 +2,7 @@
   = link_to('OpenPlay', root_path, class: 'navbar-brand')
   %ul.nav.navbar-nav
     - if user_signed_in?
-      %li.nav-itm
+      %li.nav-item
         = link_to 'Become a business owner', new_business_path, class: 'nav-link'
       %li.nav-item.pull-xs-right
         = link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link')
