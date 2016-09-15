@@ -1,4 +1,4 @@
-feature 'View buinsesses' do
+feature 'View Buinsesses' do
   background do
     @user = create(:user)
   end

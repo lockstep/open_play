@@ -28,7 +28,7 @@ describe BusinessesController do
   describe 'POST create' do
     context 'user is logged in' do
       login_user
-      it 'creates a buiness and redirect to show a list of businesses' do
+      it 'creates a business and redirect to show a list of businesses' do
         post :create, params: business_params
         expect(Business.count).to eq 1
         expect(Business.first.name).to eq 'Dream world'
