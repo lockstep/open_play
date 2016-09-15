@@ -1,0 +1,2 @@
+describe Activity do
+end
