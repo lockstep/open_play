@@ -26,16 +26,6 @@ describe BusinessesController do
   end
 
   describe 'POST create' do
-    context 'user is logged in' do
-      login_user
-      it 'creates a buiness and redirect to show a list of businesses' do
-        post :create, params: business_params
-        expect(Business.count).to eq 1
-        expect(Business.first.name).to eq 'Dream world'
-        expect(response).to redirect_to businesses_path
-      end
-    end
-
     context 'user is not logged in' do
       before { post :create, params: business_params }
       it_behaves_like 'it requires authentication'

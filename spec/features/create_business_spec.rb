@@ -48,7 +48,7 @@ feature 'Create Business' do
     end
 
     context 'all params are submitted' do
-      scenario 'user can create the bussiness' do
+      scenario 'user can add more bussiness' do
         business_name = 'Lazer center'
         complete_business_form(name: business_name)
         expect(page).to have_content 'Successfully created business'
