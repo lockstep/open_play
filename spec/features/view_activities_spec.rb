@@ -1,4 +1,4 @@
-feature 'View activities' do
+feature 'View Activities' do
   background do
     @user = create(:user)
   end
