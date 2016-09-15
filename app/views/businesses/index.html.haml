@@ -5,21 +5,22 @@
 .spacer-30
 .row
   .col-xs-12
-    - if @businesses.any?
-      %table.table
-        %thead
-          %tr
-            %th #
-            %th Name
-        %tbody
-          - @businesses.each_with_index do |business, index|
+    %center
+      - if @businesses.any?
+        %table.table
+          %thead
             %tr
-              %th{scope: 'row'}= index + 1
-              %td= business.name
-      .spacer-30
-      #new-business
-        = link_to 'Add business', new_business_path, class: 'btn btn-primary'
-    - else
-      %span You haven't created any businesses.
-      %br
-      = link_to 'Create business', new_business_path
+              %th #
+              %th Name
+          %tbody
+            - @businesses.each_with_index do |business, index|
+              %tr
+                %th{scope: 'row'}= index + 1
+                %td= link_to business.name, business_activities_path(business)
+        .spacer-30
+        #new-business
+          = link_to 'Add business', new_business_path, class: 'btn btn-primary'
+      - else
+        %span You haven't created any businesses.
+        %br
+        = link_to 'Create business', new_business_path
