@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :businesses, only: [:index, :new, :create] do
-    resources :activities, only: [:index]
+    resources :activities, only: [:index, :new, :create]
   end
 end
