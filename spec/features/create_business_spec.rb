@@ -4,39 +4,57 @@ feature 'Create Business' do
   end
   include_context 'logged in user'
 
-  context 'all params are submitted' do
-    scenario 'user can create a bussiness' do
+  context 'businesses do not exist' do
+    before do
       visit root_path
       click_link 'Businesses'
       click_link 'Create business'
-      business_name = 'Lazer center'
-      complete_business_form(name: business_name)
-      expect(page).to have_content 'Successfully created business'
-      expect(page).to have_content business_name
-      expect(page.current_path).to eq(businesses_path)
+    end
+
+    context 'all params are submitted' do
+      scenario 'user can create a bussiness' do
+        business_name = 'Lazer center'
+        complete_business_form(name: business_name)
+        expect(page).to have_content 'Successfully created business'
+        expect(page).to have_content business_name
+        expect(page.current_path).to eq(businesses_path)
+      end
+    end
+
+    context 'business name is omitted' do
+      scenario 'users sees that the business name is required' do
+        complete_business_form(name: '')
+        expect(page).to have_content "can't be blank"
+      end
+    end
+
+    context 'business description is omitted' do
+      scenario 'user still can create a bussiness' do
+        business_name = 'Lazer center'
+        complete_business_form(name: business_name, description: '')
+        expect(page).to have_content 'Successfully created business'
+        expect(page).to have_content business_name
+        expect(page.current_path).to eq(businesses_path)
+      end
     end
   end
 
-  context 'business name is omitted' do
-    scenario 'users sees that the business name is required' do
+  context 'businesses exist' do
+    before do
+      create(:business, user: @user)
       visit root_path
       click_link 'Businesses'
-      click_link 'Create business'
-      complete_business_form(name: '')
-      expect(page).to have_content "can't be blank"
+      click_link 'Add business'
     end
-  end
 
-  context 'business description is omitted' do
-    scenario 'user still can create a bussiness' do
-      visit root_path
-      click_link 'Businesses'
-      click_link 'Create business'
-      business_name = 'Lazer center'
-      complete_business_form(name: business_name, description: '')
-      expect(page).to have_content 'Successfully created business'
-      expect(page).to have_content business_name
-      expect(page.current_path).to eq(businesses_path)
+    context 'all params are submitted' do
+      scenario 'user can create a bussiness' do
+        business_name = 'Lazer center'
+        complete_business_form(name: business_name)
+        expect(page).to have_content 'Successfully created business'
+        expect(page).to have_content business_name
+        expect(page.current_path).to eq(businesses_path)
+      end
     end
   end
 

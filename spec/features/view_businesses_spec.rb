@@ -5,7 +5,7 @@ feature 'View buinsesses' do
   include_context 'logged in user'
 
   context 'there are no businesses' do
-    scenario 'user see there are no businesses' do
+    scenario 'user sees there are no businesses' do
       visit root_path
       click_link 'Businesses'
       expect(page).to have_content "You haven't created any businesses"
@@ -20,7 +20,7 @@ feature 'View buinsesses' do
     scenario 'user can see businesses' do
       visit root_path
       click_link 'Businesses'
-      expect(page).to have_content @business.name
+      expect(page).to have_link @business.name
     end
   end
 end
