@@ -6,6 +6,11 @@
 .row
   .col-xs-12
     = form_for @activity, url: {action: 'create'} do |f|
+      .form-group
+        .col-xs-3
+          = f.label :activity_type
+        .col-xs-9
+          = f.select :activity_type, Activity::ACTIVITY_TYPES
       .form-group{class: ('has-danger' if @activity.errors[:name].any?)}
         = f.text_field :name, placeholder: 'Activity name', class: 'form-control'
         - @activity.errors[:name].each do |error|

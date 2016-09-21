@@ -77,7 +77,8 @@ feature 'Create Activity' do
 
   def complete_activity_form(overrides={})
     within '#new_activity' do
-      fill_in 'activity_name', with: overrides[:name] || 'Bowling'
+      select( overrides[:activity_type] || 'Bowling', :from => 'activity_activity_type')
+      fill_in 'activity_name', with: overrides[:name] || 'Country Club Lanes'
       select( overrides[:start_time_hours] || '08', :from => 'activity_start_time_4i')
       select( overrides[:start_time_minutes] || '00', :from => 'activity_start_time_5i')
       select( overrides[:end_time_hours] || '16', :from => 'activity_end_time_4i')
