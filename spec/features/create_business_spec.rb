@@ -7,8 +7,7 @@ feature 'Create Business' do
   context 'a business does not exist' do
     before do
       visit root_path
-      click_link 'Businesses'
-      click_link 'Create business'
+      click_link 'Join us'
     end
 
     context 'all params are submitted' do
@@ -16,8 +15,9 @@ feature 'Create Business' do
         business_name = 'Lazer center'
         complete_business_form(name: business_name)
         expect(page).to have_content 'Successfully created business'
-        expect(page).to have_content business_name
-        expect(page.current_path).to eq(businesses_path)
+        expect(page).to have_content "#{business_name} Activities"
+        expect(page.current_path).to eq(
+          business_activities_path(@user.reload.business))
       end
     end
 
@@ -33,8 +33,9 @@ feature 'Create Business' do
         business_name = 'Lazer center'
         complete_business_form(name: business_name, description: '')
         expect(page).to have_content 'Successfully created business'
-        expect(page).to have_content business_name
-        expect(page.current_path).to eq(businesses_path)
+        expect(page).to have_content "#{business_name} Activities"
+        expect(page.current_path).to eq(
+          business_activities_path(@user.reload.business))
       end
     end
   end
@@ -43,18 +44,9 @@ feature 'Create Business' do
     before do
       create(:business, user: @user)
       visit root_path
-      click_link 'Businesses'
-      click_link 'Add business'
     end
-
-    context 'all params are submitted' do
-      scenario 'user can add more bussiness' do
-        business_name = 'Lazer center'
-        complete_business_form(name: business_name)
-        expect(page).to have_content 'Successfully created business'
-        expect(page).to have_content business_name
-        expect(page.current_path).to eq(businesses_path)
-      end
+    scenario 'user cannot add more businesses' do
+      expect(page).not_to have_link 'Join us'
     end
   end
 
