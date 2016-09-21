@@ -1,0 +1,2 @@
+class LaserTag < Activity
+end

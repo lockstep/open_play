@@ -3,6 +3,10 @@ class Activity < ApplicationRecord
   validates_presence_of :name
   validate :end_time_is_after_start_time
 
+  def self.types
+    %w(bowling laser_tag)
+  end
+
   def end_time_is_after_start_time
     if ( end_time.seconds_since_midnight.to_i <=
       start_time.seconds_since_midnight.to_i)

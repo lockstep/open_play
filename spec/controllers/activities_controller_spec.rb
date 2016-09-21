@@ -57,7 +57,8 @@ describe ActivitiesController do
   def activity_params
     {
       activity: {
-        name: 'Bowling',
+        type: 'Bowling',
+        name: 'Country Club Lanes',
         start_time: '8:00:00',
         end_time: '16:00:00'
       }

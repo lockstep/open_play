@@ -1,0 +1,2 @@
+class Bowling < Activity
+end
