@@ -26,7 +26,7 @@ class ActivitiesController < ApplicationController
   end
 
   def activity_params
-    permitted_params = [:name, :start_time, :end_time, :activity_type]
+    permitted_params = [:name, :start_time, :end_time, :type]
     params.require(:activity).permit(permitted_params)
   end
 end
