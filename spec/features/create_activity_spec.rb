@@ -7,13 +7,12 @@ feature 'Create Activity' do
   context 'a business exists' do
     before do
       @business = create(:business, user: @user)
-      visit root_path
-      click_link 'Businesses'
     end
 
     context 'an activity does not exist' do
       before do
-        click_link @business.name
+        visit root_path
+        click_link 'Manage Business'
         click_link 'Create Activity'
       end
 
@@ -59,7 +58,8 @@ feature 'Create Activity' do
     context 'an activity exist' do
       before do
         create(:activity, business: @business)
-        click_link @business.name
+        visit root_path
+        click_link 'Manage Business'
         click_link 'Add activity'
       end
 
