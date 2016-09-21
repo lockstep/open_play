@@ -10,7 +10,7 @@
         .col-xs-3
           = f.label :type, 'Activity Type:'
         .col-xs-9
-          = f.select :type, Activity.types.collect {|t| [t.underscore.humanize, t]}
+          = f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]}
       .form-group{class: ('has-danger' if @activity.errors[:name].any?)}
         = f.text_field :name, placeholder: 'Activity name', class: 'form-control'
         - @activity.errors[:name].each do |error|

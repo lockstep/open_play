@@ -4,7 +4,7 @@ class Activity < ApplicationRecord
   validate :end_time_is_after_start_time
 
   def self.types
-    %w(Bowling LaserTag)
+    %w(bowling laser_tag)
   end
 
   def end_time_is_after_start_time
