@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-xs-12">
+    <center>
+      <h1>
+        <%= "#{@business.name} Activities" %>
+      </h1>
+    </center>
+  </div>
+</div>
+<div class="spacer-30"></div>
+<div class="row">
+  <div class="col-xs-12">
+    <center>
+      <% if @activities.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @activities.each_with_index do |activity, index| %>
+              <tr>
+                <th scope="row">
+                  <%= index + 1 %>
+                </th>
+                <td>
+                  <%= activity.name %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="spacer-30"></div>
+        <div id="new-business">
+          <%= link_to 'Add activity', new_business_activity_path(@business), class: 'btn btn-primary' %>
+        </div>
+      <% else %>
+        <span>You haven't created any activities.</span>
+        <br/>
+        <%= link_to 'Create Activity', new_business_activity_path(@business) %>
+      <% end %>
+    </center>
+  </div>
+</div>
