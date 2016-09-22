@@ -1,0 +1,22 @@
+<nav class="navbar navbar-light navbar-fixed-top bg-faded">
+  <%= link_to('openPlay', root_path, class: 'navbar-brand', id: 'openplay-logo') %>
+  <ul class="nav navbar-nav">
+    <% if user_signed_in? %>
+      <li class="nav-item pull-xs-right">
+        <%= link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link') %>
+      </li>
+      <% if manages_business? %>
+        <li class="nav-item pull-xs-right">
+          <%= link_to 'Manage Business', business_activities_path(current_user.business), class: 'nav-link' %>
+        </li>
+      <% end %>
+    <% else %>
+      <li class="nav-item pull-xs-right">
+        <%= link_to('Sign In', new_user_session_path, class: 'nav-link') %>
+      </li>
+      <li class="nav-item pull-xs-right">
+        <%= link_to('Sign Up', new_user_registration_path, class: 'nav-link') %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

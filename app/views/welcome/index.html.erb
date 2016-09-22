@@ -1,0 +1,11 @@
+<% if user_signed_in? && !manages_business? %>
+  <div class="jumbotron">
+    <div class="container text-xs-center">
+      <h3>Are you a business owner?</h3>
+      <div class="lead">
+        <p>Join the more than 10,000 businesses and manage reservations with OpenPlay.</p>
+        <%= link_to 'Join us', new_business_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

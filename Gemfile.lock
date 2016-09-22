@@ -85,8 +85,6 @@ GEM
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    haml (4.0.7)
-      tilt
     hashdiff (0.3.0)
     i18n (0.7.0)
     jquery-rails (4.2.1)
@@ -228,7 +226,6 @@ DEPENDENCIES
   database_cleaner
   devise (~> 4.2.0)
   factory_girl_rails
-  haml (~> 4.0.5)
   jquery-rails
   listen (~> 3.0.5)
   pg (~> 0.18)
