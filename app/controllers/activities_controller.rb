@@ -1,5 +1,5 @@
 class ActivitiesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:search]
   before_action :set_business, only: [:index, :new, :create]
 
   def index
@@ -17,6 +17,10 @@ class ActivitiesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def search
+    @activities = Activity.all
   end
 
   private

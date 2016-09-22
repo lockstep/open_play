@@ -1,10 +1,58 @@
-// Place all the styles related to the Welcome controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 body {
-  padding-top: 5rem;
+  padding-top: 50px;
 }
-.starter-template {
-  padding: 3rem 1.5rem;
-  text-align: center;
+
+#hero-container {
+  position: relative;
+  height: 416px;
+  width: 100%;
+  top: 15px;
+  #hero-background-image {
+    position: absolute;
+    background-image: image-url('search_bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 416px;
+    width: 100%;
+    overflow: hidden;
+  }
+  #hero-content {
+    padding-top: 335px;
+    #searchbar-container {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      background-color: rgba(0,0,0,0.4);
+      color: #FFF;
+      font-size: 20px;
+    }
+  }
+}
+
+#leading-landing-page {
+  padding-top: 80px;
+  padding-bottom: 30px;
+}
+
+#discovery-tiles {
+  .discovery-activity {
+  }
+  #laser-tag-bg {
+    background-image: image-url('laser_tag.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 260px;
+    width: 100%;
+    overflow: hidden;
+  }
+  #bowling-tag-bg {
+    background-image: image-url('bowling.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 260px;
+    width: 100%;
+    overflow: hidden;
+  }
 }

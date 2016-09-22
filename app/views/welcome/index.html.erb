@@ -1,11 +1,64 @@
-<% if user_signed_in? && !manages_business? %>
-  <div class="jumbotron">
-    <div class="container text-xs-center">
-      <h3>Are you a business owner?</h3>
-      <div class="lead">
-        <p>Join the more than 10,000 businesses and manage reservations with OpenPlay.</p>
-        <%= link_to 'Join us', new_business_path, class: 'btn btn-primary' %>
+<div id="hero-container">
+  <div id="hero-background-image"></div>
+  <div id="hero-content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="text-xs-center" id="searchbar-container">
+          <%= form_tag("/activities/search", method: 'get', class: 'form-inline') do %>
+            <div class="form-group">
+              <%= label_tag(:date, 'Date') %>
+              &nbsp;
+              <%= date_field(:thinking, :date) %>
+              &nbsp;
+            </div>
+            <div class="form-group">
+              <%= label_tag(:start_time, 'Time') %>
+              &nbsp;
+              <%= time_select(:thinking, :start_time, default: {hour: '08', minute: '00'}) %>
+              &nbsp;
+            </div>
+            <div class="form-group">
+              <%= label_tag(:activity_type) %>
+              &nbsp;
+              <%= select_tag(:activity_type, options_for_select([ "Bowling", "Laser" ], "Bowling")) %>
+              &nbsp;
+            </div>
+            <%= submit_tag('Search', class: 'btn btn-danger') %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-<% end %>
+</div>
+
+<div class="container">
+  <div id= 'leading-landing-page' class='text-xs-center'>
+    <div class='row'>
+      <div class="col-xs-12">
+        <h2>Making Family Fun Easy</h2>
+      </div>
+    </div>
+  </div>
+  <div id='discovery-tiles'>
+    <div class="row">
+      <div class='col-lg-8'>
+        <div id='laser-tag-bg' class='discovery-activity'></div>
+      </div>
+      <div class='col-lg-4'>
+        <div id='bowling-tag-bg' class='discovery-activity'></div>
+      </div>
+    </div>
+  </div>
+  <% if user_signed_in? && !manages_business? %>
+    <div class="spacer-50"></div>
+    <div class="jumbotron">
+      <div class="container text-xs-center">
+        <h3>Are you a business owner?</h3>
+        <div class="lead">
+          <p>Join the more than 10,000 businesses and manage reservations with OpenPlay.</p>
+          <%= link_to 'Join us', new_business_path, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
