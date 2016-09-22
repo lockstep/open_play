@@ -8,3 +8,9 @@
 .spacer-80 { height: 80px; clear: both;  }
 .spacer-90 { height: 90px; clear: both;  }
 .spacer-100 { height: 100px; clear: both; }
+
+.navbar-nav {
+  li.nav-item {
+    margin-left: 20px;
+  }
+}

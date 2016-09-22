@@ -4,3 +4,39 @@
 .activity-time {
   padding-top: 1.5%;
 }
+
+.activity-list {
+  .activity-result {
+    padding: 1.275rem 0;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    .activity-info {
+      padding-top: 4px;
+      .activity-name {
+        color: #333;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      .reservable {
+        .reservable-name {
+
+        }
+        .row-times {
+          .timeslot {
+            font-size: .875rem;
+            padding: 0.5em 0.5em;
+          }
+          .unavailable {
+            background: rgba(0,0,0,.06);
+            cursor: default;
+            width: 98px;
+            height: 33px;
+          }
+        }
+      }
+    }
+    .book-btn {
+      margin-top: 75px;
+    }
+  }
+}

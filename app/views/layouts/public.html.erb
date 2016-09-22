@@ -9,6 +9,10 @@
   </head>
   <body>
     <%= render 'layouts/shared/navbar' %>
+    <% if notice || alert %>
+      <div class="spacer-50"></div>
+      <%= render 'layouts/shared/alert' %>
+    <% end %>
     <%= yield %>
   </body>
 </html>
