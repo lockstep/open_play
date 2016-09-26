@@ -15,7 +15,7 @@ feature 'Create Business' do
         business_name = 'Lazer center'
         complete_business_form(name: business_name)
         expect(page).to have_content 'Successfully created business'
-        expect(page).to have_content "#{business_name} Activities"
+        expect(page).to have_content "#{business_name}'s Activities"
         expect(page.current_path).to eq(
           business_activities_path(@user.reload.business))
       end
@@ -33,7 +33,7 @@ feature 'Create Business' do
         business_name = 'Lazer center'
         complete_business_form(name: business_name, description: '')
         expect(page).to have_content 'Successfully created business'
-        expect(page).to have_content "#{business_name} Activities"
+        expect(page).to have_content "#{business_name}'s Activities"
         expect(page.current_path).to eq(
           business_activities_path(@user.reload.business))
       end

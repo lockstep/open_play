@@ -1,0 +1,57 @@
+<h2>Create a Reservable</h2>
+<%= form_for @reservable , url: {action: 'create'}, :html => {class: 'form-horizontal'} do |f| %>
+  <div class="form-group">
+    <%= f.label :name, class: 'col-sm-4 control-label' %>
+    <div class='col-sm-8'>
+      <%= f.text_field :name, placeholder: 'e.g. Lane 1, Room A',
+        class: 'form-control' %>
+    </div>
+  </div>
+  <div class="<%= ('has-danger' if @reservable.errors[:interval].any?) %> form-group">
+    <%= f.label :interval, 'Default reserved time(mins)', class: 'col-sm-4 control-label' %>
+    <div class='col-sm-8'>
+      <%= f.text_field :interval, placeholder: 'e.g. 60 for one hour', class: 'form-control' %>
+      <% @reservable.errors[:interval].each do |error| %>
+        <div class="form-control-feedback">
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% unless @reservable.options.nil? %>
+    <% @reservable.options.each do |option| %>
+      <div class="form-group">
+        <div class="col-sm-12">
+          <%= check_box_tag "options[#{option.id}]" %>
+          <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="form-group">
+      <%= f.label :start_time, class: 'col-sm-4 control-label' %>
+      <div class="col-sm-8">
+        <%= f.time_field :start_time, class: 'form-control' %>
+      </div>
+  </div>
+  <div class="<%= ('has-danger' if @reservable.errors[:end_time].any?) %> form-group">
+      <%= f.label :end_time, class: 'col-sm-4 control-label' %>
+      <div class="col-sm-8">
+        <%= f.time_field :end_time, class: 'form-control' %>
+        <% @reservable.errors[:end_time].each do |error| %>
+          <div class="form-control-feedback">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+

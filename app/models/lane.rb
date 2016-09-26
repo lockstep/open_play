@@ -1,0 +1,2 @@
+class Lane < Reservable
+end
