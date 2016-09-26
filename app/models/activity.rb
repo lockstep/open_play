@@ -25,5 +25,5 @@ class Activity < ApplicationRecord
       self.reservables.new
     end
   end
-  
+
 end
