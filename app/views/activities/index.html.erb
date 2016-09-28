@@ -30,7 +30,14 @@
                   <%= activity.name %>
                 </td>
                 <td>
-                  <%= link_to "Add a #{activity.reservable_type}", new_activity_reservable_path(activity) %>
+                  <% activity.reservables.each do |reservable| %>
+                    <div>
+                      <%= reservable.name %>
+                    </div>
+                  <% end %>
+                  <div>
+                    <%= link_to "Add a #{activity.reservable_type}", new_activity_reservable_path(activity) %>
+                  </div>
                 </td>
               </tr>
             <% end %>
