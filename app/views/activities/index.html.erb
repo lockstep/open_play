@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <center>
       <h1>
-        <%= "#{@business.name} Activities" %>
+        <%= "#{@business.name}'s Activities" %>
       </h1>
     </center>
   </div>
@@ -17,6 +17,7 @@
             <tr>
               <th>#</th>
               <th>Name</th>
+              <th>Reservables</th>
             </tr>
           </thead>
           <tbody>
@@ -27,6 +28,16 @@
                 </th>
                 <td>
                   <%= activity.name %>
+                </td>
+                <td>
+                  <% activity.reservables.each do |reservable| %>
+                    <div>
+                      <%= reservable.name %>
+                    </div>
+                  <% end %>
+                  <div>
+                    <%= link_to "Add a #{activity.reservable_type}", new_activity_reservable_path(activity) %>
+                  </div>
                 </td>
               </tr>
             <% end %>

@@ -1,0 +1,2 @@
+class ReservableOption < ApplicationRecord
+end

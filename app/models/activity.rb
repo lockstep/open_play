@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   belongs_to :business
+  has_many :reservables
   validates_presence_of :name
   validate :end_time_is_after_start_time
 
@@ -13,4 +14,5 @@ class Activity < ApplicationRecord
       errors.add(:end_time, 'must be after the start time')
     end
   end
+
 end

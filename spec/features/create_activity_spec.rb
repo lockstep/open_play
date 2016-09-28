@@ -57,7 +57,7 @@ feature 'Create Activity' do
 
     context 'an activity exist' do
       before do
-        create(:activity, business: @business)
+        create(:bowling, business: @business)
         visit root_path
         click_link 'Manage Business'
         click_link 'Add activity'
@@ -65,7 +65,7 @@ feature 'Create Activity' do
 
       context 'all params are submitted' do
         scenario 'user can add more activity' do
-          activity_name = 'Table Tennis'
+          activity_name = 'Bowling Club'
           complete_activity_form(name: activity_name)
           expect(page).to have_content 'Successfully created activity'
           expect(page).to have_content activity_name

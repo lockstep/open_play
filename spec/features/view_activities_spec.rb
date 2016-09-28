@@ -1,4 +1,4 @@
-feature 'View Business' do
+feature 'View Activities' do
   background do
     @user = create(:user)
   end
@@ -16,17 +16,32 @@ feature 'View Business' do
         expect(page).to have_content "You haven't created any activities"
         expect(page).to have_link 'Create Activity',
           href: new_business_activity_path(@business)
+        expect(page).to_not have_link 'Add a Reservable'
       end
     end
 
     context 'an activity exists' do
-      background do
-        @activity = create(:activity, business: @business)
-      end
-      scenario 'user can see the activity' do
-        visit root_path
-        click_link 'Manage Business'
-        expect(page).to have_content @activity.name
+      context 'Bowling has many lanes' do
+        background do
+          @activity = create(:bowling, business: @business)
+          @activity.lanes.create([
+              reservable_params,
+              reservable_params(name: 'Lane B')
+            ])
+          visit root_path
+          click_link 'Manage Business'
+        end
+        scenario 'user can see the activity' do
+          expect(page).to have_content @activity.name
+        end
+        scenario 'can add a lane' do
+          expect(page).to have_link 'Add a Lane'
+        end
+        scenario 'shows all lanes of the activity' do
+          lanes = @activity.reservables
+          expect(page).to have_content lanes.first.name
+          expect(page).to have_content lanes.second.name
+        end
       end
     end
   end
@@ -36,5 +51,14 @@ feature 'View Business' do
       visit root_path
       expect(page).not_to have_link 'Manage Business'
     end
+  end
+
+  def reservable_params(overrides={})
+    {
+      name: overrides[:name] || 'Item A',
+      interval: 30,
+      start_time: '08:00',
+      end_time: '20:00'
+    }
   end
 end

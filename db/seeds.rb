@@ -5,3 +5,5 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+ReservableOption.create(name: 'bumper', reservable_type: 'Lane')
+ReservableOption.create(name: 'handicap_accessible', reservable_type: 'Lane')
