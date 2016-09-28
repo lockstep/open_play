@@ -1,10 +1,9 @@
-<h2>Create a Reservable</h2>
+<h2><%= "Create a #{@reservable.type}" %></h2>
 <%= form_for @reservable , url: {action: 'create'}, :html => {class: 'form-horizontal'} do |f| %>
   <div class="form-group">
     <%= f.label :name, class: 'col-sm-4 control-label' %>
     <div class='col-sm-8'>
-      <%= f.text_field :name, placeholder: 'e.g. Lane 1, Room A',
-        class: 'form-control' %>
+      <%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
   <div class="<%= ('has-danger' if @reservable.errors[:interval].any?) %> form-group">
