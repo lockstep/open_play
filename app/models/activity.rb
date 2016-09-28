@@ -15,15 +15,4 @@ class Activity < ApplicationRecord
     end
   end
 
-  def build_reservable
-    case self
-    when Bowling
-      self.lanes.new
-    when LaserTag
-      self.rooms.new
-    else
-      self.reservables.new
-    end
-  end
-
 end

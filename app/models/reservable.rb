@@ -9,16 +9,6 @@ class Reservable < ApplicationRecord
   validates :interval, numericality: { only_integer: true }
   validate :end_time_is_after_start_time
 
-  after_initialize do |reservable|
-    unless activity.nil?
-      reservable.start_time = activity.start_time
-      reservable.end_time = activity.end_time
-    end
-  end
-
-  scope :lanes, -> { where(type: 'Lane') }
-  scope :rooms, -> { where(type: 'Room') }
-
   def end_time_is_after_start_time
     return unless start_time.present? && end_time.present?
     unless start_time < end_time

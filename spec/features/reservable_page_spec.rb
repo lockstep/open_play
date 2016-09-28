@@ -13,15 +13,15 @@ feature 'Reservable Page' do
         click_link 'Manage Business'
       end
       scenario 'display default times the same as the activity times' do
-        click_link 'Add a Reservable'
-        expect(find_field('reservable_start_time').value).to match '09:00'
-        expect(find_field('reservable_end_time').value).to match '17:00'
+        click_link 'Add a Lane'
+        expect(find_field('lane_start_time').value).to match '09:00'
+        expect(find_field('lane_end_time').value).to match '17:00'
       end
       context 'Reservable type as Lane' do
         background do
           ReservableOption.create(name: 'bumper', reservable_type: 'Lane')
           ReservableOption.create(name: 'handicap_accessible', reservable_type: 'Lane')
-          click_link 'Add a Reservable'
+          click_link 'Add a Lane'
         end
         scenario 'display possible options for Lane' do
           expect(page).to have_content 'Bumper'
@@ -37,23 +37,23 @@ feature 'Reservable Page' do
         @laser_tag = create(:laser_tag, business: @business)
         visit root_path
         click_link 'Manage Business'
-        click_link 'Add a Reservable'
+        click_link 'Add a Room'
       end
       context 'valid params' do
         background do
-          fill_in :reservable_name, with: 'Lane 1'
-          fill_in :reservable_interval, with: 60
+          fill_in :room_name, with: 'Room 1'
+          fill_in :room_interval, with: 60
           click_on 'Submit'
         end
         scenario 'creates a correct type of reservable successfully' do
-          expect(page).to have_content 'Reservable was successfully added'
+          expect(page).to have_content 'Room was successfully added'
         end
       end
       context 'invalid params' do
         background do
-          fill_in :reservable_interval, with: '60 mins'
-          fill_in :reservable_start_time, with: '10:00'
-          fill_in :reservable_end_time, with: '09:00'
+          fill_in :room_interval, with: '60 mins'
+          fill_in :room_start_time, with: '10:00'
+          fill_in :room_end_time, with: '09:00'
           click_on 'Submit'
         end
         scenario 'does not create a reservable' do

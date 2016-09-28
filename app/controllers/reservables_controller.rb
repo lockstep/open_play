@@ -5,7 +5,7 @@ class ReservablesController < ApplicationController
 
   def create
     @reservable = current_activity.build_reservable
-    if @reservable.update_attributes(reservable_params)
+    if @reservable.update_attributes(reservable_params(@reservable))
       options = params[:options]
       unless options.nil?
         options.each do |option|
@@ -15,7 +15,7 @@ class ReservablesController < ApplicationController
         end
       end
       redirect_to business_activities_path(current_activity.business),
-        :notice => 'Reservable was successfully added.'
+        :notice => "#{@reservable.type} was successfully added."
     else
       render :new
     end
@@ -27,8 +27,14 @@ class ReservablesController < ApplicationController
     @current_activity ||= Activity.find_by_id(params[:activity_id])
   end
 
-  def reservable_params
-    params.require(:reservable)
+  def reservable_params(reservable)
+    case reservable
+    when Lane
+      reservable_type = :lane
+    when Room
+      reservable_type = :room
+    end
+    params.require(reservable_type)
       .permit([
         :name,
         :interval,

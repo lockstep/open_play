@@ -22,15 +22,15 @@ feature 'View Activities' do
 
     context 'an activity exists' do
       background do
-        @activity = create(:activity, business: @business)
+        @activity = create(:bowling, business: @business)
         visit root_path
         click_link 'Manage Business'
       end
       scenario 'user can see the activity' do
         expect(page).to have_content @activity.name
       end
-      scenario 'can add a reservable' do
-        expect(page).to have_link 'Add a Reservable'
+      scenario 'can add a lane' do
+        expect(page).to have_link 'Add a Lane'
       end
 
       xcontext 'has reservables' do
