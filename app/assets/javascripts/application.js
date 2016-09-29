@@ -11,7 +11,10 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery_ujs
 //= require tether
 //= require bootstrap
-//= require jquery_ujs
+//= require moment
+//= require pikaday/js/pikaday
+//= require jquery-timepicker/js/jquery.timepicker.min.js
 //= require_tree .

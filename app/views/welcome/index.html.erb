@@ -5,22 +5,22 @@
       <div class="col-xs-12">
         <div class="text-xs-center" id="searchbar-container">
           <%= form_tag("/activities/search", method: 'get', class: 'form-inline') do %>
-            <div class="form-group">
-              <%= label_tag(:date, 'Date') %>
+            <div class='form-group'>
+              <%= label_tag(:date) %>
               &nbsp;
-              <%= date_field(:thinking, :date) %>
-              &nbsp;
-            </div>
-            <div class="form-group">
-              <%= label_tag(:start_time, 'Time') %>
-              &nbsp;
-              <%= time_select(:thinking, :start_time, default: {hour: '08', minute: '00'}) %>
+              <input type='text' id='datepicker', name='activity[date]'>
               &nbsp;
             </div>
-            <div class="form-group">
+            <div class='form-group'>
+              <%= label_tag(:time, 'Time') %>
+              &nbsp;
+              <input type='text' id='timepicker', name='activity[time]'>
+              &nbsp;
+            </div>
+            <div class='form-group'>
               <%= label_tag(:activity_type) %>
               &nbsp;
-              <%= select_tag(:activity_type, options_for_select([ "Bowling", "Laser" ], "Bowling")) %>
+              <%= select_tag('activity[type]', options_for_select([ "Bowling", "LaserTag" ], "Bowling")) %>
               &nbsp;
             </div>
             <%= submit_tag('Search', class: 'btn btn-danger') %>
