@@ -52,6 +52,9 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
 
+  # Use WebKit
+  Capybara.javascript_driver = :webkit
+
   # Hooks
 
   config.before(:suite) do
@@ -64,9 +67,9 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = ex.metadata[:db_strategy]
     else
       if Capybara.current_driver == :rack_test
-        DatabaseCleaner.strategy = :truncation
-      else
         DatabaseCleaner.strategy = :transaction
+      else
+        DatabaseCleaner.strategy = :truncation
       end
     end
     DatabaseCleaner.start
