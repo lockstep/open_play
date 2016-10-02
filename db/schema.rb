@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160922173726) do
+ActiveRecord::Schema.define(version: 20160929052851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 20160922173726) do
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.time     "start_time"
+    t.time     "end_time"
+    t.date     "booking_date"
+    t.integer  "players"
+    t.string   "options"
+    t.integer  "order_id"
+    t.integer  "reservable_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
+    t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
+  end
+
   create_table "businesses", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -33,6 +47,13 @@ ActiveRecord::Schema.define(version: 20160922173726) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["user_id"], name: "index_businesses_on_user_id", using: :btree
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
   create_table "reservable_options", force: :cascade do |t|
@@ -81,7 +102,10 @@ ActiveRecord::Schema.define(version: 20160922173726) do
   end
 
   add_foreign_key "activities", "businesses"
+  add_foreign_key "bookings", "orders"
+  add_foreign_key "bookings", "reservables"
   add_foreign_key "businesses", "users"
+  add_foreign_key "orders", "users"
   add_foreign_key "reservable_options_availables", "reservable_options"
   add_foreign_key "reservable_options_availables", "reservables"
   add_foreign_key "reservables", "activities"
