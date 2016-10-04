@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
   end
 
   def search
+    @date = params[:activity][:date]
     @activities = Activity.all
   end
 

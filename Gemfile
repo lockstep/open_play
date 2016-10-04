@@ -13,6 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 
 gem 'bootstrap', '~> 4.0.0.alpha3'
+gem "font-awesome-rails"
 # Use moment.js as the advanced formatting for Pikaday(datepicker library)
 gem 'momentjs-rails'
 
@@ -34,6 +35,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails'
+  gem 'launchy'
 end
 
 group :test do
