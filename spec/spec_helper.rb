@@ -52,9 +52,6 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
 
-  # Use WebKit
-  Capybara.javascript_driver = :webkit
-
   # Hooks
 
   config.before(:suite) do

@@ -1,4 +1,5 @@
-feature 'Complete Reservation', js: true do
+feature 'Complete Reservation', js: true, driver: :webkit do
+
   background do
     @user = create(:user)
     @business = create(:business, user: @user)

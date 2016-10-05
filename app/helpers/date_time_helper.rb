@@ -1,10 +1,10 @@
 module DateTimeHelper
-  def present_time_as_meridiem_notation(time)
+  def present_time(time)
     time.localtime.strftime("%I:%M %p")
   end
 
   def present_range_of_time(start_time, end_time)
-    "#{present_time_as_meridiem_notation(start_time)} - #{present_time_as_meridiem_notation(end_time)}"
+    "#{present_time(start_time)} - #{present_time(end_time)}"
   end
 
   def present_date(date)
