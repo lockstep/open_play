@@ -8,36 +8,73 @@
           </div>
         </div>
         <div class="col-xs-9">
-          <div class="col-xs-9">
-            <div class="activity-info">
-              <%= link_to "/", class: 'activity-name' do %>
-                <span class=''><%= activity.name %></span>
-              <% end %>
-              <div class="reservable">
-                <span class="reservable-name">Lane 1 </span>
-                <div class="row-times">
-                  <%= link_to '7:00 - 8:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '8:00 - 9:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '', '#', class: 'btn unavailable timeslot' %>
-                  <%= link_to '10:00 - 11:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '11:00 - 12:00', '/', class: 'btn btn-danger timeslot' %>
-                </div>
-              </div>
-              <div class="reservable">
-                <span class="reservable-name">Lane 2 </span>
-                <div class="row-times">
-                  <%= link_to '7:00 - 8:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '8:00 - 9:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '9:00 - 10:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '10:00 - 11:00', '/', class: 'btn btn-danger timeslot' %>
-                  <%= link_to '11:00 - 12:00', '/', class: 'btn btn-danger timeslot' %>
-                </div>
+          <%= form_tag(new_order_path, method: :get) do %>
+            <div class="col-xs-9">
+              <div class="activity-info">
+                <%= link_to "/", class: 'activity-name' do %>
+                  <span class=''><%= activity.name %></span>
+                <% end %>
+                <% activity.reservables.each do |reservable| %>
+                  <div class="reservable">
+                    <span class="reservable-name"><%= reservable.name %></span>
+                    <div class="row-times">
+
+                      <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        data: { activity_id: activity.id, reservable_id: reservable.id,
+                        slot: '1'}) do %>
+                        <i class="fa"></i> 8:00 - 9:00
+                      <% end %>
+                      <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                        '01:00:00,02:00:00', false, class: 'checkbox-hidden',
+                        id: activity.id.to_s + '-' + reservable.id.to_s + '-' + '1' %>
+
+                      <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        data: { activity_id: activity.id, reservable_id: reservable.id,
+                        slot: '2'}) do %>
+                        <i class="fa"></i> 9:00 - 10:00
+                      <% end %>
+                      <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                        '02:00:00,03:00:00', false, class: 'checkbox-hidden',
+                        id: activity.id.to_s + '-' + reservable.id.to_s + '-' + '2' %>
+
+                      <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        data: { activity_id: activity.id, reservable_id: reservable.id,
+                        slot: '3'}) do %>
+                        <i class="fa"></i> 10:00 - 11:00
+                      <% end %>
+                      <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                        '03:00:00,04:00:00', false, class: 'checkbox-hidden',
+                        id: activity.id.to_s + '-' + reservable.id.to_s + '-' + '3' %>
+
+                      <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        data: { activity_id: activity.id, reservable_id: reservable.id,
+                        slot: '4'}) do %>
+                        <i class="fa"></i> 11:00 - 12:00
+                      <% end %>
+                      <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                        '04:00:00,05:00:00', false, class: 'checkbox-hidden',
+                        id: activity.id.to_s + '-' + reservable.id.to_s + '-' + '4' %>
+
+                      <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        data: { activity_id: activity.id, reservable_id: reservable.id,
+                        slot: '5'}) do %>
+                        <i class="fa"></i> 12:00 - 13:00
+                      <% end %>
+                      <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                        '05:00:00,06:00:00', false, class: 'checkbox-hidden',
+                        id: activity.id.to_s + '-' + reservable.id.to_s + '-' + '5' %>
+                    </div>
+                  </div>
+                  <br/>
+                <% end %>
               </div>
             </div>
-          </div>
-          <div class-"col-xs-3">
-            <%= link_to 'Book', '/', class: 'btn btn-info book-btn' %>
-          </div>
+
+            <%= hidden_field_tag('date', @date) %>
+            <div class-"col-xs-3">
+              <%= submit_tag 'Book', class: 'btn btn-info book-btn' %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

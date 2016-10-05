@@ -1,0 +1,65 @@
+<div class='row'>
+  <div class='col-xs-12'>
+    <h1 class='text-xs-center'>Reservation Info</h1>
+  </div>
+</div>
+<div class='spacer-30'></div>
+<div class='row'>
+  <div class='col-xs-1'>
+    <span class='font-weight-bold'>Date</span>
+  </div>
+  <div class='col-xs-11'>
+    <span><%= present_date(@order.booking_date) %></span>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-xs-1'>
+    <span class='font-weight-bold'>Place</span>
+  </div>
+  <div class='col-xs-11'>
+    <span><%= @order.booking_place %></span>
+  </div>
+</div>
+<div class='spacer-30'></div>
+
+<%= form_tag(orders_path, method: :post) do %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class='text-xs-center'>Name</th>
+        <th class='text-xs-center'>Time</th>
+        <th class='text-xs-center'># Players</th>
+        <th class='text-xs-center'>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.bookings.each_with_index do |booking, index| %>
+        <tr>
+          <td class='text-xs-center'>
+            <%= booking.reservable.name %>
+          </td>
+          <td class='text-xs-center'>
+            <%= present_range_of_time(booking.start_time, booking.end_time) %>
+            <%= hidden_field_tag('order[bookings_attributes][][start_time]', booking.start_time) %>
+            <%= hidden_field_tag('order[bookings_attributes][][end_time]', booking.end_time) %>
+            <%= hidden_field_tag('order[bookings_attributes][][booking_date]', booking.booking_date) %>
+            <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
+          </td>
+          <td class="<%= ('table-danger' if booking.errors[:number_of_players].any?) %> text-xs-center">
+            <%= text_field_tag 'order[bookings_attributes][][number_of_players]', booking.number_of_players, id: "order_bookings_#{index}_number_of_players" , placeholder: 'Number of players' %>
+            <% booking.errors[:number_of_players].each do |error| %>
+              <div class="text-danger"><%= error %></div>
+            <% end %>
+          </td>
+          <td class='text-xs-center'>
+            options
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class='row text-xs-center' %>
+    <%= submit_tag "Complete Reservation", class: 'btn btn-primary' %>
+  </div>
+<% end %>
