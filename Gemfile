@@ -17,6 +17,10 @@ gem "font-awesome-rails"
 # Use moment.js as the advanced formatting for Pikaday(datepicker library)
 gem 'momentjs-rails'
 
+# Enable JavaScript package and Babel transformation in Sprockets
+# It is meant as a replacement for Browserify or Webpack in Rails.
+gem 'sprockets-commoner'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
 end
