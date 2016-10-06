@@ -17,3 +17,6 @@ spec/examples.txt
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# Ignore node modules
+/node_modules
