@@ -39,10 +39,12 @@ feature 'Reservable Page' do
         click_link 'Manage Business'
         click_link 'Add a Room'
       end
+
       context 'valid params' do
         background do
           fill_in :room_name, with: 'Room 1'
           fill_in :room_interval, with: 60
+          fill_in :room_maximum_players, with: 30
           click_on 'Submit'
         end
         scenario 'creates a correct type of reservable successfully' do
@@ -54,6 +56,40 @@ feature 'Reservable Page' do
           fill_in :room_interval, with: '60 mins'
           fill_in :room_start_time, with: '10:00'
           fill_in :room_end_time, with: '09:00'
+          fill_in :room_maximum_players, with: '-1'
+          click_on 'Submit'
+        end
+        scenario 'does not create a reservable' do
+          expect(page).to have_content 'not a number'
+          expect(page).to have_content 'must be after the start time'
+          expect(page).to have_content 'must be greater than 0'
+        end
+      end
+    end
+
+    context 'Bowling exists' do
+      background do
+        @bowling = create(:bowling, business: @business)
+        visit root_path
+        click_link 'Manage Business'
+        click_link 'Add a Lane'
+      end
+
+      context 'valid params' do
+        background do
+          fill_in :lane_name, with: 'Room 1'
+          fill_in :lane_interval, with: 60
+          click_on 'Submit'
+        end
+        scenario 'creates a correct type of reservable successfully' do
+          expect(page).to have_content 'Lane was successfully added'
+        end
+      end
+      context 'invalid params' do
+        background do
+          fill_in :lane_interval, with: '60 mins'
+          fill_in :lane_start_time, with: '10:00'
+          fill_in :lane_end_time, with: '09:00'
           click_on 'Submit'
         end
         scenario 'does not create a reservable' do
@@ -63,5 +99,4 @@ feature 'Reservable Page' do
       end
     end
   end
-
 end
