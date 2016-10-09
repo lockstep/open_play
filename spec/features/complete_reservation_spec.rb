@@ -3,13 +3,14 @@ feature 'Complete Reservation', js: true, driver: :webkit do
   background do
     @user = create(:user)
     @business = create(:business, user: @user)
-    @bowling = create(:bowling, business: @business)
+    @laser_tag = create(:laser_tag, business: @business)
   end
   include_context 'logged in user'
 
-  describe 'booking a lane' do
+  describe 'booking a room' do
     background do
-      @lane = create(:lane, activity: @bowling)
+      @room = create(:room, activity: @laser_tag)
+      create_list(:booking, 2, reservable: @room)
       visit root_path
       page.execute_script("$('#datepicker').val('4/10/2016')")
       click_on 'Search'
@@ -23,11 +24,12 @@ feature 'Complete Reservation', js: true, driver: :webkit do
 
       scenario 'displays the booking info correctly' do
         expect(page).to have_content 'Tuesday, October 4'
-        expect(page).to have_content @bowling.name
+        expect(page).to have_content @laser_tag.name
         # Because I hard code time on search result page. So, this spec will need to
         # be changeed in the future. I will leave it for now.
         # expect(page).to have_content '9:00 AM - 10:00 AM'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
+        expect(page).to have_content "(20/30)"
       end
 
       context 'complete reservation' do
@@ -69,6 +71,13 @@ feature 'Complete Reservation', js: true, driver: :webkit do
               expect(page).to have_content "must be greater than 0"
             end
           end
+          context 'number of players is over than available players' do
+            scenario 'books unsuccessfully' do
+              fill_in 'order_bookings_0_number_of_players', with: '15'
+              click_on 'Complete Reservation'
+              expect(page).to have_content 'must be less than available players'
+            end
+          end
         end
       end
     end
@@ -82,7 +91,7 @@ feature 'Complete Reservation', js: true, driver: :webkit do
 
       scenario 'displays the booking info correctly' do
         expect(page).to have_content 'Tuesday, October 4'
-        expect(page).to have_content @bowling.name
+        expect(page).to have_content @laser_tag.name
         # Because I hard code time on search result page. So, this spec will need to
         # be changeed in the future. I will leave it for now.
         # expect(page).to have_content '9:00 AM - 10:00 AM'

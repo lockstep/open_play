@@ -36,7 +36,7 @@
       <% @order.bookings.each_with_index do |booking, index| %>
         <tr>
           <td class='text-xs-center'>
-            <%= booking.reservable.name %>
+            <%= booking.reservable_name %>
           </td>
           <td class='text-xs-center'>
             <%= present_range_of_time(booking.start_time, booking.end_time) %>
@@ -46,7 +46,12 @@
             <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
           </td>
           <td class="<%= ('table-danger' if booking.errors[:number_of_players].any?) %> text-xs-center">
-            <%= text_field_tag 'order[bookings_attributes][][number_of_players]', booking.number_of_players, id: "order_bookings_#{index}_number_of_players" , placeholder: 'Number of players' %>
+            <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
+              booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
+              placeholder: 'Number of players' %>
+            <span class='text-info'>
+              (<%= booking.number_of_booked_players %>/<%= booking.maximum_players %>)
+            </span>
             <% booking.errors[:number_of_players].each do |error| %>
               <div class="text-danger"><%= error %></div>
             <% end %>

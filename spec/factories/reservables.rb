@@ -11,5 +11,6 @@ FactoryGirl.define do
 
   factory :room, parent: :reservable, class: 'Room' do
     name "Room 1"
+    maximum_players 30
   end
 end
