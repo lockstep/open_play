@@ -19,4 +19,7 @@ class Reservable < ApplicationRecord
     end
   end
 
+  def is_a_room?
+    self.instance_of?(Room)
+  end
 end
