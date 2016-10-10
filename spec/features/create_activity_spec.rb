@@ -37,8 +37,8 @@ feature 'Create Activity' do
         context 'end_time is scheduled before start_time' do
           scenario 'user sees end_time need to schedule after start_time' do
             complete_activity_form(
-              start_time_hours: '12', start_time_minutes: '30',
-              end_time_hours: '08', end_time_minutes: '00'
+              start_time: '12:30',
+              end_time: '08:00'
             )
             expect(page).to have_content 'must be after the start time'
           end
@@ -46,8 +46,8 @@ feature 'Create Activity' do
         context 'end_time is equal start_time' do
           scenario 'user sees end_time need to schedule after start_time' do
             complete_activity_form(
-              start_time_hours: '08', start_time_minutes: '00',
-              end_time_hours: '08', end_time_minutes: '00'
+              start_time: '08:00',
+              end_time: '08:00'
             )
             expect(page).to have_content 'must be after the start time'
           end
@@ -79,10 +79,8 @@ feature 'Create Activity' do
     within '#new_activity' do
       select( overrides[:type] || 'Bowling', :from => 'activity_type')
       fill_in 'activity_name', with: overrides[:name] || 'Country Club Lanes'
-      select( overrides[:start_time_hours] || '08', :from => 'activity_start_time_4i')
-      select( overrides[:start_time_minutes] || '00', :from => 'activity_start_time_5i')
-      select( overrides[:end_time_hours] || '16', :from => 'activity_end_time_4i')
-      select( overrides[:end_time_minutes] || '00', :from => 'activity_end_time_5i')
+      fill_in 'activity_start_time', with: overrides[:start_time] || '08:00'
+      fill_in 'activity_end_time', with: overrides[:end_time] || '16:00'
       click_button 'Submit'
     end
   end

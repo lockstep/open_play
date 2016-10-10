@@ -23,5 +23,6 @@ module OpenPlay
     # -- all .rb files in that directory are automatically loaded.
     config.active_record.time_zone_aware_types = [:datetime]
     config.time_zone = 'Eastern Time (US & Canada)'
+    config.active_record.time_zone_aware_attributes = false
   end
 end

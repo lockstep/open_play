@@ -34,10 +34,10 @@ describe OrdersController do
           expect(Order.count).to eq 1
           bookings = Order.first.bookings
           expect(bookings.length).to eq 3
-          expect(bookings.first.start_time).to eq '2000-01-01 06:00:00'
-          expect(bookings.first.end_time).to eq '2000-01-01 07:00:00'
-          expect(bookings.last.start_time).to eq '2000-01-01 08:00:00'
-          expect(bookings.last.end_time).to eq '2000-01-01 09:00:00'
+          expect(bookings.first.start_time).to eq '2000-01-01 01:00:00'
+          expect(bookings.first.end_time).to eq '2000-01-01 02:00:00'
+          expect(bookings.last.start_time).to eq '2000-01-01 03:00:00'
+          expect(bookings.last.end_time).to eq '2000-01-01 04:00:00'
           expect(response).to redirect_to orders_success_path
         end
       end
