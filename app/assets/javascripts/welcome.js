@@ -14,5 +14,5 @@ $(function() {
   // TimePicker
   var timePicker = $('#timepicker')
   timePicker.timepicker({ 'scrollDefault': 'now' });
-  timePicker.timepicker('setTime', new Date());
+  timePicker.timepicker('setTime', '11:00');
 });

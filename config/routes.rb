@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create]
   get 'activities/search', to: 'activities#search'
   get 'orders/success', to: 'orders#success'
+  get 'search', to: 'search#search'
 end

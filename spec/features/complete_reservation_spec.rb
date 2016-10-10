@@ -17,7 +17,7 @@ feature 'Complete Reservation', :js do
 
     context 'books one time slot' do
       background do
-        click_on '9:00 - 10:00'
+        click_on '09:00'
         click_on 'Book'
         stub_stripe_checkout_handler
       end
@@ -25,9 +25,7 @@ feature 'Complete Reservation', :js do
       scenario 'displays the booking info correctly' do
         expect(page).to have_content 'Tuesday, October 4'
         expect(page).to have_content @bowling.name
-        # Because I hard code time on search result page. So, this spec will need to
-        # be changeed in the future. I will leave it for now.
-        # expect(page).to have_content '9:00 AM - 10:00 AM'
+        expect(page).to have_content '9:00 AM - 10:00 AM'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
       end
 
@@ -78,18 +76,16 @@ feature 'Complete Reservation', :js do
 
     context 'books multiple time slots' do
       background do
-        click_on '9:00 - 10:00'
-        click_on '10:00 - 11:00'
+        click_on '09:00'
+        click_on '10:00'
         click_on 'Book'
       end
 
       scenario 'displays the booking info correctly' do
         expect(page).to have_content 'Tuesday, October 4'
         expect(page).to have_content @bowling.name
-        # Because I hard code time on search result page. So, this spec will need to
-        # be changeed in the future. I will leave it for now.
-        # expect(page).to have_content '9:00 AM - 10:00 AM'
-        # expect(page).to have_content '10:00 AM - 11:00 AM'
+        expect(page).to have_content '9:00 AM - 10:00 AM'
+        expect(page).to have_content '10:00 AM - 11:00 AM'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
       end
