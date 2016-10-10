@@ -31,7 +31,7 @@
             <%= f.label :start_time, class: 'col-form-label' %>
           </div>
           <div class="col-xs-8 activity-time">
-            <%= f.time_select :start_time, default: {hour: '08', minute: '00'} %>
+            <%= f.time_field :start_time, { value: '08:00'} %>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
@@ -39,7 +39,7 @@
             <%= f.label :end_time, class: 'col-form-label' %>
           </div>
           <div class="col-xs-8 activity-time">
-            <%= f.time_select :end_time, default: {hour: '16', minute: '00'} %>
+            <%= f.time_field :end_time, { value: '16:00'} %>
           </div>
         </div>
       </div>

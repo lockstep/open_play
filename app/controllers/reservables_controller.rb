@@ -1,4 +1,6 @@
 class ReservablesController < ApplicationController
+  before_action :authenticate_user!
+  
   def new
     @reservable = current_activity.build_reservable
   end
@@ -39,7 +41,8 @@ class ReservablesController < ApplicationController
         :name,
         :interval,
         :start_time,
-        :end_time
+        :end_time,
+        :maximum_players
       ])
   end
 
