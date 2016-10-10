@@ -1,6 +1,6 @@
 module DateTimeHelper
   def present_time(time)
-    time.localtime.strftime("%I:%M %p")
+    time.strftime("%I:%M %p")
   end
 
   def present_range_of_time(start_time, end_time)
