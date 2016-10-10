@@ -4,17 +4,17 @@ class Booking < ApplicationRecord
 
   validates_presence_of :order, :number_of_players
   validates_numericality_of :number_of_players, only_integer: true,
-    greater_than: 0, if: Proc.new{ |object| is_belongs_to_a_room_with_no_errors?(object)}
+    greater_than: 0, if: Proc.new{ |object| object.errors.empty? }
   validate :number_of_players_cannot_over_than_available_players,
-    :if => Proc.new{ |object| is_belongs_to_a_room_with_no_errors?(object) }
+    :if => Proc.new{ |object| object.reservable_is_a_room? && object.errors.empty? }
 
   delegate :activity_name, to: :reservable, prefix: true
   delegate :name, to: :reservable, prefix: true
-  delegate :number_of_booked_players, to: :reservable
+  delegate :is_a_room?, to: :reservable, prefix: true
   delegate :maximum_players, to: :reservable
 
-  def is_belongs_to_a_room_with_no_errors?(object)
-    object.reservable.is_a_room? && object.errors.empty?
+  def number_of_booked_players
+    reservable.number_of_booked_players if reservable_is_a_room?
   end
 
   def number_of_players_cannot_over_than_available_players

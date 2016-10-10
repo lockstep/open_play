@@ -49,9 +49,11 @@
             <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
               booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
               placeholder: 'Number of players' %>
-            <span class='text-info'>
-              (<%= booking.number_of_booked_players %>/<%= booking.maximum_players %>)
-            </span>
+            <% if booking.reservable_is_a_room? %>
+              <span class='text-info players-detail'>
+                (<%= booking.number_of_booked_players %>/<%= booking.maximum_players %>)
+              </span>
+            <% end %>
             <% booking.errors[:number_of_players].each do |error| %>
               <div class="text-danger"><%= error %></div>
             <% end %>

@@ -67,7 +67,7 @@ feature 'Reservable Page' do
       end
     end
 
-    context 'Bowling tag exists' do
+    context 'Bowling exists' do
       background do
         @bowling = create(:bowling, business: @business)
         visit root_path
