@@ -5,12 +5,15 @@ if Rails.env.production?
 end
 
 require 'rspec/rails'
+require 'capybara/poltergeist'
 require 'webmock/rspec'
 require 'sidekiq/testing'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
 WebMock.disable_net_connect!(allow_localhost: true)
+
+Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups

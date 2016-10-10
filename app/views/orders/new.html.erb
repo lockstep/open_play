@@ -22,7 +22,7 @@
 </div>
 <div class='spacer-30'></div>
 
-<%= form_tag(orders_path, method: :post) do %>
+<%= form_tag(orders_path, method: :post, id: 'new-order-form') do %>
   <table class="table">
     <thead>
       <tr>
@@ -60,6 +60,7 @@
   </table>
 
   <div class='row text-xs-center' %>
-    <%= submit_tag "Complete Reservation", class: 'btn btn-primary' %>
+    <%= submit_tag "Complete Reservation", id: 'complete-reservation',
+      class: 'btn btn-primary' %>
   </div>
 <% end %>

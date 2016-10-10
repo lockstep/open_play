@@ -1,2 +1,2 @@
 #!/bin/sh
-foreman start -f Procfile
+foreman start -f Procfile.dev

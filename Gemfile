@@ -43,6 +43,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'poltergeist'
 end
 
 group :production do
@@ -51,6 +52,7 @@ group :production do
 end
 
 group :development do
+  gem 'thin'
   # Access an IRB console on exception pages or by using <%= console %> anywhere
   # in the code.
   gem 'web-console'
