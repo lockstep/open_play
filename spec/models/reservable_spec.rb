@@ -48,7 +48,7 @@ describe Reservable do
           time_slot_1 = time_slots.first
           time_slot_2 = time_slots.second
           expect(time_slot_1 + @lane.interval.minutes).to eq time_slot_2
-          expect(time_slots.third).to eq '11:00'
+          expect(time_slots.third.strftime("%H:%M")).to eq '11:00'
         end
       end
       context 'the lane has one booking' do
@@ -67,8 +67,8 @@ describe Reservable do
           time_slots = @lane.build_time_slots('2016-10-10', '11:00am')
           expect(time_slots.size).to eq 5
           expect(time_slots.first).to eq nil
-          expect(time_slots.second).to eq '10:30'
-          expect(time_slots.third).to eq '11:00'
+          expect(time_slots.second.strftime("%H:%M")).to eq '10:30'
+          expect(time_slots.third.strftime("%H:%M")).to eq '11:00'
         end
       end
     end
