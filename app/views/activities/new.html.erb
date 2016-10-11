@@ -8,7 +8,7 @@
 <div class="spacer-40"></div>
 <div class="row">
   <div class="col-xs-12">
-    <%= form_for @activity, url: {action: 'create'} do |f| %>
+    <%= form_for @activity, as: :activity, url: {action: 'create'} do |f| %>
       <div class="form-group">
         <div class="col-xs-3">
           <%= f.label :type, 'Activity Type:' %>
