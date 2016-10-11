@@ -79,6 +79,7 @@ feature 'Reservable Page' do
         background do
           fill_in :lane_name, with: 'Room 1'
           fill_in :lane_interval, with: 60
+          fill_in :lane_maximum_players, with: 30
           click_on 'Submit'
         end
         scenario 'creates a correct type of reservable successfully' do
@@ -90,11 +91,13 @@ feature 'Reservable Page' do
           fill_in :lane_interval, with: '60 mins'
           fill_in :lane_start_time, with: '10:00'
           fill_in :lane_end_time, with: '09:00'
+          fill_in :lane_maximum_players, with: 15.5
           click_on 'Submit'
         end
         scenario 'does not create a reservable' do
           expect(page).to have_content 'not a number'
           expect(page).to have_content 'must be after the start time'
+          expect(page).to have_content 'must be an integer'
         end
       end
     end
