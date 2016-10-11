@@ -31,7 +31,8 @@ class ActivitiesController < ApplicationController
   end
 
   def activity_params
-    permitted_params = [:name, :start_time, :end_time, :type]
+    permitted_params = [:name, :start_time, :end_time, :type,
+      :prevent_back_to_back_booking]
     params.require(:activity).permit(permitted_params)
   end
 end
