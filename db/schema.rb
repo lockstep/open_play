@@ -91,6 +91,8 @@ ActiveRecord::Schema.define(version: 20161013103354) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "maximum_players"
+    t.float    "weekday_price"
+    t.float    "weekend_price"
     t.index ["activity_id"], name: "index_reservables_on_activity_id", using: :btree
   end
 

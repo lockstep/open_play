@@ -32,7 +32,9 @@ describe ReservablesController do
               interval: 60,
               start_time: '08:00:00.000',
               end_time: '16:00:00.000',
-              maximum_players: 30
+              maximum_players: 30,
+              weekday_price: 15,
+              weekend_price: 20
             }
           }
 
@@ -43,6 +45,8 @@ describe ReservablesController do
           expect(reservable.start_time.to_s).to match '08:00'
           expect(reservable.end_time.to_s).to match '16:00'
           expect(reservable.maximum_players).to eq 30
+          expect(reservable.weekday_price).to eq 15
+          expect(reservable.weekend_price).to eq 20
         end
       end
     end

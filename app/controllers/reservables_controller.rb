@@ -42,7 +42,9 @@ class ReservablesController < ApplicationController
         :interval,
         :start_time,
         :end_time,
-        :maximum_players
+        :maximum_players,
+        :weekday_price,
+        :weekend_price
       ])
   end
 

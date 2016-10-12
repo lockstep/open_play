@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class='spacer-30'></div>
-<div class='row'>
+<div class='row' id='order-date'>
   <div class='col-xs-1'>
     <span class='font-weight-bold'>Date</span>
   </div>
@@ -29,7 +29,8 @@
         <th class='text-xs-center'>Name</th>
         <th class='text-xs-center'>Time</th>
         <th class='text-xs-center'># Players</th>
-        <th class='text-xs-left'>Options</th>
+        <th class='text-xs-center'>Options</th>
+        <th class='text-xs-center'>Price(Per Person)</th>
       </tr>
     </thead>
     <tbody>
@@ -44,17 +45,16 @@
             <%= hidden_field_tag('order[bookings_attributes][][end_time]', booking.end_time) %>
             <%= hidden_field_tag('order[bookings_attributes][][booking_date]', booking.booking_date) %>
             <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
+            <%= hidden_field_tag('order[user_id]', current_user.id) %>
+            <%= hidden_field_tag('token_id', '') %>
           </td>
-          <td class="<%= ('table-danger' if booking.errors[:number_of_players].any?) %> text-xs-center">
+          <td class="text-xs-center">
             <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
               booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
               placeholder: 'Number of players' %>
             <span class='text-info players-detail'>
               <%= number_of_booked_players(booking) %>
             </span>
-            <% booking.errors[:number_of_players].each do |error| %>
-              <div class="text-danger"><%= error %></div>
-            <% end %>
           </td>
           <td class='text-xs-left'>
             <% booking.reservable_options_available.each do |option| %>
@@ -66,6 +66,9 @@
                   "#{option.reservable_option_name.humanize}" %>
               </p>
             <% end %>
+          </td>
+          <td class='text-xs-center'>
+            <%= present_booking_price(booking.booking_price) %>
           </td>
         </tr>
       <% end %>

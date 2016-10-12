@@ -7,4 +7,8 @@ module OrderHelper
     )
     "(#{booked_player_count}/#{booking.maximum_players})"
   end
+
+  def present_booking_price(booking_price)
+    "$ #{booking_price}"
+  end
 end

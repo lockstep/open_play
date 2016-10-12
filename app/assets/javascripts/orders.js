@@ -1,23 +1,50 @@
 $(function() {
+  var renderErrors = function(errors) {
+    $("<div id='bookings-errors' class='alert alert-danger' role='alert'><ul></ul></div>")
+      .insertBefore('#order-date');
+    errors.forEach(function(error) {
+      $('#bookings-errors ul').append("<li role='menu-item'>" + error + "</li>")
+    })
+  }
 
-  $('#complete-reservation').click(OPEN_PLAY.checkoutInitiator);
+  $('#complete-reservation').click(function(e) {
+    e.preventDefault();
+    // destroy errors
+    $('#bookings-errors').remove();
+
+    $.ajax({
+      url: "/prepare_complete_order",
+      type: "GET",
+      data: $('#new-order-form').serialize(),
+      success: function(response) {
+        OPEN_PLAY.checkoutInitiator(
+          response.meta.number_of_bookings,
+          response.meta.total_price
+        );
+      },
+      error: function(xhr, status, error) {
+        renderErrors(xhr.responseJSON.meta.errors)
+      }
+    });
+
+  });
 
   window.addEventListener('popstate', function() {
     OPEN_PLAY.checkoutHandler.close();
   });
-
 });
 
-OPEN_PLAY.checkoutInitiator = function(e) {
-  e.preventDefault();
+
+OPEN_PLAY.checkoutInitiator = function(number_of_bookings ,total_price) {
   OPEN_PLAY.checkoutHandler.open({
     name: 'Open Play',
-    description: '2 widgets',
-    amount: 2000
+    description: number_of_bookings + ' bookings',
+    amount: total_price
   });
 }
 
 OPEN_PLAY.successfulChargeCallback = function(token) {
+  $('#token_id').val(token.id);
   $('#new-order-form').submit();
 }
 
