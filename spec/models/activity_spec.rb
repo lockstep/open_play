@@ -8,7 +8,11 @@ describe Activity do
       scenario 'builds a lane' do
         reservable = @bowling.build_reservable
         expect(reservable.type).to eq 'Lane'
-        reservable.update_attributes({name: 'Lane 1', interval: 30})
+        reservable.update_attributes({
+          name: 'Lane 1',
+          interval: 30,
+          maximum_players: 30
+        })
         expect(Reservable.find(reservable.id).class).to eq Lane
       end
     end
@@ -20,7 +24,11 @@ describe Activity do
       scenario 'builds a room' do
         reservable = @laser_tag.build_reservable
         expect(reservable.type).to eq 'Room'
-        reservable.update_attributes({name: 'Room 1', interval: 30, maximum_players: 30})
+        reservable.update_attributes({
+          name: 'Room 1',
+          interval: 30,
+          maximum_players: 30
+        })
         expect(Reservable.find(reservable.id).class).to eq Room
       end
     end

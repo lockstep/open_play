@@ -47,19 +47,17 @@
       </div>
   </div>
 
-  <% if @reservable.is_a_room? %>
-    <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group">
-      <%= f.label :maximum_players, 'Maximum of players', class: 'col-sm-4 control-label' %>
-      <div class='col-sm-8'>
-        <%= f.text_field :maximum_players, class: 'form-control' %>
-        <% @reservable.errors[:maximum_players].each do |error| %>
-          <div class="form-control-feedback">
-            <%= error %>
-          </div>
-        <% end %>
-      </div>
+  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group">
+    <%= f.label :maximum_players, 'Maximum of players', class: 'col-sm-4 control-label' %>
+    <div class='col-sm-8'>
+      <%= f.text_field :maximum_players, class: 'form-control' %>
+      <% @reservable.errors[:maximum_players].each do |error| %>
+        <div class="form-control-feedback">
+          <%= error %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 
   <div class="form-group">
     <div class="col-sm-12">

@@ -8,6 +8,7 @@ class Reservable < ApplicationRecord
   has_many :bookings
 
   validates :interval, numericality: { only_integer: true }
+  validates :maximum_players, numericality: { only_integer: true, greater_than: 0 }
   validate :end_time_is_after_start_time
 
   delegate :name, to: :activity, prefix: true
@@ -17,10 +18,6 @@ class Reservable < ApplicationRecord
     unless start_time < end_time
       errors.add(:end_time, 'must be after the start time')
     end
-  end
-
-  def is_a_room?
-    self.instance_of?(Room)
   end
 
   def build_time_slots(booking_date, booking_time)
@@ -38,6 +35,16 @@ class Reservable < ApplicationRecord
       time_on_each_slot(later),
       time_on_each_slot(latest)
     ]
+  end
+
+  def number_of_booked_players(start_time, end_time, date)
+    bookings
+      .during(start_time, end_time, date)
+      .sum("number_of_players")
+  end
+
+  def available_players(start_time, end_time, date)
+    maximum_players - number_of_booked_players(start_time, end_time, date)
   end
 
   private

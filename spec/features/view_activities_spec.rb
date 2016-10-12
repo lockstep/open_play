@@ -58,7 +58,8 @@ feature 'View Activities' do
       name: overrides[:name] || 'Item A',
       interval: 30,
       start_time: '08:00',
-      end_time: '20:00'
+      end_time: '20:00',
+      maximum_players: 30
     }
   end
 end
