@@ -17,4 +17,7 @@
 //= require moment
 //= require pikaday/js/pikaday
 //= require jquery-timepicker/js/jquery.timepicker.min.js
-//= require_tree .
+//= require checkout
+//= require welcome
+//= require activities
+//= require orders

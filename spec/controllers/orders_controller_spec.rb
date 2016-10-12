@@ -19,8 +19,7 @@ describe OrdersController do
 
   describe 'POST create' do
     before do
-      @first_reservable = create(:reservable)
-      @second_reservable = create(:reservable, name: 'Item 2')
+      @reservable = create(:reservable)
     end
 
     context 'user is logged in' do
@@ -28,8 +27,8 @@ describe OrdersController do
       context 'all params are valid' do
         it 'creates a booking' do
           post :create, params: order_params(
-            first_reservable: @first_reservable.id,
-            second_reservable: @second_reservable.id
+            reservable: @reservable.id,
+            user_id: @user.id
           )
           expect(Order.count).to eq 1
           bookings = Order.first.bookings
@@ -44,8 +43,7 @@ describe OrdersController do
     context 'user is not logged in' do
       before do
         post :create, params: order_params(
-          first_reservable: @first_reservable.id,
-          second_reservable: @second_reservable.id
+          reservable: @reservable.id,
         )
       end
       it_behaves_like 'it requires authentication'
@@ -55,11 +53,12 @@ describe OrdersController do
   def order_params(overrides={})
     {
       order: {
+        user_id: overrides[:user_id],
         bookings_attributes: [
           {
            start_time: '08:00:00',
            end_time: '09:00:00',
-           reservable_id: overrides[:first_reservable],
+           reservable_id: overrides[:reservable],
            booking_date: '4/10/2016',
            number_of_players: '1'
           }

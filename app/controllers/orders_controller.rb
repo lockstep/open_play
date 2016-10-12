@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params.merge({ user_id: current_user.id }))
+    @order = Order.new(order_params)
     if @order.save
       redirect_to orders_success_path
     else
@@ -27,6 +27,15 @@ class OrdersController < ApplicationController
   end
 
   def success
+  end
+
+  def verify_order
+    order = Order.new(order_params)
+    if order.valid?
+      render json: order, status: :ok
+    else
+      render json: { meta: { errors: order.errors.full_messages }}, status: :unprocessable_entity
+    end
   end
 
   private
@@ -48,8 +57,8 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(bookings_attributes: [
-      :start_time, :end_time, :booking_date, :number_of_players, :reservable_id
-    ])
+    params.require(:order).permit(:user_id, bookings_attributes: [
+      :start_time, :end_time, :booking_date, :number_of_players, :reservable_id]
+    )
   end
 end
