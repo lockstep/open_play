@@ -19,7 +19,7 @@ class Booking < ApplicationRecord
   def number_of_players_cannot_exceed_maximum
     if errors.empty? && number_of_players >
       reservable.available_players(start_time, end_time, booking_date)
-      errors.add(:number_of_players, 'must be less than available players')
+      errors.add(:number_of_players, 'must be fewer than available players')
     end
   end
 end

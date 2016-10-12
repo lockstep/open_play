@@ -211,7 +211,7 @@ feature 'Complete Reservation', :js do
             scenario 'books unsuccessfully' do
               fill_in 'order_bookings_0_number_of_players', with: '15'
               click_on 'Complete Reservation'
-              expect(page).to have_content 'must be less than available players'
+              expect(page).to have_content 'must be fewer than available players'
             end
           end
         end
