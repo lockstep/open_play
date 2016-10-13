@@ -342,6 +342,9 @@ feature 'Complete Reservation', :js do
           OPEN_PLAY.successfulChargeCallback({
             id: 'testId'
           });
+        },
+        close: function() { 
+          // NOOP
         }
       };
     JS
