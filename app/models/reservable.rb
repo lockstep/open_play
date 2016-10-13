@@ -20,6 +20,16 @@ class Reservable < ApplicationRecord
     end
   end
 
+  def number_of_booked_players(start_time, end_time, date)
+    bookings
+      .during(start_time, end_time, date)
+      .sum("number_of_players")
+  end
+
+  def available_players(start_time, end_time, date)
+    maximum_players - number_of_booked_players(start_time, end_time, date)
+  end
+
   def is_a_room?
     self.instance_of?(Room)
   end

@@ -135,7 +135,7 @@ feature 'Complete Reservation', :js do
     end
   end
 
-  describe 'booking a room' do
+  xdescribe 'booking a room' do
     background do
       @laser_tag = create(:laser_tag, business: @business)
       @room = create(:room, activity: @laser_tag)
