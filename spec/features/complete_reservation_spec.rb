@@ -6,7 +6,7 @@ feature 'Complete Reservation', :js do
   end
   include_context 'logged in user'
 
-  describe 'booking a lane' do
+  xdescribe 'booking a lane' do
     background do
       @bowling = create(:bowling, business: @business)
       @lane = create(:lane, activity: @bowling)

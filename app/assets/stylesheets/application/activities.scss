@@ -22,15 +22,17 @@
 
         }
         .row-times {
+          margin-top: 5px;
           .timeslot {
             font-size: .875rem;
-            padding: 0.5em 0.5em;
-          }
-          .unavailable {
-            background: rgba(0,0,0,.06);
-            cursor: default;
-            width: 98px;
-            height: 33px;
+            padding: 0.5em;
+            min-width: 65px;
+            margin-bottom: 5px;
+            &:disabled {
+              color: #bfbfbf;
+              background-color: #969696;
+              border-color: #dcd2d2;
+            }
           }
           .checkbox-hidden {
             display: none;
