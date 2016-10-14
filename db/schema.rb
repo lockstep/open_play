@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005044242) do
+ActiveRecord::Schema.define(version: 20161013103354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20161005044242) do
     t.datetime "updated_at",  null: false
     t.string   "type"
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
+  end
+
+  create_table "booking_reservable_options", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "reservable_option_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.index ["booking_id"], name: "index_booking_reservable_options_on_booking_id", using: :btree
+    t.index ["reservable_option_id"], name: "index_booking_reservable_options_on_reservable_option_id", using: :btree
   end
 
   create_table "bookings", force: :cascade do |t|
@@ -103,6 +112,8 @@ ActiveRecord::Schema.define(version: 20161005044242) do
   end
 
   add_foreign_key "activities", "businesses"
+  add_foreign_key "booking_reservable_options", "bookings"
+  add_foreign_key "booking_reservable_options", "reservable_options"
   add_foreign_key "bookings", "orders"
   add_foreign_key "bookings", "reservables"
   add_foreign_key "businesses", "users"

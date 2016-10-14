@@ -29,7 +29,7 @@
         <th class='text-xs-center'>Name</th>
         <th class='text-xs-center'>Time</th>
         <th class='text-xs-center'># Players</th>
-        <th class='text-xs-center'>Options</th>
+        <th class='text-xs-left'>Options</th>
       </tr>
     </thead>
     <tbody>
@@ -56,8 +56,16 @@
               <div class="text-danger"><%= error %></div>
             <% end %>
           </td>
-          <td class='text-xs-center'>
-            options
+          <td class='text-xs-left'>
+            <% booking.reservable.options_availables.each do |option| %>
+              <p>
+                <%= check_box_tag "order[bookings_attributes][][reservable_options_attributes][][reservable_option_id]",
+                  "#{option.reservable_option.id}", false,
+                  id: "order_bookings_#{index}_options_#{option.reservable_option.id}" %>
+                <%= label_tag "order_bookings_#{index}_options_#{option.reservable_option.id}",
+                  "#{option.reservable_option.name.humanize}" %>
+              </p>
+            <% end %>
           </td>
         </tr>
       <% end %>

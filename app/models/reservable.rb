@@ -5,6 +5,8 @@ class Reservable < ApplicationRecord
     primary_key: 'type',
     class_name: 'ReservableOption'
   has_many :options_availables, class_name: 'ReservableOptionsAvailable'
+  accepts_nested_attributes_for :options_availables
+
   has_many :bookings
 
   validates :interval, numericality: { only_integer: true }
