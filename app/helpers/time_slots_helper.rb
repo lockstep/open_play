@@ -25,12 +25,13 @@ module TimeSlotsHelper
   def reservable_available_to_book?(reservable, requested_time)
     return false unless reservable_is_open?(reservable, requested_time)
     requested_date = requested_time.beginning_of_day
-    bookings = reservable.bookings.where(booking_date: requested_time)
+    bookings = reservable.bookings.where(booking_date: requested_date)
     return true unless bookings.present?
     bookings.each do |booking|
       start_booking_time = merge_date_and_time(requested_date, booking.start_time)
       end_booking_time = merge_date_and_time(requested_date, booking.end_time)
-      availableToBook = (requested_time < start_booking_time) || (requested_time >= end_booking_time)
+      availableToBook = (requested_time < start_booking_time) ||
+        (requested_time >= end_booking_time)
       return false unless availableToBook
     end
     true
@@ -40,6 +41,7 @@ module TimeSlotsHelper
     requested_date = requested_time.beginning_of_day
     opening_time = merge_date_and_time(requested_date, reservable.start_time)
     closing_time = merge_date_and_time(requested_date, reservable.end_time)
-    inWorkingHours = (requested_time >= opening_time) && (requested_time < closing_time)
+    inWorkingHours = (requested_time >= opening_time) &&
+      (requested_time < closing_time)
   end
 end
