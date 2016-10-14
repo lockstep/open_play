@@ -1,4 +1,6 @@
 module TimeSlotsHelper
+  include DateTimeHelper
+
   def build_time_slots(reservable, requested_date, requested_time)
     requested_date = DateTime.parse(requested_date)
     requested_time = requested_date + Time.parse(requested_time)
@@ -21,18 +23,7 @@ module TimeSlotsHelper
   private
 
   def reservable_available_to_book?(reservable, requested_time)
-    return false unless reservable_opening?(reservable, requested_time)
-    reservable_available?(reservable, requested_time)
-  end
-
-  def reservable_opening?(reservable, requested_time)
-    requested_date = requested_time.beginning_of_day
-    opening_time = merge_date_and_time(requested_date, reservable.start_time)
-    closing_time = merge_date_and_time(requested_date, reservable.end_time)
-    inWorkingHours = (requested_time >= opening_time) && (requested_time < closing_time)
-  end
-
-  def reservable_available?(reservable, requested_time)
+    return false unless reservable_is_open?(reservable, requested_time)
     requested_date = requested_time.beginning_of_day
     bookings = reservable.bookings.where(booking_date: requested_time)
     return true unless bookings.present?
@@ -45,7 +36,10 @@ module TimeSlotsHelper
     true
   end
 
-  def merge_date_and_time(date, time)
-    date + time.seconds_since_midnight.seconds
+  def reservable_is_open?(reservable, requested_time)
+    requested_date = requested_time.beginning_of_day
+    opening_time = merge_date_and_time(requested_date, reservable.start_time)
+    closing_time = merge_date_and_time(requested_date, reservable.end_time)
+    inWorkingHours = (requested_time >= opening_time) && (requested_time < closing_time)
   end
 end

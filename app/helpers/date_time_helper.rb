@@ -10,4 +10,8 @@ module DateTimeHelper
   def present_date(date)
     date.strftime("%A, %B %e")
   end
+
+  def merge_date_and_time(date, time)
+    date + time.seconds_since_midnight.seconds
+  end
 end
