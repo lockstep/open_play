@@ -23,28 +23,20 @@
 
                       <div class="row-times">
                         <% i = 0 %>
-                        <% reservable.build_time_slots(@booking_date, @booking_time).each do |slot| %>
-                          <% if slot.present? %>
-                            &nbsp;
-                            <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
-                              data: {
-                                activity_id: activity.id,
-                                reservable_id: reservable.id,
-                                slot: i+=1
-                              }) do %>
-                              <i class="fa"></i> <%= slot.strftime("%H:%M") %>
-                            <% end %>
-                            <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
-                              "#{slot.strftime("%H:%M")},#{(slot + reservable.interval.minutes).strftime("%H:%M")}",
-                              false, class: 'checkbox-hidden',
-                              id: "#{activity.id}-#{reservable.id}-#{i}" %>
-                          <% else%>
-                            &nbsp;
-                            <%= button_tag(type: 'button', class: 'btn timeslot',
-                              disabled: true ) do %>
-                              <i class="fa"></i> --:--
-                            <% end %>
-                          <% end%>
+                        <% build_time_slots(reservable, @booking_date, @booking_time).each do |slot| %>
+                          <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                            data: {
+                              activity_id: activity.id,
+                              reservable_id: reservable.id,
+                              slot: i+=1
+                            },
+                            disabled: !slot[:available]) do %>
+                            <i class="fa"></i> <%= slot[:time].strftime("%H:%M") %>
+                          <% end %>
+                          <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
+                            "#{slot[:time].strftime("%H:%M")},#{(slot[:time] + reservable.interval.minutes).strftime("%H:%M")}",
+                            false, class: 'checkbox-hidden',
+                            id: "#{activity.id}-#{reservable.id}-#{i}" %>
                         <% end %>
                       </div>
 
