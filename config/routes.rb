@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :orders, only: [:new, :create]
+  get 'verify_order', to: 'orders#verify_order'
   get 'activities/search', to: 'activities#search'
   get 'orders/success', to: 'orders#success'
   get 'search', to: 'search#search'

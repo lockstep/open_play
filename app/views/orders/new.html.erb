@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class='spacer-30'></div>
-<div class='row'>
+<div class='row' id='order-date'>
   <div class='col-xs-1'>
     <span class='font-weight-bold'>Date</span>
   </div>
@@ -44,17 +44,15 @@
             <%= hidden_field_tag('order[bookings_attributes][][end_time]', booking.end_time) %>
             <%= hidden_field_tag('order[bookings_attributes][][booking_date]', booking.booking_date) %>
             <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
+            <%= hidden_field_tag('order[user_id]', current_user.id) %>
           </td>
-          <td class="<%= ('table-danger' if booking.errors[:number_of_players].any?) %> text-xs-center">
+          <td class="text-xs-center">
             <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
               booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
               placeholder: 'Number of players' %>
             <span class='text-info players-detail'>
               <%= number_of_booked_players(booking) %>
             </span>
-            <% booking.errors[:number_of_players].each do |error| %>
-              <div class="text-danger"><%= error %></div>
-            <% end %>
           </td>
           <td class='text-xs-center'>
             options
