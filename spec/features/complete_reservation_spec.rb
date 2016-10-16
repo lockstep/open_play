@@ -22,8 +22,6 @@ feature 'Complete Reservation', :js do
         click_on '09:00'
         click_on 'Book'
 
-        stub_stripe_checkout_handler
-
         expect(page).to have_content 'Tuesday, October 4'
         expect(page).to have_content @bowling.name
         expect(page).to have_content '9:00 AM - 10:00 AM'
@@ -298,6 +296,9 @@ feature 'Complete Reservation', :js do
           OPEN_PLAY.successfulChargeCallback({
             id: 'testId'
           });
+        },
+        close: function() {
+          // NOOP
         }
       };
     JS
