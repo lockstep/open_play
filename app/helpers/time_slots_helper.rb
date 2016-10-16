@@ -3,8 +3,12 @@ module TimeSlotsHelper
 
   def build_time_slots(reservable, requested_date, requested_time)
     requested_date = DateTime.parse(requested_date)
-    requested_time = requested_date + Time.parse(requested_time)
-      .seconds_since_midnight.seconds
+    if requested_time.present?
+      requested_time = requested_date + Time.parse(requested_time)
+        .seconds_since_midnight.seconds
+    else
+      requested_time = merge_date_and_time(requested_date, reservable.start_time)
+    end
     closing_time = merge_date_and_time(requested_date, reservable.end_time)
     time_slots = []
     subsequent_time = requested_time
