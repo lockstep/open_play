@@ -5,7 +5,7 @@ $(function() {
     // DatePicker
     var datePicker = new Pikaday({
       field: document.getElementById('datepicker'),
-      format: 'D/M/YYYY',
+      format: 'D MMM YYYY',
       minDate: moment().toDate()
     });
     datePicker.setDate(moment().toDate());
