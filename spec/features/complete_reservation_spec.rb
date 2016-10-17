@@ -1,4 +1,5 @@
 feature 'Complete Reservation', :js do
+  include ReservationHelpers
 
   background do
     @user = create(:user)
@@ -15,14 +16,11 @@ feature 'Complete Reservation', :js do
     context 'books one time slot' do
       scenario 'displays the booking info correctly' do
         visit root_path
-        page.execute_script("$('#datepicker').val('4/10/2016')")
-        page.execute_script("$('#timepicker').val('09:00')")
-        page.select 'Bowling', :from => 'activity_type'
-        click_on 'Search'
+        search_activities
         click_on '09:00'
         click_on 'Book'
 
-        expect(page).to have_content 'Tuesday, October 4'
+        expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @bowling.name
         expect(page).to have_content '9:00 AM - 10:00 AM'
         expect(page).to have_content '0/30'
@@ -41,9 +39,7 @@ feature 'Complete Reservation', :js do
         end
         scenario 'displays the available options correctly' do
           visit root_path
-          page.execute_script("$('#datepicker').val('4/10/2016')")
-          page.execute_script("$('#timepicker').val('09:00')")
-          click_on 'Search'
+          search_activities
           click_on '09:00'
           click_on 'Book'
           expect(page).to have_content 'Bumper'
@@ -51,9 +47,7 @@ feature 'Complete Reservation', :js do
         end
         scenario 'books with available options successfully' do
           visit root_path
-          page.execute_script("$('#datepicker').val('4/10/2016')")
-          page.execute_script("$('#timepicker').val('09:00')")
-          click_on 'Search'
+          search_activities
           click_on '09:00'
           click_on 'Book'
           stub_stripe_checkout_handler
@@ -68,9 +62,7 @@ feature 'Complete Reservation', :js do
         context 'params are valid' do
           scenario 'books successfully' do
             visit root_path
-            page.execute_script("$('#datepicker').val('4/10/2016')")
-            page.execute_script("$('#timepicker').val('09:00')")
-            click_on 'Search'
+            search_activities
             click_on '09:00'
             click_on 'Book'
             stub_stripe_checkout_handler
@@ -119,13 +111,11 @@ feature 'Complete Reservation', :js do
     context 'books multiple time slots' do
       scenario 'displays the booking info correctly' do
         visit root_path
-        page.execute_script("$('#datepicker').val('4/10/2016')")
-        page.execute_script("$('#timepicker').val('09:00')")
-        click_on 'Search'
+        search_activities
         click_on '09:00'
         click_on '10:00'
         click_on 'Book'
-        expect(page).to have_content 'Tuesday, October 4'
+        expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @bowling.name
         expect(page).to have_content '9:00 AM - 10:00 AM'
         expect(page).to have_content '10:00 AM - 11:00 AM'
@@ -138,9 +128,7 @@ feature 'Complete Reservation', :js do
         context 'params are valid' do
           scenario 'books successfully' do
             visit root_path
-            page.execute_script("$('#datepicker').val('4/10/2016')")
-            page.execute_script("$('#timepicker').val('09:00')")
-            click_on 'Search'
+            search_activities
             click_on '09:00'
             click_on '10:00'
             click_on 'Book'
@@ -171,14 +159,11 @@ feature 'Complete Reservation', :js do
     context 'books one time slot' do
       scenario 'displays the booking info correctly' do
         visit root_path
-        page.execute_script("$('#datepicker').val('4/10/2016')")
-        page.execute_script("$('#timepicker').val('09:00')")
-        page.select 'Laser tag', :from => 'activity_type'
-        click_on 'Search'
+        search_activities(activity_type: 'Laser tag')
         click_on '11:00'
         click_on 'Book'
 
-        expect(page).to have_content 'Tuesday, October 4'
+        expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @laser_tag.name
         expect(page).to have_content '11:00 AM - 12:00 PM'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
@@ -189,10 +174,7 @@ feature 'Complete Reservation', :js do
         context 'params are valid' do
           scenario 'books successfully' do
             visit root_path
-            page.execute_script("$('#datepicker').val('4/10/2016')")
-            page.execute_script("$('#timepicker').val('09:00')")
-            page.select 'Laser tag', :from => 'activity_type'
-            click_on 'Search'
+            search_activities(activity_type: 'Laser tag')
             click_on '11:00'
             click_on 'Book'
 
@@ -250,15 +232,12 @@ feature 'Complete Reservation', :js do
     context 'books multiple time slots' do
       scenario 'displays the booking info correctly' do
         visit root_path
-        page.execute_script("$('#datepicker').val('4/10/2016')")
-        page.execute_script("$('#timepicker').val('09:00')")
-        page.select 'Laser tag', :from => 'activity_type'
-        click_on 'Search'
+        search_activities(activity_type: 'Laser tag')
         click_on '9:00'
         click_on '10:00'
         click_on 'Book'
 
-        expect(page).to have_content 'Tuesday, October 4'
+        expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @laser_tag.name
         expect(page).to have_content '9:00 AM - 10:00 AM'
         expect(page).to have_content '10:00 AM - 11:00 AM'
@@ -271,10 +250,7 @@ feature 'Complete Reservation', :js do
         context 'params are valid' do
           scenario 'books successfully' do
             visit root_path
-            page.execute_script("$('#datepicker').val('4/10/2016')")
-            page.execute_script("$('#timepicker').val('09:00')")
-            page.select 'Laser tag', :from => 'activity_type'
-            click_on 'Search'
+            search_activities(activity_type: 'Laser tag')
             click_on '9:00'
             click_on '10:00'
             click_on 'Book'

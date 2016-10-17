@@ -57,13 +57,13 @@
             <% end %>
           </td>
           <td class='text-xs-left'>
-            <% booking.reservable.options_availables.each do |option| %>
+            <% booking.reservable_options_availables.each do |option| %>
               <p>
                 <%= check_box_tag "order[bookings_attributes][][reservable_options_attributes][][reservable_option_id]",
-                  "#{option.reservable_option.id}", false,
-                  id: "order_bookings_#{index}_options_#{option.reservable_option.id}" %>
-                <%= label_tag "order_bookings_#{index}_options_#{option.reservable_option.id}",
-                  "#{option.reservable_option.name.humanize}" %>
+                  "#{option.reservable_option_id}", false,
+                  id: "order_bookings_#{index}_options_#{option.reservable_option_id}" %>
+                <%= label_tag "order_bookings_#{index}_options_#{option.reservable_option_id}",
+                  "#{option.reservable_option_name.humanize}" %>
               </p>
             <% end %>
           </td>
