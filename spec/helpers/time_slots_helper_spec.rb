@@ -25,6 +25,14 @@ describe TimeSlotsHelper do
           expect(time_slots.second[:available]).to eq true
           expect(time_slots.last[:available]).to eq true
         end
+        context 'passes no time' do
+          scenario 'returns every possible time slots' do
+            time_slots = build_time_slots(@lane, '2016-10-10', '')
+            expect(time_slots.size).to eq 11
+            expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
+            expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:00'
+          end
+        end
       end
       context 'the lane has one booking' do
         before do

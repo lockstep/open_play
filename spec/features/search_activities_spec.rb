@@ -75,6 +75,16 @@ feature 'Search Activities', js: true do
             expect(page).to have_button('18:00', disabled: true)
           end
         end
+        context 'search with no time' do
+          scenario 'displays every time slots of each activity' do
+            visit root_path
+            page.execute_script("$('#timepicker').val('')")
+            click_on 'Search'
+            expect(page).to have_content @lane.name
+            expect(page).to have_content '08:00 09:00 10:00 11:00 12:00 13:00'
+            expect(page).to have_content '14:00 15:00 16:00 17:00 18:00 19:00'
+          end
+        end
       end
     end
 
@@ -84,6 +94,17 @@ feature 'Search Activities', js: true do
         page.select 'Laser tag', :from => 'activity_type'
         click_on 'Search'
         expect(page).to have_content 'No results found'
+      end
+    end
+
+    context 'invalid params' do
+      context '#booking_date' do
+        scenario 'shows the appropiate message' do
+          visit root_path
+          page.execute_script("$('#datepicker').val('')")
+          click_on 'Search'
+          expect(page).to have_content 'Date is required.'
+        end
       end
     end
   end
