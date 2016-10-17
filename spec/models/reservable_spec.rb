@@ -17,11 +17,11 @@ describe Reservable do
       context '#reservable_options_available' do
         context 'the lane has bumper' do
           before do
-            @lane.options_availables.create(reservable_option: @option_1)
+            @lane.options_available.create(reservable_option: @option_1)
           end
           scenario 'saves the available options correctly' do
-            expect(@lane.options_availables.size).to eq 1
-            lane_option = @lane.options_availables.first
+            expect(@lane.options_available.size).to eq 1
+            lane_option = @lane.options_available.first
             expect(lane_option.reservable_option.name).to eq 'bumper'
           end
         end

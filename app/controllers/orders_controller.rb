@@ -49,7 +49,8 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(bookings_attributes: [
-      :start_time, :end_time, :booking_date, :number_of_players, :reservable_id
+      :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
+      reservable_options_attributes: [:reservable_option_id]
     ])
   end
 end
