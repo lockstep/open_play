@@ -14,7 +14,7 @@ class Booking < ApplicationRecord
   delegate :name, to: :reservable, prefix: true
   delegate :maximum_players, to: :reservable
   delegate :number_of_booked_players, to: :reservable, prefix: true
-  delegate :options_availables, to: :reservable, prefix: true
+  delegate :options_available, to: :reservable, prefix: true
 
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)

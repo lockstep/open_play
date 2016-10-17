@@ -4,8 +4,8 @@ class Reservable < ApplicationRecord
     foreign_key: 'reservable_type',
     primary_key: 'type',
     class_name: 'ReservableOption'
-  has_many :options_availables, class_name: 'ReservableOptionsAvailable'
-  accepts_nested_attributes_for :options_availables
+  has_many :options_available, class_name: 'ReservableOptionsAvailable'
+  accepts_nested_attributes_for :options_available
 
   has_many :bookings
 

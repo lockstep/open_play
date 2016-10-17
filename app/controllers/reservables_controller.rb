@@ -11,7 +11,7 @@ class ReservablesController < ApplicationController
       options = params[:options]
       unless options.nil?
         options.each do |option|
-          @reservable.options_availables.create(
+          @reservable.options_available.create(
             reservable_option_id: option
           )
         end

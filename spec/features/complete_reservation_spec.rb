@@ -31,7 +31,7 @@ feature 'Complete Reservation', :js do
           @option_1 = ReservableOption.create(name: 'bumper', reservable_type: 'Lane')
           @option_2 = ReservableOption.create(name: 'handicap_accessible', reservable_type: 'Lane')
           @lane.update(
-            options_availables_attributes: [
+            options_available_attributes: [
               { reservable_option: @option_1 },
               { reservable_option: @option_2 }
             ]

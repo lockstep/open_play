@@ -57,7 +57,7 @@
             <% end %>
           </td>
           <td class='text-xs-left'>
-            <% booking.reservable_options_availables.each do |option| %>
+            <% booking.reservable_options_available.each do |option| %>
               <p>
                 <%= check_box_tag "order[bookings_attributes][][reservable_options_attributes][][reservable_option_id]",
                   "#{option.reservable_option_id}", false,
