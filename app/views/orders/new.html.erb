@@ -46,7 +46,6 @@
             <%= hidden_field_tag('order[bookings_attributes][][booking_date]', booking.booking_date) %>
             <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
             <%= hidden_field_tag('order[user_id]', current_user.id) %>
-            <%= hidden_field_tag('token_id', '') %>
           </td>
           <td class="text-xs-center">
             <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
@@ -76,6 +75,7 @@
   </table>
 
   <div class='row text-xs-center' %>
+    <%= hidden_field_tag('token_id', '') %>
     <%= submit_tag "Complete Reservation", id: 'complete-reservation',
       class: 'btn btn-primary' %>
   </div>
