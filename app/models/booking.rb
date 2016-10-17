@@ -15,6 +15,8 @@ class Booking < ApplicationRecord
   delegate :maximum_players, to: :reservable
   delegate :number_of_booked_players, to: :reservable, prefix: true
   delegate :options_available, to: :reservable, prefix: true
+  delegate :weekday_price, to: :reservable
+  delegate :weekend_price, to: :reservable
 
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)
@@ -25,5 +27,10 @@ class Booking < ApplicationRecord
       reservable.available_players(start_time, end_time, booking_date)
       errors.add(:number_of_players, 'must be fewer than available players')
     end
+  end
+
+  def booking_price
+    return weekend_price if booking_date.saturday? || booking_date.sunday?
+    weekday_price
   end
 end

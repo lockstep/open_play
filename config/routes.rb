@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :orders, only: [:new, :create]
+  get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
   get 'orders/success', to: 'orders#success'
   get 'search', to: 'search#search'

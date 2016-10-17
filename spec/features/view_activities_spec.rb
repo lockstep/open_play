@@ -59,7 +59,9 @@ feature 'View Activities' do
       interval: 30,
       start_time: '08:00',
       end_time: '20:00',
-      maximum_players: 30
+      maximum_players: 30,
+      weekday_price: 15,
+      weekend_price: 20
     }
   end
 end

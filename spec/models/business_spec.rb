@@ -1,2 +1,0 @@
-describe Business do
-end

@@ -59,6 +59,30 @@
     </div>
   </div>
 
+  <div class="<%= ('has-danger' if @reservable.errors[:weekday_price].any?) %> form-group">
+    <%= f.label :weekday_price, 'Weekday Price', class: 'col-sm-4 control-label' %>
+    <div class='col-sm-8'>
+      <%= f.text_field :weekday_price, class: 'form-control' %>
+      <% @reservable.errors[:weekday_price].each do |error| %>
+        <div class="form-control-feedback">
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:weekend_price].any?) %> form-group">
+    <%= f.label :weekend_price, 'Weekend Price', class: 'col-sm-4 control-label' %>
+    <div class='col-sm-8'>
+      <%= f.text_field :weekend_price, class: 'form-control' %>
+      <% @reservable.errors[:weekend_price].each do |error| %>
+        <div class="form-control-feedback">
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <div class="form-group">
     <div class="col-sm-12">
       <%= f.submit 'Submit', class: 'btn btn-primary' %>

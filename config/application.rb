@@ -24,5 +24,7 @@ module OpenPlay
     config.active_record.time_zone_aware_types = [:datetime]
     config.time_zone = 'Eastern Time (US & Canada)'
     config.active_record.time_zone_aware_attributes = false
+
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end

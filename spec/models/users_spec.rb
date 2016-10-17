@@ -1,2 +1,0 @@
-describe User do
-end

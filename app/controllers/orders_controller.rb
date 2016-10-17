@@ -18,15 +18,36 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params.merge({ user_id: current_user.id }))
+    @order = Order.new(order_params)
     if @order.save
+      Stripe::Charge.create(
+        amount: @order.total_price.to_i,
+        currency: 'usd',
+        source: params[:token_id]
+      )
       redirect_to orders_success_path
     else
       render :new
     end
+  rescue Stripe::CardError
+    render :new
   end
 
   def success
+  end
+
+  def prepare_complete_order
+    order = Order.new(order_params)
+    if order.valid?
+      render json: { meta: {
+          number_of_bookings: order.bookings.length,
+          total_price: order.total_price
+        }
+      }, status: :ok
+    else
+      render json: { meta: { errors: order.errors.full_messages }},
+        status: :unprocessable_entity
+    end
   end
 
   private
@@ -48,7 +69,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(bookings_attributes: [
+    params.require(:order).permit(:user_id, bookings_attributes: [
       :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
       reservable_options_attributes: [:reservable_option_id]
     ])

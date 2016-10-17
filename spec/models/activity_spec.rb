@@ -11,7 +11,9 @@ describe Activity do
         reservable.update_attributes({
           name: 'Lane 1',
           interval: 30,
-          maximum_players: 30
+          maximum_players: 30,
+          weekday_price: 15,
+          weekend_price: 20
         })
         expect(Reservable.find(reservable.id).class).to eq Lane
       end
@@ -27,7 +29,9 @@ describe Activity do
         reservable.update_attributes({
           name: 'Room 1',
           interval: 30,
-          maximum_players: 30
+          maximum_players: 30,
+          weekday_price: 15,
+          weekend_price: 20
         })
         expect(Reservable.find(reservable.id).class).to eq Room
       end
