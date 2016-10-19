@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
   before_action :authenticate_user!, except: [:search]
   before_action :set_business, only: [:index, :new, :create]
+  before_action :set_activity, only: [:destroy, :edit, :update]
 
   def index
     @activities = @business.activities
@@ -19,11 +20,19 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def edit; end
+
   def update
+    if @activity.update(activity_params)
+      redirect_to business_activities_path(@activity.business),
+        :notice => 'Successfully updated activity'
+    else
+      redirect_back fallback_location: :back, error: 'Unable to update activity'
+    end
   end
 
   def destroy
-    Activity.destroy(params[:id])
+    @activity.destroy
     redirect_back fallback_location: :back, :notice => 'Successfully deleted activity'
   end
 
@@ -34,6 +43,9 @@ class ActivitiesController < ApplicationController
 
   private
 
+  def set_activity
+    @activity = Activity.find_by_id(params[:id])
+  end
   def set_business
     @business = Business.find(params[:business_id])
   end
