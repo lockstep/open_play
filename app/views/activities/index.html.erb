@@ -18,7 +18,7 @@
               <th class='text-xs-center'>#</th>
               <th class='text-xs-center'>Name</th>
               <th class='text-xs-center'>Reservables</th>
-              <th class='text-xs-center'>Actions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +44,8 @@
                 <td class='text-xs-center'>
                   <%= link_to 'View reservations',
                     business_owner_reservations_path(activity), class: 'btn btn-primary' %>
+                  <%= link_to 'Edit', "#", class: 'btn btn-primary' %>
+                  <%= link_to 'Delete', "#", class: 'btn btn-danger' %>
                 </td>
               </tr>
             <% end %>
