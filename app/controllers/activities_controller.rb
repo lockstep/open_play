@@ -19,6 +19,14 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def update
+  end
+
+  def destroy
+    Activity.destroy(params[:id])
+    redirect_back fallback_location: :back, :notice => 'Successfully deleted activity'
+  end
+
   def search
     @date = params[:activity][:date]
     @activities = Activity.all
