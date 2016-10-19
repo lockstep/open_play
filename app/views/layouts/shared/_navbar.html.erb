@@ -2,23 +2,37 @@
   <%= link_to(root_path, class: 'navbar-brand', id: 'openplay-logo') do %>
     <%= image_tag('logo') %>
   <% end %>
-  <ul class="nav navbar-nav">
-    <% if user_signed_in? %>
-      <li class="nav-item pull-xs-right">
-        <%= link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link') %>
-      </li>
-      <% if manages_business? %>
+
+  <% if user_signed_in? %>
+    <div class="btn-group pull-xs-right">
+      <button type="button" class="btn dropdown-toggle nav-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= current_user.email %>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <button class="dropdown-item" type="button">Your Bookings</button>
+        <button class="dropdown-item" type="button">Your Profile</button>
+        <button class="dropdown-item" type="button">
+          <%= link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link') %>
+        </button>
+      </div>
+    </div>
+
+    <% if manages_business? %>
+      <ul class="nav navbar-nav">
         <li class="nav-item pull-xs-right">
           <%= link_to 'Manage Business', business_activities_path(current_user.business), class: 'nav-link' %>
         </li>
-      <% end %>
-    <% else %>
+      </ul>
+    <% end %>
+  <% else %>
+    <ul class="nav navbar-nav">
       <li class="nav-item pull-xs-right">
         <%= link_to('Sign In', new_user_session_path, class: 'nav-link') %>
       </li>
       <li class="nav-item pull-xs-right">
         <%= link_to('Sign Up', new_user_registration_path, class: 'nav-link') %>
       </li>
-    <% end %>
-  </ul>
+    </ul>
+
+  <% end %>
 </nav>
