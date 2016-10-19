@@ -5,7 +5,7 @@ feature 'View Activities' do
   include_context 'logged in user'
 
   context 'a business exists' do
-    before do
+    background do
       @business = create(:business, user: @user)
     end
 
@@ -13,6 +13,7 @@ feature 'View Activities' do
       scenario 'user sees there are no activities' do
         visit root_path
         click_link 'Manage Business'
+
         expect(page).to have_content "You haven't created any activities"
         expect(page).to have_link 'Create Activity',
           href: new_business_activity_path(@business)
@@ -28,19 +29,33 @@ feature 'View Activities' do
               reservable_params,
               reservable_params(name: 'Lane B')
             ])
+        end
+
+        scenario 'user can see the activity' do
           visit root_path
           click_link 'Manage Business'
-        end
-        scenario 'user can see the activity' do
+
           expect(page).to have_content @activity.name
         end
+
         scenario 'can add a lane' do
+          visit root_path
+          click_link 'Manage Business'
+
           expect(page).to have_link 'Add a Lane'
         end
+
         scenario 'shows all lanes of the activity' do
-          lanes = @activity.reservables
-          expect(page).to have_content lanes.first.name
-          expect(page).to have_content lanes.second.name
+          visit root_path
+          click_link 'Manage Business'
+          expect(page).to have_content @activity.reservables.first.name
+          expect(page).to have_content @activity.reservables.second.name
+        end
+
+        scenario 'shows link to view reservations' do
+          visit root_path
+          click_link 'Manage Business'
+          expect(page).to have_link 'View reservations'
         end
       end
     end

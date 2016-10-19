@@ -4,6 +4,7 @@ describe OrdersController do
       login_user
       before do
         get :new, params: {
+          activity_id: 1,
           date: '4/10/2016',
           time_slots: { '1': ["01:00:00, 02:00:00"] }
         }
@@ -59,6 +60,7 @@ describe OrdersController do
     {
       order: {
         user_id: overrides[:user_id],
+        activity_id: @reservable.activity.id,
         bookings_attributes: [
           {
             start_time: '08:00:00',

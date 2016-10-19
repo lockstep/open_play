@@ -15,29 +15,35 @@
         <table class="table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Reservables</th>
+              <th class='text-xs-center'>#</th>
+              <th class='text-xs-center'>Name</th>
+              <th class='text-xs-center'>Reservables</th>
+              <th class='text-xs-center'>Actions</th>
             </tr>
           </thead>
           <tbody>
             <% @activities.each_with_index do |activity, index| %>
-              <tr>
-                <th scope="row">
+              <tr id="activity_<%= activity.id %>">
+                <th scope="row" class='text-xs-center'>
                   <%= index + 1 %>
                 </th>
-                <td>
+                <td class='text-xs-center'>
                   <%= activity.name %>
                 </td>
-                <td>
+                <td class='text-xs-center'>
                   <% activity.reservables.each do |reservable| %>
                     <div>
                       <%= reservable.name %>
                     </div>
                   <% end %>
                   <div>
-                    <%= link_to "Add a #{activity.reservable_type}", new_activity_reservable_path(activity) %>
+                    <%= link_to "Add a #{activity.reservable_type}",
+                      new_activity_reservable_path(activity) %>
                   </div>
+                </td>
+                <td class='text-xs-center'>
+                  <%= link_to 'View reservations',
+                    business_owner_reservations_path(activity), class: 'btn btn-primary' %>
                 </td>
               </tr>
             <% end %>
@@ -45,7 +51,8 @@
         </table>
         <div class="spacer-30"></div>
         <div id="new-business">
-          <%= link_to 'Add activity', new_business_activity_path(@business), class: 'btn btn-primary' %>
+          <%= link_to 'Add activity', new_business_activity_path(@business),
+            class: 'btn btn-primary' %>
         </div>
       <% else %>
         <span>You haven't created any activities.</span>

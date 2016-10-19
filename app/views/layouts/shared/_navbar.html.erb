@@ -9,7 +9,9 @@
         <%= current_user.email %>
       </button>
       <div class="dropdown-menu dropdown-menu-right">
-        <button class="dropdown-item" type="button">Your Bookings</button>
+        <button class="dropdown-item" type="button">
+          <%= link_to('Your Bookings', user_reservations_path(current_user), class: 'nav-link') %>
+        </button>
         <button class="dropdown-item" type="button">Your Profile</button>
         <button class="dropdown-item" type="button">
           <%= link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link') %>

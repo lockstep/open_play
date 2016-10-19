@@ -96,4 +96,6 @@ RSpec.configure do |config|
         'create_charge.json')
     ))
   end
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end

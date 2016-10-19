@@ -1,6 +1,7 @@
 class Activity < ApplicationRecord
   belongs_to :business
   has_many :reservables
+  has_many :orders
   validates_presence_of :name
   validate :end_time_is_after_start_time
 

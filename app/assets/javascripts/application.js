@@ -21,3 +21,4 @@
 //= require welcome
 //= require timeslots
 //= require orders
+//= require orders_reservations
