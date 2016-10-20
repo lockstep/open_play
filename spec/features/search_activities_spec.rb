@@ -11,6 +11,9 @@ feature 'Search Activities', js: true do
     background do
       @bowling = create(:bowling, business: @business)
       @bowling_2 = create(:bowling, name: 'Classic Bowling', business: @business)
+      @bowling_3 = create(:bowling, name: 'Archived Bowling',
+        business: @business, archived: true
+      )
     end
     context 'has multiple lanes' do
       background do
@@ -29,11 +32,12 @@ feature 'Search Activities', js: true do
         )
       end
       context 'results found' do
-        scenario 'shows list of activities' do
+        scenario 'shows list of active activities' do
           visit root_path
           search_activities(booking_time: '4:00pm')
           expect(page).to have_content @bowling.name
           expect(page).to have_content @bowling_2.name
+          expect(page).to_not have_content @bowling_3.name
         end
         scenario 'shows the requested time first and go to the end of the day' do
           visit root_path

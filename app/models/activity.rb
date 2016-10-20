@@ -17,8 +17,8 @@ class Activity < ApplicationRecord
   end
 
   def self.search(booking_time, activity_type)
-    return Activity.where("type = ?", activity_type) unless booking_time.present?
-    Activity.where("type = ? AND start_time <= ? AND end_time > ?",
+    return Activity.active.where("type = ?", activity_type) unless booking_time.present?
+    Activity.active.where("type = ? AND start_time <= ? AND end_time > ?",
       activity_type, booking_time, booking_time)
   end
 
