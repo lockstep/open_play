@@ -85,8 +85,7 @@ feature 'Search Activities', js: true do
     context 'no results found' do
       scenario 'shows the appropiate message' do
         visit root_path
-        page.select 'Laser tag', :from => 'activity_type'
-        click_on 'Search'
+        search_activities(activity_type: 'Laser tag')
         expect(page).to have_content 'No results found'
       end
     end
@@ -98,6 +97,26 @@ feature 'Search Activities', js: true do
           search_activities(booking_date: '')
           expect(page).to have_content 'Date is required.'
         end
+      end
+    end
+  end
+
+  describe 'Laser tag exists' do
+    context 'prevents back-to-back bookings' do
+      background do
+        @laser_tag = create(
+          :laser_tag,
+          prevent_back_to_back_booking: true,
+          business: @business
+        )
+        @room = create(:room, activity: @laser_tag)
+      end
+      scenario 'disables back-to-back slots' do
+        visit root_path
+        search_activities(activity_type: 'Laser tag')
+        click_on '12:00'
+        expect(page).to have_button('11:00', disabled: true)
+        expect(page).to have_button('13:00', disabled: true)
       end
     end
   end

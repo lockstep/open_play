@@ -19,5 +19,5 @@
 //= require jquery-timepicker/js/jquery.timepicker.min.js
 //= require checkout
 //= require welcome
-//= require activities
+//= require timeslots
 //= require orders
