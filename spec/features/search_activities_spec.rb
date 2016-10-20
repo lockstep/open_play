@@ -30,6 +30,14 @@ feature 'Search Activities', js: true do
           start_time: '10:00',
           end_time: '20:00'
         )
+        @lane_3 = create(
+          :lane,
+          name: 'Lane 3',
+          activity: @bowling,
+          start_time: '10:00',
+          end_time: '20:00',
+          archived: true
+        )
       end
       context 'results found' do
         scenario 'shows list of active activities' do
@@ -46,6 +54,13 @@ feature 'Search Activities', js: true do
           expect(page).to have_content '16:00'
           expect(page).to have_content @lane_2.name
           expect(page).to have_content '16:00 17:00 18:00 19:00'
+        end
+        scenario 'not show archived reservables' do
+          visit root_path
+          search_activities(booking_time: '1:00pm')
+          expect(page).to have_content @lane.name
+          expect(page).to have_content @lane_2.name
+          expect(page).to_not have_content @lane_3.name
         end
         context 'has bookings' do
           background do

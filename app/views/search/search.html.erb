@@ -17,7 +17,7 @@
                   <%= link_to "/", class: 'activity-name' do %>
                     <span class=''><%= activity.name %></span>
                   <% end %>
-                  <% activity.reservables.each do |reservable| %>
+                  <% activity.reservables.active.each do |reservable| %>
                     <div class="reservable">
                       <span class="reservable-name"><%= reservable.name %></span>
 

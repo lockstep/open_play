@@ -39,11 +39,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def search
-    @date = params[:activity][:date]
-    @activities = Activity.all.active
-  end
-
   private
 
   def set_activity
