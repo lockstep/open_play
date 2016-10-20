@@ -35,10 +35,6 @@ feature 'edit activity' do
       click_link 'Edit'
       expect(page).to have_content 'Edit a Lane'
       fill_in :lane_name, with: 'Amazing Lane 1'
-      fill_in :lane_interval, with: 60
-      fill_in :lane_maximum_players, with: 30
-      fill_in :lane_weekday_price, with: 10
-      fill_in :lane_weekend_price, with: 20
       click_on 'Submit'
       expect(page).to have_content 'Successfully updated reservable'
       expect(page).to have_content 'Amazing Lane 1'

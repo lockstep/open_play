@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: [:destroy, :edit, :update]
 
   def index
-    @activities = @business.activities
+    @activities = @business.activities.active
   end
 
   def new
@@ -14,7 +14,7 @@ class ActivitiesController < ApplicationController
   def create
     @activity = @business.activities.build(activity_params)
     if @activity.save
-      redirect_to business_activities_path, :notice => 'Successfully created activity'
+      redirect_to business_activities_path, notice: 'Successfully created activity'
     else
       render :new
     end
@@ -25,20 +25,23 @@ class ActivitiesController < ApplicationController
   def update
     if @activity.update(activity_params)
       redirect_to business_activities_path(@activity.business),
-        :notice => 'Successfully updated activity'
+        notice: 'Successfully updated activity'
     else
       redirect_back fallback_location: :back, error: 'Unable to update activity'
     end
   end
 
   def destroy
-    @activity.destroy
-    redirect_back fallback_location: :back, :notice => 'Successfully deleted activity'
+    if @activity.update(archived: true)
+      redirect_back fallback_location: :back, notice: 'Successfully deleted activity'
+    else
+      redirect_back fallback_location: :back, error: 'Unable to delete reservable'
+    end
   end
 
   def search
     @date = params[:activity][:date]
-    @activities = Activity.all
+    @activities = Activity.all.active
   end
 
   private

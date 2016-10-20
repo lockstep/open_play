@@ -17,7 +17,7 @@ class ReservablesController < ApplicationController
         end
       end
       redirect_to business_activities_path(current_activity.business),
-        :notice => "#{@reservable.type} was successfully added."
+        notice: "#{@reservable.type} was successfully added."
     else
       render :new
     end
@@ -28,15 +28,18 @@ class ReservablesController < ApplicationController
   def update
     if @reservable.update(reservable_params(@reservable))
       redirect_to edit_activity_path(@reservable.activity),
-        :notice => 'Successfully updated reservable'
+        notice: 'Successfully updated reservable'
     else
       redirect_back fallback_location: :back, error: 'Unable to update reservable'
     end
   end
 
   def destroy
-    @reservable.destroy
-    redirect_back fallback_location: :back, :notice => 'Successfully deleted reservable'
+    if @reservable.update(archived: true)
+      redirect_back fallback_location: :back, notice: 'Successfully deleted reservable'
+    else
+      redirect_back fallback_location: :back, error: 'Unable to delete reservable'
+    end
   end
 
   private

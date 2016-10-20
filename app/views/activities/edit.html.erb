@@ -84,7 +84,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @activity.reservables.each do |reservable| %>
+        <% @activity.reservables.active.each do |reservable| %>
           <tr>
             <td><%= reservable.name %></td>
             <td><%= reservable.interval %></td>

@@ -30,8 +30,8 @@
                 <td class='text-xs-center'>
                   <%= activity.name %>
                 </td>
-                <td class='text-xs-center'>
-                  <% activity.reservables.each do |reservable| %>
+                <td>
+                  <% activity.reservables.active.each do |reservable| %>
                     <div>
                       <%= reservable.name %>
                     </div>
