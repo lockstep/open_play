@@ -6,13 +6,11 @@ feature 'delete activity' do
   include_context 'logged in user'
 
   context 'an activity exist' do
-    before do
-      @activity = create(:bowling, business: @business)
-      visit root_path
-      click_link 'Manage Business'
-    end
+    before { @activity = create(:bowling, business: @business) }
 
     scenario 'user can delete the activity' do
+      visit root_path
+      click_link 'Manage Business'
       expect(page).to have_content @activity.name
       click_link 'Delete'
       expect(page).to have_content 'Successfully deleted activity'

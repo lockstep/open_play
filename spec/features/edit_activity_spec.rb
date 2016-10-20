@@ -9,11 +9,11 @@ feature 'edit activity' do
     before do
       @activity = create(:bowling, business: @business)
       @reservable = create(:lane, activity: @activity)
-      visit root_path
-      click_link 'Manage Business'
     end
 
     scenario 'user can edit the activity' do
+      visit root_path
+      click_link 'Manage Business'
       expect(page).to have_content @activity.name
       click_link 'Edit'
       edit_activity_form(name: 'Super Bowling')
@@ -22,6 +22,8 @@ feature 'edit activity' do
     end
 
     scenario 'user can delete reservables' do
+      visit root_path
+      click_link 'Manage Business'
       click_link 'Edit'
       expect(page).to have_content @reservable.name
       click_link 'Delete'
@@ -30,6 +32,8 @@ feature 'edit activity' do
     end
 
     scenario 'user can edit reservables' do
+      visit root_path
+      click_link 'Manage Business'
       click_link 'Edit'
       expect(page).to have_content @reservable.name
       click_link 'Edit'
@@ -42,7 +46,6 @@ feature 'edit activity' do
   end
 
   def edit_activity_form(overrides={})
-    select( overrides[:type] || 'Bowling', :from => 'activity_type')
     fill_in 'activity_name', with: overrides[:name] || 'Country Club Lanes'
     fill_in 'activity_start_time', with: overrides[:start_time] || '08:00'
     fill_in 'activity_end_time', with: overrides[:end_time] || '16:00'

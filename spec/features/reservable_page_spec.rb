@@ -25,7 +25,7 @@ feature 'Reservable Page' do
           ReservableOption.create(name: 'handicap_accessible', reservable_type: 'Lane')
           click_link 'Add a Lane'
         end
-        
+
         scenario 'display possible options for Lane' do
           expect(page).to have_content 'Bumper'
           expect(page).to have_content 'Handicap accessible'

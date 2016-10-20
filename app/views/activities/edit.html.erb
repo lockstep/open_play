@@ -14,7 +14,7 @@
           <%= f.label :type, 'Activity Type:' %>
         </div>
         <div class="col-xs-9">
-          <%= f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]} %>
+          <%= @activity.type%>
         </div>
       </div>
       <div class="<%= ('has-danger' if @activity.errors[:name].any?) %> form-group">
@@ -73,14 +73,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Reservables </th>
+          <th><%=@activity.reservable_type%></th>
           <th>Interval</th>
           <th>Start time</th>
           <th>End time</th>
           <th>Maximum players</th>
           <th>Weekday price</th>
           <th>Weekend price</th>
-          <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>

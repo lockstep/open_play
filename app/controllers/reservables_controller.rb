@@ -26,7 +26,20 @@ class ReservablesController < ApplicationController
   def edit; end
 
   def update
-    if @reservable.update(reservable_params(@reservable))
+    if @reservable.update_attributes(reservable_params(@reservable))
+      options = params[:options]
+      @reservable.options_available.destroy_all unless @reservable.options_available.nil?
+      
+      unless options.nil?
+        options.each do |option|
+          unless @reservable.options_available.find_by(reservable_option_id: option).present?
+            @reservable.options_available.create(
+              reservable_option_id: option
+            )
+          end
+        end
+      end
+
       redirect_to edit_activity_path(@reservable.activity),
         notice: 'Successfully updated reservable'
     else
