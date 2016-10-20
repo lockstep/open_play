@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :businesses, only: [:new, :create], shallow: true do
     resources :activities, only: [:index, :new, :create, :edit, :update, :destroy] do
-      resources :reservables, only: [:new, :create]
+      resources :reservables, only: [:new, :create,  :edit, :update, :destroy]
     end
   end
 

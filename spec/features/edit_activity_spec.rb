@@ -8,6 +8,7 @@ feature 'edit activity' do
   context 'an activity exist' do
     before do
       @activity = create(:bowling, business: @business)
+      @reservable = create(:lane, activity: @activity)
       visit root_path
       click_link 'Manage Business'
     end
@@ -18,6 +19,29 @@ feature 'edit activity' do
       edit_activity_form(name: 'Super Bowling')
       expect(page).to have_content 'Successfully updated activity'
       expect(page).to have_content 'Super Bowling'
+    end
+
+    scenario 'user can delete reservables' do
+      click_link 'Edit'
+      expect(page).to have_content @reservable.name
+      click_link 'Delete'
+      expect(page).to have_content 'Successfully deleted reservable'
+      expect(page).to_not have_content @reservable.name
+    end
+
+    scenario 'user can edit reservables' do
+      click_link 'Edit'
+      expect(page).to have_content @reservable.name
+      click_link 'Edit'
+      expect(page).to have_content 'Edit a Lane'
+      fill_in :lane_name, with: 'Amazing Lane 1'
+      fill_in :lane_interval, with: 60
+      fill_in :lane_maximum_players, with: 30
+      fill_in :lane_weekday_price, with: 10
+      fill_in :lane_weekend_price, with: 20
+      click_on 'Submit'
+      expect(page).to have_content 'Successfully updated reservable'
+      expect(page).to have_content 'Amazing Lane 1'
     end
   end
 

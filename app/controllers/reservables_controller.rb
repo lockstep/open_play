@@ -1,6 +1,6 @@
 class ReservablesController < ApplicationController
   before_action :authenticate_user!
-  
+  before_action :set_reservable, only: [:edit, :update, :destroy]
   def new
     @reservable = current_activity.build_reservable
   end
@@ -23,7 +23,27 @@ class ReservablesController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    if @reservable.update(reservable_params(@reservable))
+      redirect_to edit_activity_path(@reservable.activity),
+        :notice => 'Successfully updated reservable'
+    else
+      redirect_back fallback_location: :back, error: 'Unable to update reservable'
+    end
+  end
+
+  def destroy
+    @reservable.destroy
+    redirect_back fallback_location: :back, :notice => 'Successfully deleted reservable'
+  end
+
   private
+
+  def set_reservable
+    @reservable = Reservable.find_by_id(params[:id])
+  end
 
   def current_activity
     @current_activity ||= Activity.find_by_id(params[:activity_id])
