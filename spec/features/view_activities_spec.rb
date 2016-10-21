@@ -46,10 +46,14 @@ feature 'View Activities' do
         end
 
         scenario 'user can delete activity' do
+          visit root_path
+          click_link 'Manage Business'
           expect(page).to have_link 'Delete'
         end
-        
+
         scenario 'user can edit activity' do
+          visit root_path
+          click_link 'Manage Business'
           expect(page).to have_link 'Edit'
         end
 
