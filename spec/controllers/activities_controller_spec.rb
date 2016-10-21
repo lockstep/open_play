@@ -44,6 +44,23 @@ describe ActivitiesController do
   end
 
   describe 'POST create' do
+    context 'user is logged in' do
+      login_user
+      context 'a business exists' do
+        before { @business = create(:business, user: @user) }
+        it 'creates an activity' do
+          post :create, params: activity_params.merge({ business_id: @business.id })
+
+          expect(Activity.count).to eq 1
+          expect(Activity.first.type).to eq 'Bowling'
+          expect(Activity.first.name).to eq 'Country Club Lanes'
+          expect(Activity.first.start_time.to_s).to match '08:00:00'
+          expect(Activity.first.end_time.to_s).to match '16:00:00'
+          expect(Activity.first.prevent_back_to_back_booking).to eq true
+          expect(response).to redirect_to business_activities_path
+        end
+      end
+    end
     context 'user is not logged in' do
       before do
         @user = create(:user)
@@ -60,7 +77,8 @@ describe ActivitiesController do
         type: 'Bowling',
         name: 'Country Club Lanes',
         start_time: '8:00:00',
-        end_time: '16:00:00'
+        end_time: '16:00:00',
+        prevent_back_to_back_booking: true
       }
     }
   end
