@@ -3,11 +3,7 @@
 $(function() {
 
   var showHideCheckIcon = function(icon) {
-    if (icon.hasClass('fa-check')) {
-      icon.removeClass('fa-check')
-    } else {
-      icon.addClass('fa-check')
-    }
+    icon.hasClass('fa-check') ? icon.removeClass('fa-check') : icon.addClass('fa-check')
   };
 
   var toggleCheckBox = function(activityId, reservableId, slot) {
