@@ -36,9 +36,10 @@ $(function() {
 
 
 OPEN_PLAY.checkoutInitiator = function(number_of_bookings ,total_price) {
+  var unit = number_of_bookings == 1 ? 'booking' : 'bookings';
   OPEN_PLAY.checkoutHandler.open({
     name: 'Open Play',
-    description: number_of_bookings + ' bookings',
+    description: number_of_bookings + ' ' + unit,
     amount: total_price
   });
 }
