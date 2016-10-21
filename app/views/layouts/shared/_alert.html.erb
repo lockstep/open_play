@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <% if notice %>
     <div class="alert alert-success alert-dismissable" role="alert">
       <button type='button' class='close' data-dismiss='alert'>
@@ -14,4 +14,25 @@
       <%= alert %>
     </div>
   <% end %>
-</div>
+</div> -->
+<%- [:notice, :info, :warning, :error, :alert].each do |kind| -%>
+  <%- next if flash[kind].blank? -%>
+  <%
+    alert_type = case kind
+      when :notice
+        'success'
+      when :error
+        'danger'
+      when :info
+        'info'
+      when :warning, :alert
+        'warning'
+      end
+  %>
+  <div class="container">
+    <div class="alert alert-dismissable alert-<%= alert_type %> notice fade in">
+      <button class="close" data-dismiss="alert" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+      <%= flash[kind] %>
+    </div>
+  </div>
+<%end%>

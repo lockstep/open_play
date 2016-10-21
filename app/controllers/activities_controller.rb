@@ -27,15 +27,16 @@ class ActivitiesController < ApplicationController
       redirect_to business_activities_path(@activity.business),
         notice: 'Successfully updated activity'
     else
-      redirect_back fallback_location: :back, error: 'Unable to update activity'
+      render :edit
     end
   end
 
   def destroy
     if @activity.update(archived: true)
-      redirect_back fallback_location: :back, notice: 'Successfully deleted activity'
+      redirect_back fallback_location: root_path, notice: 'Successfully deleted activity'
     else
-      redirect_back fallback_location: :back, error: 'Unable to delete reservable'
+      flash[:error] = 'Unable to delete activity'
+      redirect_back fallback_location: root_path
     end
   end
 

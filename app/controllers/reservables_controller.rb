@@ -29,7 +29,7 @@ class ReservablesController < ApplicationController
     if @reservable.update_attributes(reservable_params(@reservable))
       options = params[:options]
       @reservable.options_available.destroy_all unless @reservable.options_available.nil?
-      
+
       unless options.nil?
         options.each do |option|
           unless @reservable.options_available.find_by(reservable_option_id: option).present?
@@ -43,15 +43,16 @@ class ReservablesController < ApplicationController
       redirect_to edit_activity_path(@reservable.activity),
         notice: 'Successfully updated reservable'
     else
-      redirect_back fallback_location: :back, error: 'Unable to update reservable'
+      render :edit
     end
   end
 
   def destroy
     if @reservable.update(archived: true)
-      redirect_back fallback_location: :back, notice: 'Successfully deleted reservable'
+      redirect_back fallback_location: root_path, notice: 'Successfully deleted reservable'
     else
-      redirect_back fallback_location: :back, error: 'Unable to delete reservable'
+      flash[:error] = 'Unable to delete activity'
+      redirect_back fallback_location: root_path
     end
   end
 
