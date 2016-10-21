@@ -6,66 +6,67 @@
   </div>
 </div>
 <div class="spacer-40"></div>
-
-<%= form_for @activity, as: :activity, url: {action: 'create'} do |f| %>
-  <div class="row form-group">
-    <div class="col-xs-3">
-      <%= f.label :type, 'Activity Type:' %>
-    </div>
-    <div class="col-xs-9">
-      <%= f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]} %>
-    </div>
-  </div>
-
-  <div class="<%= ('has-danger' if @activity.errors[:name].any?) %> row form-group">
-    <div class="col-xs-3">
-      <%= f.label :name, 'Activity Name:' %>
-    </div>
-    <div class="col-xs-5">
-      <%= f.text_field :name, placeholder: 'Activity name', class: 'form-control' %>
-      <% @activity.errors[:name].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_for @activity, as: :activity, url: {action: 'create'} do |f| %>
+      <div class="form-group row">
+        <div class="col-xs-2">
+          <%= f.label :type, 'Activity Type:',style:'padding-top:.4rem'%>
         </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <div class="col-xs-3">
-      <%= f.label :start_time %>
-    </div>
-    <div class="col-xs-9">
-      <%= f.time_field :start_time, { value: '08:00'} %>
-    </div>
-  </div>
-
-  <div class="<%= ('has-danger' if @activity.errors[:end_time].any?) %> row form-group">
-    <div class="col-xs-3">
-      <%= f.label :end_time %>
-    </div>
-    <div class="col-xs-9">
-      <%= f.time_field :end_time, { value: '16:00'} %>
-      <% @activity.errors[:end_time].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
+        <div class="col-xs-3">
+          <%= f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]},
+            {}, {class:'form-control'} %>
         </div>
-      <% end %>
-    </div>
-  </div>
+        <div class="<%= ('has-danger' if @activity.errors[:name].any?) %> col-xs-7">
+          <%= f.text_field :name, placeholder: 'Activity name', class: 'form-control' %>
+          <% @activity.errors[:name].each do |error| %>
+            <div class="form-control-feedback">
+              <%= error %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-2">
+          <%= f.label :start_time, class: 'col-form-label' %>
+        </div>
+        <div class="col-xs-4">
+          <%= f.time_field :start_time, { value: '08:00', class:'form-control'} %>
+        </div>
+        <div class="col-xs-2">
+          <%= f.label :end_time, class: 'col-form-label' %>
+        </div>
+        <div class="col-xs-4">
+          <%= f.time_field :end_time, { value: '16:00', class:'form-control'} %>
+        </div>
 
-  <div class="row form-group">
-    <div class="col-xs-3">
-      <%= f.label :prevent_back_to_back_booking %>
-    </div>
-    <div class="col-xs-9">
-      <%= f.check_box :prevent_back_to_back_booking %>
-    </div>
+        <% if @activity.errors[:end_time].any? %>
+          <div class="has-danger col-xs-12">
+            <div class="row">
+              <div class="col-xs-4 offset-xs-8">
+                <% @activity.errors[:end_time].each do |error| %>
+                  <div class="form-control-feedback">
+                    <%= error %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <%= f.label :prevent_back_to_back_booking %>
+          <%= f.check_box :prevent_back_to_back_booking %>
+        </div>
+      </div>
+      <div class="from-group row">
+        <div class="col-xs-12">
+          <center>
+            <%= f.submit 'Submit', class: 'btn btn-primary' %>
+          </center>
+        </div>
+      </div>
+    <% end %>
   </div>
-
-  <div class="row form-group">
-    <div class="col-xs-12 text-xs-center">
-      <%= f.submit 'Submit', class: 'btn btn-primary' %>
-    </div>
-  </div>
-<% end %>
+<div>
