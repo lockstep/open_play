@@ -44,16 +44,15 @@ feature 'View Activities' do
 
           expect(page).to have_link 'Add a Lane'
         end
-<<<<<<< HEAD
 
-=======
         scenario 'user can delete activity' do
           expect(page).to have_link 'Delete'
         end
+        
         scenario 'user can edit activity' do
           expect(page).to have_link 'Edit'
         end
->>>>>>> 52fa088... add feature spec and  action buttons for activity
+
         scenario 'shows all lanes of the activity' do
           visit root_path
           click_link 'Manage Business'
