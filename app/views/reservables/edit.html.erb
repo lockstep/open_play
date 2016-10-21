@@ -1,11 +1,16 @@
 <h2><%= "Edit a #{@reservable.type}" %></h2>
 <%= form_for @reservable , url: {action: 'update'}, :html => {class: 'form-horizontal'} do |f| %>
-  <div class="form-group">
-    <%= f.label :name, class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :name, class: 'form-control' %>
-    </div>
+<div class="<%= ('has-danger' if @reservable.errors[:name].any?) %> form-group">
+  <%= f.label :name, class: 'col-sm-4 control-label' %>
+  <div class='col-sm-8'>
+    <%= f.text_field :name, class: 'form-control' %>
+    <% @reservable.errors[:name].each do |error| %>
+      <div class="form-control-feedback">
+        <%= error %>
+      </div>
+    <% end %>
   </div>
+</div>
   <div class="<%= ('has-danger' if @reservable.errors[:interval].any?) %> form-group">
     <%= f.label :interval, 'Default reserved time(mins)', class: 'col-sm-4 control-label' %>
     <div class='col-sm-8'>

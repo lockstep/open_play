@@ -8,7 +8,7 @@ class Reservable < ApplicationRecord
   accepts_nested_attributes_for :options_available
 
   has_many :bookings
-
+  validates_presence_of :name
   validates :interval, numericality: { only_integer: true }
   validates :maximum_players, numericality: { only_integer: true, greater_than: 0 }
   validates :weekday_price, numericality: { greater_than: 0 }

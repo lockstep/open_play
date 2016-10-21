@@ -88,8 +88,8 @@
           <tr>
             <td><%= reservable.name %></td>
             <td><%= reservable.interval %></td>
-            <td><%= reservable.start_time.strftime("%H:%M") %></td>
-            <td><%= reservable.end_time.strftime("%H:%M") %></td>
+            <td><%= present_time(reservable.start_time)%></td>
+            <td><%= present_time(reservable.end_time)%></td>
             <td><%= reservable.maximum_players %></td>
             <td>$<%= reservable.weekday_price %></td>
             <td>$<%= reservable.weekend_price %></td>

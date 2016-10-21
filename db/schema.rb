@@ -20,11 +20,11 @@ ActiveRecord::Schema.define(version: 20161020043926) do
     t.integer  "business_id"
     t.time     "start_time"
     t.time     "end_time"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "type"
+    t.boolean  "archived",                     default: false
     t.boolean  "prevent_back_to_back_booking", default: false
-    t.boolean  "archived",    default: false
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
 

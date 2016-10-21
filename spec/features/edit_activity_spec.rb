@@ -11,14 +11,25 @@ feature 'edit activity' do
       @reservable = create(:lane, activity: @activity)
     end
 
-    scenario 'user can edit the activity' do
-      visit root_path
-      click_link 'Manage Business'
-      expect(page).to have_content @activity.name
-      click_link 'Edit'
-      edit_activity_form(name: 'Super Bowling')
-      expect(page).to have_content 'Successfully updated activity'
-      expect(page).to have_content 'Super Bowling'
+    context 'user can edit the activity' do
+      scenario 'successfully edited activity ' do
+        visit root_path
+        click_link 'Manage Business'
+        expect(page).to have_content @activity.name
+        click_link 'Edit'
+        edit_activity_form(name: 'Super Bowling')
+        expect(page).to have_content 'Successfully updated activity'
+        expect(page).to have_content 'Super Bowling'
+      end
+
+      scenario 'unsuccessfully edited activity' do
+        visit root_path
+        click_link 'Manage Business'
+        expect(page).to have_content @activity.name
+        click_link 'Edit'
+        edit_activity_form(name: '')
+        expect(page).to have_content "can't be blank"
+      end
     end
 
     scenario 'user can delete reservables' do
@@ -31,17 +42,32 @@ feature 'edit activity' do
       expect(page).to_not have_content @reservable.name
     end
 
-    scenario 'user can edit reservables' do
-      visit root_path
-      click_link 'Manage Business'
-      click_link 'Edit'
-      expect(page).to have_content @reservable.name
-      click_link 'Edit'
-      expect(page).to have_content 'Edit a Lane'
-      fill_in :lane_name, with: 'Amazing Lane 1'
-      click_on 'Submit'
-      expect(page).to have_content 'Successfully updated reservable'
-      expect(page).to have_content 'Amazing Lane 1'
+    context 'user can edit reservables' do
+      scenario 'successfully edited reservable' do
+        visit root_path
+        click_link 'Manage Business'
+        click_link 'Edit'
+        expect(page).to have_content @reservable.name
+        click_link 'Edit'
+        expect(page).to have_content 'Edit a Lane'
+        fill_in :lane_name, with: 'Amazing Lane 1'
+        click_on 'Submit'
+        expect(page).to have_content 'Successfully updated reservable'
+        expect(page).to have_content 'Amazing Lane 1'
+      end
+      scenario 'unsuccessfully edited reservable' do
+        visit root_path
+        click_link 'Manage Business'
+        click_link 'Edit'
+        expect(page).to have_content @reservable.name
+        click_link 'Edit'
+        expect(page).to have_content 'Edit a Lane'
+        fill_in :lane_interval, with: ''
+        fill_in :lane_name, with: ''
+        click_on 'Submit'
+        expect(page).to have_content "can't be blank"
+        expect(page).to have_content "is not a number"
+      end
     end
   end
 
