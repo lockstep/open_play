@@ -1,96 +1,98 @@
 <h2><%= "Create a #{@reservable.type}" %></h2>
-<%= form_for @reservable , url: {action: 'create'}, :html => {class: 'form-horizontal'} do |f| %>
-  <div class="<%= ('has-danger' if @reservable.errors[:name].any?) %> form-group">
-    <%= f.label :name, class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :name, class: 'form-control' %>
-      <% @reservable.errors[:name].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <div class="<%= ('has-danger' if @reservable.errors[:interval].any?) %> form-group">
-    <%= f.label :interval, 'Default reserved time(mins)', class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :interval, placeholder: 'e.g. 60 for one hour', class: 'form-control' %>
-      <% @reservable.errors[:interval].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <% unless @reservable.options.nil? %>
-    <% @reservable.options.each do |option| %>
-      <div class="form-group">
-        <div class="col-sm-12">
-          <%= check_box_tag "options[#{option.id}]" %>
-          <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-
-  <div class="form-group">
-      <%= f.label :start_time, class: 'col-sm-4 control-label' %>
-      <div class="col-sm-8">
-        <%= f.time_field :start_time, class: 'form-control' %>
-      </div>
-  </div>
-  <div class="<%= ('has-danger' if @reservable.errors[:end_time].any?) %> form-group">
-      <%= f.label :end_time, class: 'col-sm-4 control-label' %>
-      <div class="col-sm-8">
-        <%= f.time_field :end_time, class: 'form-control' %>
-        <% @reservable.errors[:end_time].each do |error| %>
+<div class="container">
+  <%= form_for @reservable , url: {action: 'create'}, :html => {class: 'form-horizontal'} do |f| %>
+    <div class="<%= ('has-danger' if @reservable.errors[:name].any?) %> form-group row">
+        <%= f.label :name, class: 'col-sm-4 control-label' %>
+      <div class='col-sm-8'>
+        <%= f.text_field :name, class: 'form-control' %>
+        <% @reservable.errors[:name].each do |error| %>
           <div class="form-control-feedback">
             <%= error %>
           </div>
         <% end %>
       </div>
-  </div>
+    </div>
+    <div class="<%= ('has-danger' if @reservable.errors[:interval].any?) %> form-group row">
+      <%= f.label :interval, 'Default reserved time(mins)', class: 'col-sm-4 control-label' %>
+      <div class='col-sm-8'>
+        <%= f.text_field :interval, placeholder: 'e.g. 60 for one hour', class: 'form-control' %>
+        <% @reservable.errors[:interval].each do |error| %>
+          <div class="form-control-feedback">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
-  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group">
-    <%= f.label :maximum_players, 'Maximum of players', class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :maximum_players, class: 'form-control' %>
-      <% @reservable.errors[:maximum_players].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
+    <% unless @reservable.options.nil? %>
+      <% @reservable.options.each do |option| %>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <%= check_box_tag "options[#{option.id}]" %>
+            <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
+          </div>
         </div>
       <% end %>
-    </div>
-  </div>
+    <% end %>
 
-  <div class="<%= ('has-danger' if @reservable.errors[:weekday_price].any?) %> form-group">
-    <%= f.label :weekday_price, 'Weekday Price', class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :weekday_price, class: 'form-control' %>
-      <% @reservable.errors[:weekday_price].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
+    <div class="form-group row">
+        <%= f.label :start_time, class: 'col-sm-4 control-label' %>
+        <div class="col-sm-8">
+          <%= f.time_field :start_time, class: 'form-control' %>
         </div>
-      <% end %>
     </div>
-  </div>
-
-  <div class="<%= ('has-danger' if @reservable.errors[:weekend_price].any?) %> form-group">
-    <%= f.label :weekend_price, 'Weekend Price', class: 'col-sm-4 control-label' %>
-    <div class='col-sm-8'>
-      <%= f.text_field :weekend_price, class: 'form-control' %>
-      <% @reservable.errors[:weekend_price].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
+    <div class="<%= ('has-danger' if @reservable.errors[:end_time].any?) %> form-group row">
+        <%= f.label :end_time, class: 'col-sm-4 control-label' %>
+        <div class="col-sm-8">
+          <%= f.time_field :end_time, class: 'form-control' %>
+          <% @reservable.errors[:end_time].each do |error| %>
+            <div class="form-control-feedback">
+              <%= error %>
+            </div>
+          <% end %>
         </div>
-      <% end %>
     </div>
-  </div>
 
-  <div class="form-group">
-    <div class="col-sm-12">
-      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group row">
+      <%= f.label :maximum_players, 'Maximum of players', class: 'col-sm-4 control-label' %>
+      <div class='col-sm-8'>
+        <%= f.text_field :maximum_players, class: 'form-control' %>
+        <% @reservable.errors[:maximum_players].each do |error| %>
+          <div class="form-control-feedback">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
-<% end %>
+
+    <div class="<%= ('has-danger' if @reservable.errors[:weekday_price].any?) %> form-group row">
+      <%= f.label :weekday_price, 'Weekday Price', class: 'col-sm-4 control-label' %>
+      <div class='col-sm-8'>
+        <%= f.text_field :weekday_price, class: 'form-control' %>
+        <% @reservable.errors[:weekday_price].each do |error| %>
+          <div class="form-control-feedback">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="<%= ('has-danger' if @reservable.errors[:weekend_price].any?) %> form-group row">
+      <%= f.label :weekend_price, 'Weekend Price', class: 'col-sm-4 control-label' %>
+      <div class='col-sm-8'>
+        <%= f.text_field :weekend_price, class: 'form-control' %>
+        <% @reservable.errors[:weekend_price].each do |error| %>
+          <div class="form-control-feedback">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <%= f.submit 'Submit', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
