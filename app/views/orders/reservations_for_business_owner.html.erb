@@ -1,0 +1,24 @@
+<div class='row'>
+  <div class='col-xs-12'>
+    <h1 class='text-xs-center'>Reservations</h1>
+  </div>
+</div>
+<div class='spacer-30'></div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-xs-center" id="searchbar-container">
+      <%= form_tag(business_owner_reservations_path, method: 'get', class: 'form-inline', id: 'orders-reservations-form') do %>
+        <div class='form-group'>
+          <%= label_tag(:booking_date, 'Date') %>
+          &nbsp;
+          <%= text_field_tag 'booking_date', @date, id: 'reservations-booking-date' %>
+          &nbsp;
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class='spacer-30'></div>
+
+<%= render 'orders/reservations' %>

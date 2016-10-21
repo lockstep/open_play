@@ -51,6 +51,7 @@
               <%= hidden_field_tag('date', @booking_date) %>
               <%= hidden_field_tag("prevent-btb-booking-#{activity.id}",
                 activity.prevent_back_to_back_booking) %>
+              <%= hidden_field_tag('activity_id', activity.id) %>
               <div class-"col-xs-3">
                 <%= submit_tag 'Book', class: 'btn btn-info book-btn' %>
               </div>

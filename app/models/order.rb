@@ -3,7 +3,14 @@ class Order < ApplicationRecord
 
   has_many :bookings, inverse_of: :order
   belongs_to :user
+  belongs_to :activity
   accepts_nested_attributes_for :bookings
+
+  scope :reservations, -> { includes(:activity, :bookings) }
+  scope :reservations_on, -> (date) {
+    reservations.where(bookings: { booking_date: date }) }
+  scope :filterd_by_activity, -> (id) { where(activity_id: id) }
+  scope :filterd_by_user, -> (id) { where(user_id: id) }
 
   def booking
     bookings.first
@@ -18,9 +25,19 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    total_price = bookings
-      .map { |booking| booking.number_of_players * booking.booking_price }
+    bookings.map { |booking| booking.number_of_players * booking.booking_price }
       .reduce(0, :+)
+  end
+
+  def total_price_in_cents
     dollars_to_cents(total_price)
+  end
+
+  def self.reservations_for_business_owner(date, activity_id)
+    reservations_on(date).filterd_by_activity(activity_id)
+  end
+
+  def self.reservations_for_users(date, user_id)
+    reservations_on(date).filterd_by_user(user_id)
   end
 end

@@ -1,9 +1,11 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_time_slot_selection_is_present, only: [:new]
+  before_action :set_booking_date, only: [:reservations_for_business_owner,
+    :reservations_for_users]
 
   def new
-    @order = Order.new()
+    @order = Order.new(activity_id: params[:activity_id])
     params[:time_slots].each do |reservable_id, reservable_time_slots|
       reservable_time_slots.each do |time_slots|
         @order.bookings.build(
@@ -21,7 +23,7 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     if @order.save
       Stripe::Charge.create(
-        amount: @order.total_price.to_i,
+        amount: @order.total_price_in_cents.to_i,
         currency: 'usd',
         source: params[:token_id]
       )
@@ -36,12 +38,20 @@ class OrdersController < ApplicationController
   def success
   end
 
+  def reservations_for_business_owner
+    @orders = Order.reservations_for_business_owner(@date, params[:activity_id])
+  end
+
+  def reservations_for_users
+    @orders = Order.reservations_for_users(@date, params[:user_id])
+  end
+
   def prepare_complete_order
     order = Order.new(order_params)
     if order.valid?
       render json: { meta: {
           number_of_bookings: order.bookings.length,
-          total_price: order.total_price
+          total_price: order.total_price_in_cents
         }
       }, status: :ok
     else
@@ -68,8 +78,12 @@ class OrdersController < ApplicationController
     end
   end
 
+  def set_booking_date
+    @date = params[:booking_date] || Date.today
+  end
+
   def order_params
-    params.require(:order).permit(:user_id, bookings_attributes: [
+    params.require(:order).permit(:user_id, :activity_id, bookings_attributes: [
       :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
       reservable_options_attributes: [:reservable_option_id]
     ])

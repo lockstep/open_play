@@ -7,8 +7,12 @@ module DateTimeHelper
     "#{present_time(start_time)} - #{present_time(end_time)}"
   end
 
-  def present_date(date)
+  def present_date_in_weekday_month_day_format(date)
     date.strftime("%A, %B %e")
+  end
+
+  def present_date_in_day_month_format(date)
+    date.strftime("%e %B")
   end
 
   def merge_date_and_time(date, time)
