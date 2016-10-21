@@ -27,7 +27,8 @@
     <% @reservable.options.each do |option| %>
       <div class="form-group row">
         <div class="col-sm-12">
-          <%= check_box_tag "options[#{option.id}]" %>
+          <%= check_box_tag "options[#{option.id}]", "1",
+            option.check_selected_reservable_options(@reservable.id, option.id)%>
           <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
         </div>
       </div>
