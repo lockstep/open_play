@@ -56,8 +56,14 @@
       </div>
       <div class="row form-group">
         <div class="col-xs-12">
-          <%= f.label :prevent_back_to_back_booking %>
+          <%= f.label :prevent_back_to_back_booking, 'Prevent back-to-back bookings:' %>
           <%= f.check_box :prevent_back_to_back_booking %>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <%= f.label :allow_multi_party_bookings, 'Allow multi-party bookings:' %>
+          <%= f.check_box :allow_multi_party_bookings %>
         </div>
       </div>
       <div class="from-group row">

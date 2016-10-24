@@ -54,7 +54,8 @@ class ActivitiesController < ApplicationController
       :name,
       :start_time,
       :end_time, :type,
-      :prevent_back_to_back_booking
+      :prevent_back_to_back_booking,
+      :allow_multi_party_bookings
     ]
     params.require(:activity).permit(permitted_params)
   end

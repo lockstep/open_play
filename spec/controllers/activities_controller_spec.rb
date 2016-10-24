@@ -57,6 +57,7 @@ describe ActivitiesController do
           expect(Activity.first.start_time.to_s).to match '08:00:00'
           expect(Activity.first.end_time.to_s).to match '16:00:00'
           expect(Activity.first.prevent_back_to_back_booking).to eq true
+          expect(Activity.first.allow_multi_party_bookings).to eq true
           expect(response).to redirect_to business_activities_path
         end
       end
@@ -78,7 +79,8 @@ describe ActivitiesController do
         name: 'Country Club Lanes',
         start_time: '8:00:00',
         end_time: '16:00:00',
-        prevent_back_to_back_booking: true
+        prevent_back_to_back_booking: true,
+        allow_multi_party_bookings: true
       }
     }
   end

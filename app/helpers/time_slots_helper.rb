@@ -34,9 +34,17 @@ module TimeSlotsHelper
     bookings.each do |booking|
       start_booking_time = merge_date_and_time(requested_date, booking.start_time)
       end_booking_time = merge_date_and_time(requested_date, booking.end_time)
-      availableToBook = (requested_time < start_booking_time) ||
-        (requested_time >= end_booking_time)
-      return false unless availableToBook
+      time_was_booked = (requested_time >= start_booking_time) &&
+        (requested_time < end_booking_time)
+      if time_was_booked
+        available_for_multi_party = reservable.allow_multi_party_bookings &&
+          reservable.available_players(
+            start_booking_time,
+            end_booking_time,
+            requested_date
+          ) > 0
+        return false unless available_for_multi_party
+      end
     end
     true
   end

@@ -16,6 +16,7 @@ class Reservable < ApplicationRecord
   validate :end_time_is_after_start_time
 
   delegate :name, to: :activity, prefix: true
+  delegate :allow_multi_party_bookings, to: :activity
   scope :active, -> { where(archived: false) }
   def end_time_is_after_start_time
     return unless start_time.present? && end_time.present?
