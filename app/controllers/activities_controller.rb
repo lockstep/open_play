@@ -1,18 +1,22 @@
 class ActivitiesController < ApplicationController
-  before_action :authenticate_user!, except: [:search]
+  before_action :authenticate_user!
   before_action :set_business, only: [:index, :new, :create]
   before_action :set_activity, only: [:destroy, :edit, :update]
+  after_action :verify_authorized
 
   def index
     @activities = @business.activities.active
+    authorize @business.activities.build
   end
 
   def new
     @activity = @business.activities.build
+    authorize @activity
   end
 
   def create
     @activity = @business.activities.build(activity_params)
+    authorize @activity
     if @activity.save
       redirect_to business_activities_path, notice: 'Successfully created activity'
     else
@@ -44,7 +48,9 @@ class ActivitiesController < ApplicationController
 
   def set_activity
     @activity = Activity.find_by_id(params[:id])
+    authorize @activity
   end
+
   def set_business
     @business = Business.find(params[:business_id])
   end
