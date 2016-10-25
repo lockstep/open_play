@@ -52,12 +52,13 @@ describe ActivitiesController do
           post :create, params: activity_params.merge({ business_id: @business.id })
 
           expect(Activity.count).to eq 1
-          expect(Activity.first.type).to eq 'Bowling'
-          expect(Activity.first.name).to eq 'Country Club Lanes'
-          expect(Activity.first.start_time.to_s).to match '08:00:00'
-          expect(Activity.first.end_time.to_s).to match '16:00:00'
-          expect(Activity.first.prevent_back_to_back_booking).to eq true
-          expect(Activity.first.allow_multi_party_bookings).to eq true
+          activity = Activity.first
+          expect(activity.type).to eq 'Bowling'
+          expect(activity.name).to eq 'Country Club Lanes'
+          expect(activity.start_time.to_s).to match '08:00:00'
+          expect(activity.end_time.to_s).to match '16:00:00'
+          expect(activity.prevent_back_to_back_booking).to eq true
+          expect(activity.allow_multi_party_bookings).to eq true
           expect(response).to redirect_to business_activities_path
         end
       end
