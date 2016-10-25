@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.string   "type"
-    t.boolean  "prevent_back_to_back_booking", default: false
     t.boolean  "archived",                     default: false
+    t.boolean  "prevent_back_to_back_booking", default: false
     t.boolean  "allow_multi_party_bookings",   default: false
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
@@ -56,8 +56,14 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.string   "name"
     t.text     "description"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "phone_number"
+    t.string   "address"
+    t.string   "profile_picture_file_name"
+    t.string   "profile_picture_content_type"
+    t.integer  "profile_picture_file_size"
+    t.datetime "profile_picture_updated_at"
     t.index ["user_id"], name: "index_businesses_on_user_id", using: :btree
   end
 
@@ -66,7 +72,6 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "activity_id"
-    t.float    "total_price"
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
@@ -100,8 +105,8 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.float    "weekday_price",            default: 0.0
     t.float    "weekend_price",            default: 0.0
     t.boolean  "archived",                 default: false
-    t.float    "per_person_weekday_price"
-    t.float    "per_person_weekend_price"
+    t.float    "per_person_weekday_price", default: 0.0
+    t.float    "per_person_weekend_price", default: 0.0
     t.index ["activity_id"], name: "index_reservables_on_activity_id", using: :btree
   end
 

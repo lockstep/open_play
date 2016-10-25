@@ -3,16 +3,15 @@ require File.expand_path('../../config/environment', __FILE__)
 if Rails.env.production?
   abort("The Rails environment is running in production mode!")
 end
-
 require 'rspec/rails'
 require 'capybara/poltergeist'
 require 'webmock/rspec'
 require 'sidekiq/testing'
+
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
 WebMock.disable_net_connect!(allow_localhost: true)
-
 Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|

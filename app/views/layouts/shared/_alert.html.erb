@@ -13,8 +13,10 @@
       end
   %>
   <div class="container">
-    <div class="alert alert-dismissable alert-<%= alert_type %> notice fade in">
-      <button class="close" data-dismiss="alert" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    <div class="alert alert-dismissable alert-<%= alert_type %> notice fade in" role="alert">
+      <button class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
       <%= flash[kind] %>
     </div>
   </div>

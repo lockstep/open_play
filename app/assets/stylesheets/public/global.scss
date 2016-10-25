@@ -18,3 +18,14 @@
 h1, h2, h3 {
   color: #266fa8;
 }
+.reservation-row{
+  width:120%;
+  margin-left: -10%;
+}
+
+@media (max-width: 768px) {
+  .reservation-row{
+    width:100%;
+    margin-left: -15px;
+  }
+}

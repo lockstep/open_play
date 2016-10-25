@@ -210,6 +210,17 @@ feature 'Complete Reservation', :js do
       end
     end
 
+    context 'cancel reservation' do
+      scenario 'redirect to root path' do
+        visit root_path
+        search_activities
+        click_on '11:00'
+        click_on 'Book'
+        click_on 'Cancel'
+          expect(page.current_path).to eq(root_path)
+      end
+    end
+
     context 'books multiple time slots' do
       scenario 'displays the booking info correctly' do
         visit root_path
