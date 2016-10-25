@@ -36,8 +36,9 @@ describe TimeSlotsHelper do
       end
       context 'the lane has one booking' do
         before do
-          @order = Order.create(user: create(:user))
-          @booking = Booking.create(
+          @order = create(:order, activity: @bowling)
+          @booking = create(
+            :booking,
             start_time: '17:00',
             end_time: '18:00',
             booking_date: '2016-10-10',
@@ -58,6 +59,38 @@ describe TimeSlotsHelper do
           expect(time_slots.first[:available]).to eq false
           expect(time_slots.second[:available]).to eq true
           expect(time_slots.last[:available]).to eq true
+        end
+        context 'multi-party bookings are allowed' do
+          before do
+            @bowling.update(allow_multi_party_bookings: true)
+          end
+          context 'has some spots left' do
+            scenario 'shows that the time slot is still available' do
+              time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+              expect(time_slots.first[:available]).to eq true
+              expect(time_slots.second[:available]).to eq true
+              expect(time_slots.last[:available]).to eq true
+            end
+          end
+          context 'no spots left' do
+            before do
+              @booking = create(
+                :booking,
+                start_time: '17:00',
+                end_time: '18:00',
+                booking_date: '2016-10-10',
+                number_of_players: 28,
+                reservable: @lane,
+                order: @order
+              )
+            end
+            scenario 'shows that the time slot is unavailable' do
+              time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+              expect(time_slots.first[:available]).to eq false
+              expect(time_slots.second[:available]).to eq true
+              expect(time_slots.last[:available]).to eq true
+            end
+          end
         end
       end
     end
