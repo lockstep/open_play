@@ -1,58 +1,70 @@
 describe OrdersController do
   describe 'GET new' do
-    context 'user is logged in' do
-      login_user
-      before do
-        get :new, params: {
-          activity_id: 1,
-          date: '4/10/2016',
-          time_slots: { '1': ["01:00:00, 02:00:00"] }
-        }
+    context 'a business exists' do
+      before { @business = create(:business) }
+      context 'an activity exists' do
+        before { @activity = create(:bowling, business: @business) }
+        context 'user is logged in' do
+          login_user
+          before do
+            @business.update(user: @user)
+            get :new, params: {
+              activity_id: @activity.id,
+              date: '4/10/2016',
+              time_slots: { '1': ["01:00:00, 02:00:00"] }
+            }
+          end
+          it_behaves_like 'a successful request'
+        end
+        context 'user is not logged in' do
+          before do
+            get :new, params: {
+              activity_id: @activity.id,
+              date: '4/10/2016',
+              time_slots: { '1': ["01:00:00, 02:00:00"] }
+            }
+          end
+          it_behaves_like 'it requires authentication'
+        end
       end
-      it_behaves_like 'a successful request'
-    end
-
-    context 'user is not logged in' do
-      before { get :new }
-      it_behaves_like 'it requires authentication'
     end
   end
 
   describe 'POST create' do
-    before do
-      @reservable = create(:reservable)
-      @option_1 = ReservableOption.create(
-        name: 'bumper',
-        reservable_type: 'Lane'
-      )
-      @option_2 = ReservableOption.create(
-        name: 'handicap_accessible',
-        reservable_type: 'Lane'
-      )
-    end
+    context 'a reservable and reservable options are exist' do
+      before do
+        @reservable = create(:reservable)
+        @option_1 = ReservableOption.create(
+          name: 'bumper',
+          reservable_type: 'Lane'
+        )
+        @option_2 = ReservableOption.create(
+          name: 'handicap_accessible',
+          reservable_type: 'Lane'
+        )
+      end
 
-    context 'user is logged in' do
-      login_user
-      context 'all params are valid' do
-        it 'creates a booking' do
-          post :create, params: order_params(user_id: @user.id)
+      context 'user is logged in' do
+        login_user
+        context 'all params are valid' do
+          it 'creates a booking' do
+            post :create, params: order_params(user_id: @user.id)
 
-          expect(Order.count).to eq 1
-          bookings = Order.first.bookings
-          expect(bookings.length).to eq 1
-          expect(bookings.first.start_time.to_s).to match '08:00:00'
-          expect(bookings.first.end_time.to_s).to match '09:00:00'
-          expect(bookings.first.reservable_options.size).to eq 2
-          expect(response).to redirect_to orders_success_path
+            expect(Order.count).to eq 1
+            bookings = Order.first.bookings
+            expect(bookings.length).to eq 1
+            expect(bookings.first.start_time.to_s).to match '08:00:00'
+            expect(bookings.first.end_time.to_s).to match '09:00:00'
+            expect(bookings.first.reservable_options.size).to eq 2
+            expect(response).to redirect_to orders_success_path
+          end
         end
       end
-    end
 
-    context 'user is not logged in' do
-      before do
-        post :create, params: order_params
+      context 'user is not logged in' do
+        before { post :create, params: order_params }
+        it_behaves_like 'it requires authentication'
       end
-      it_behaves_like 'it requires authentication'
     end
   end
 
