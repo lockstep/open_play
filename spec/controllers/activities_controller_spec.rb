@@ -1,9 +1,7 @@
 describe ActivitiesController do
   describe 'GET index' do
     context 'a business exists' do
-      before do
-        @business = create(:business)
-      end
+      before { @business = create(:business) }
       context 'user is logged in' do
         login_user
         context 'user is a business owner' do
@@ -15,17 +13,13 @@ describe ActivitiesController do
         end
 
         context 'user is not a business owner' do
-          before do
-            get :index, params: { business_id: @business.id }
-          end
+          before { get :index, params: { business_id: @business.id } }
           it_behaves_like 'an unauthorized request'
         end
       end
 
       context 'user is not logged in' do
-        before do
-          get :index, params: { business_id: @business.id }
-        end
+        before { get :index, params: { business_id: @business.id } }
         it_behaves_like 'it requires authentication'
       end
     end
@@ -45,17 +39,13 @@ describe ActivitiesController do
         end
 
         context 'user is not a business owner' do
-          before do
-            get :new, params: { business_id: @business.id }
-          end
+          before { get :new, params: { business_id: @business.id } }
           it_behaves_like 'an unauthorized request'
         end
       end
 
       context 'user is not logged in' do
-        before do
-          get :new, params: { business_id: @business.id }
-        end
+        before { get :new, params: { business_id: @business.id } }
         it_behaves_like 'it requires authentication'
       end
     end
