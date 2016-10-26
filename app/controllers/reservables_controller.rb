@@ -1,12 +1,16 @@
 class ReservablesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reservable, only: [:edit, :update, :destroy]
+  after_action :verify_authorized
+
   def new
     @reservable = current_activity.build_reservable
+    authorize @reservable
   end
 
   def create
     @reservable = current_activity.build_reservable
+    authorize @reservable
     if @reservable.update_attributes(reservable_params(@reservable))
       options = params[:options]
       unless options.nil?
@@ -60,6 +64,7 @@ class ReservablesController < ApplicationController
 
   def set_reservable
     @reservable = Reservable.find_by_id(params[:id])
+    authorize @reservable
   end
 
   def current_activity
