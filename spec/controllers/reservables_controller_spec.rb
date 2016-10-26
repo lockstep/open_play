@@ -69,6 +69,8 @@ describe ReservablesController do
               expect(reservable.maximum_players).to eq 30
               expect(reservable.weekday_price).to eq 15
               expect(reservable.weekend_price).to eq 20
+              expect(reservable.per_person_weekday_price).to eq 10
+              expect(reservable.per_person_weekend_price).to eq 30
             end
           end
           context 'user is not a business owner' do
@@ -92,7 +94,9 @@ describe ReservablesController do
               end_time: '16:00:00.000',
               maximum_players: 30,
               weekday_price: 15,
-              weekend_price: 20
+              weekend_price: 20,
+              per_person_weekday_price: 10,
+              per_person_weekend_price: 30
             }
           }
         end
@@ -116,6 +120,8 @@ describe ReservablesController do
               expect(reservable.maximum_players).to eq 30
               expect(reservable.weekday_price).to eq 15
               expect(reservable.weekend_price).to eq 20
+              expect(reservable.per_person_weekday_price).to eq 10
+              expect(reservable.per_person_weekend_price).to eq 30
             end
           end
           context 'user is not a business owner' do
@@ -139,7 +145,9 @@ describe ReservablesController do
             end_time: '16:00:00.000',
             maximum_players: 30,
             weekday_price: 15,
-            weekend_price: 20
+            weekend_price: 20,
+            per_person_weekday_price: 10,
+            per_person_weekend_price: 30
           }
         }
       end

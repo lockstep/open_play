@@ -88,7 +88,9 @@ feature 'View Activities' do
       end_time: '20:00',
       maximum_players: 30,
       weekday_price: 15,
-      weekend_price: 20
+      weekend_price: 20,
+      per_person_weekday_price: 10,
+      per_person_weekend_price: 15
     }
   end
 end

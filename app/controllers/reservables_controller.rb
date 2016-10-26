@@ -86,7 +86,9 @@ class ReservablesController < ApplicationController
         :end_time,
         :maximum_players,
         :weekday_price,
-        :weekend_price
+        :weekend_price,
+        :per_person_weekday_price,
+        :per_person_weekend_price
       ])
   end
 

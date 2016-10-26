@@ -4,8 +4,10 @@ feature 'View User Reservations', :js do
     business = create(:business, user: @user)
 
     @bowling = create(:bowling, business: business)
-    @lane_one = create(:lane, name: 'lane_one', activity: @bowling, weekday_price: 20)
-    @lane_two = create(:lane, name: 'lane_two', activity: @bowling, weekday_price: 30)
+    @lane_one = create(:lane, name: 'lane_one', activity: @bowling,
+      weekday_price: 10, per_person_weekday_price: 20)
+    @lane_two = create(:lane, name: 'lane_two', activity: @bowling,
+      weekday_price: 15, per_person_weekday_price: 30)
   end
   include_context 'logged in user'
 
@@ -52,20 +54,20 @@ feature 'View User Reservations', :js do
         expect(page).to have_content @lane_one.name
         expect(page).to have_content '10:00 AM - 11:00 AM'
         expect(page).to have_content '13 October'
-        expect(find("#booking_#{@booking_1.id}")).to have_content 2
+        expect(find("#number_of_people_from_booking_#{@booking_1.id}")).to have_content 2
         expect(page).to have_content @lane_two.name
         expect(page).to have_content '02:00 PM - 03:00 PM'
         expect(page).to have_content '13 October'
-        expect(find("#booking_#{@booking_2.id}")).to have_content 3
-        expect(page).to have_content '$ 130.0'
+        expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
+        expect(page).to have_content '$ 155.0'
 
         expect(page).to_not have_content '11:00 AM - 12:00 PM'
         expect(page).to_not have_content '04:00 PM - 05:00 PM'
-        expect(page).to_not have_content '$ 230.0'
+        expect(page).to_not have_content '$ 255.0'
 
         expect(page).to_not have_content '12:00 PM - 01:00 PM'
         expect(page).to_not have_content '04:00 PM - 05:00 PM'
-        expect(page).to_not have_content '$ 50.0'
+        expect(page).to_not have_content '$ 75.0'
       end
     end
 
@@ -99,20 +101,20 @@ feature 'View User Reservations', :js do
           expect(page).to have_content @lane_one.name
           expect(page).to have_content '10:00 AM - 11:00 AM'
           expect(page).to have_content '13 October'
-          expect(find("#booking_#{@booking_1.id}")).to have_content 2
+          expect(find("#number_of_people_from_booking_#{@booking_1.id}")).to have_content 2
           expect(page).to have_content @lane_two.name
           expect(page).to have_content '02:00 PM - 03:00 PM'
           expect(page).to have_content '13 October'
-          expect(find("#booking_#{@booking_2.id}")).to have_content 3
-          expect(page).to have_content '$ 130.0'
+          expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
+          expect(page).to have_content '$ 155.0'
 
           expect(page).to_not have_content '11:00 AM - 12:00 PM'
           expect(page).to_not have_content '03:00 PM - 04:00 PM'
-          expect(page).to_not have_content '$ 230.0'
+          expect(page).to_not have_content '$ 255.0'
 
           expect(page).to_not have_content '12:00 PM - 01:00 PM'
           expect(page).to_not have_content '04:00 PM - 05:00 PM'
-          expect(page).to_not have_content '$ 50.0'
+          expect(page).to_not have_content '$ 75.0'
         end
       end
     end

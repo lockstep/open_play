@@ -90,7 +90,7 @@ RSpec.configure do |config|
 
   config.before do
     stub_request(:post, "https://api.stripe.com/v1/charges")
-      .with(body: {"amount": "1500", "currency": "usd", "source": "tokenId12345"})
+      .with(body: {"amount": "2000", "currency": "usd", "source": "tokenId12345"})
       .to_return(status: 200, body: File.read(
         File.join('spec', 'support', 'fixtures', 'fake_requests', 'stripe',
         'create_charge.json')

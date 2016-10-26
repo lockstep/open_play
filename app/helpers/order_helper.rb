@@ -9,6 +9,6 @@ module OrderHelper
   end
 
   def present_booking_price(booking_price)
-    "$ #{booking_price}"
+    booking_price.zero? ? '-' : "$ #{booking_price}"
   end
 end

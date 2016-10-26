@@ -6,8 +6,10 @@ FactoryGirl.define do
     interval 60
     activity { create(:activity) }
     maximum_players 30
-    weekday_price 15
-    weekend_price 20
+    weekday_price 5
+    weekend_price 10
+    per_person_weekday_price 15
+    per_person_weekend_price 20
   end
 
   factory :lane, parent: :reservable, class: 'Lane' do

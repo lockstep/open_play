@@ -25,6 +25,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content @bowling.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(page).to have_content '0/30'
+          expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
@@ -79,6 +80,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content @bowling.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(page).to have_content '0/30'
+          expect(page).to have_content '$ 10'
           expect(page).to have_content '$ 20'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
@@ -220,6 +222,7 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content '11:00 AM - 12:00 PM'
         expect(page).to have_content '12:00 PM - 01:00 PM'
         expect(page).to have_content '0/30'
+        expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
@@ -273,6 +276,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
           expect(page).to have_content "(0/30)"
+          expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
         end
       end
@@ -289,6 +293,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
           expect(page).to have_content "(0/30)"
+          expect(page).to have_content '$ 10'
           expect(page).to have_content '$ 20'
         end
       end
@@ -393,6 +398,7 @@ feature 'Complete Reservation', :js do
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
         expect(page).to have_content "(0/30)"
+        expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
       end
 
