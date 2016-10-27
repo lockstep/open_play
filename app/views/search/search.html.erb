@@ -23,15 +23,18 @@
 
                       <div class="row-times">
                         <% i = 0 %>
-                        <% build_time_slots(reservable, @booking_date, @booking_time).each do |slot| %>
-                          <%= button_tag(type: 'button', class: 'btn btn-danger timeslot',
+                        <% build_time_slots(reservable, @booking_date, @booking_time, current_user).each do |slot| %>
+                          <%= button_tag(type: 'button', class: 'btn btn-danger timeslot ' +
+                            ( activity.prevent_back_to_back_booking &&
+                              ( slot[:booking_info][:booked_by] == current_user.id ) ?
+                                'current-user-booked-slot' : '' ),
                             data: {
                               activity_id: activity.id,
                               reservable_id: reservable.id,
                               slot: i+=1
                             },
                             id: "timeslot-#{activity.id}-#{reservable.id}-#{i}",
-                            disabled: !slot[:available]) do %>
+                            disabled: !slot[:booking_info][:available]) do %>
                             <i class="fa"></i> <%= slot[:time].strftime("%H:%M") %>
                           <% end %>
                           <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',

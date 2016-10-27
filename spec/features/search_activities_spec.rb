@@ -64,8 +64,9 @@ feature 'Search Activities', js: true do
         end
         context 'has bookings' do
           background do
-            @order = Order.create(user: create(:user))
-            Booking.create(
+            @order = create(:order, activity: @bowling, user: @user)
+            create(
+              :booking,
               start_time: '16:00',
               end_time: '17:00',
               booking_date: '2020-01-20',
@@ -73,7 +74,8 @@ feature 'Search Activities', js: true do
               reservable: @lane,
               order: @order
             )
-            Booking.create(
+            create(
+              :booking,
               start_time: '18:00',
               end_time: '19:00',
               booking_date: '2020-01-20',
@@ -136,6 +138,38 @@ feature 'Search Activities', js: true do
         click_on '12:00'
         expect(page).to have_button('11:00', disabled: true)
         expect(page).to have_button('13:00', disabled: true)
+      end
+      context 'the user tries to do back-to-back bookings by searching again' do
+        background do
+          @order = create(:order, user: @user, activity: @laser_tag)
+          @booking = create(
+            :booking,
+            start_time: '12:00',
+            end_time: '13:00',
+            booking_date: '2020-01-20',
+            number_of_players: 2,
+            reservable: @room,
+            order: @order
+          )
+        end
+        scenario 'still disables the back-to-back slots' do
+          visit root_path
+          search_activities(activity_type: 'Laser tag')
+          expect(page).to have_button('11:00', disabled: true)
+          expect(page).to have_button('13:00', disabled: true)
+        end
+        context 'allows multi-party bookings' do
+          background do
+            @laser_tag.update(allow_multi_party_bookings: true)
+          end
+          scenario 'still disables the back-to-back slots' do
+            visit root_path
+            search_activities(activity_type: 'Laser tag')
+            expect(page).to have_button('11:00', disabled: true)
+            expect(page).to have_button('12:00', disabled: true)
+            expect(page).to have_button('13:00', disabled: true)
+          end
+        end
       end
     end
   end

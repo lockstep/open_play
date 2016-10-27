@@ -2,6 +2,13 @@
 // All this logic will automatically be available in application.js.
 $(function() {
 
+  // To prevent back-to-back bookings if a current user tries to book them by
+  // searching again.
+  $('.current-user-booked-slot').each(function(index, slot) {
+      $(slot).nextAll('button').first().prop('disabled', true);
+      $(slot).prevAll('button').first().prop('disabled', true);
+  });
+
   var showHideCheckIcon = function(icon) {
     icon.hasClass('fa-check') ? icon.removeClass('fa-check') : icon.addClass('fa-check')
   };
