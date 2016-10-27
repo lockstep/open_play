@@ -79,7 +79,7 @@ class OrdersController < ApplicationController
   end
 
   def set_booking_date
-    @date = params[:booking_date] || Date.today
+    @date = params[:booking_date] || DateTime.now.to_formatted_s(:rfc822)
   end
 
   def order_params

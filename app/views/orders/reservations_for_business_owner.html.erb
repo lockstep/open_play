@@ -12,7 +12,8 @@
         <div class='form-group'>
           <%= label_tag(:booking_date, 'Date') %>
           &nbsp;
-          <%= text_field_tag 'booking_date', @date, id: 'reservations-booking-date' %>
+          <%= text_field_tag 'booking_date', @date,
+            class: 'form-control', id: 'reservations-booking-date' %>
           &nbsp;
         </div>
       <% end %>
