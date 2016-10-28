@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   resources :orders, only: [:new, :create]
   get 'businesses/show', to: 'businesses#show'
+  resources :users, only: [:show, :edit, :update]
+
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
   get 'orders/success', to: 'orders#success'
