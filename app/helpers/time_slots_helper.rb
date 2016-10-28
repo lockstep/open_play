@@ -7,9 +7,9 @@ module TimeSlotsHelper
       requested_time = requested_date + Time.parse(requested_time)
         .seconds_since_midnight.seconds
     else
-      requested_time = merge_date_and_time(requested_date, reservable.start_time)
+      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
     end
-    closing_time = merge_date_and_time(requested_date, reservable.end_time)
+    closing_time = merge_date_and_time(requested_date, reservable.closing_time)
     time_slots = []
     subsequent_time = requested_time
     while subsequent_time < closing_time do
@@ -57,8 +57,8 @@ module TimeSlotsHelper
 
   def reservable_is_open?(reservable, requested_time)
     requested_date = requested_time.beginning_of_day
-    opening_time = merge_date_and_time(requested_date, reservable.start_time)
-    closing_time = merge_date_and_time(requested_date, reservable.end_time)
+    opening_time = merge_date_and_time(requested_date, reservable.opening_time)
+    closing_time = merge_date_and_time(requested_date, reservable.closing_time)
     inWorkingHours = (requested_time >= opening_time) &&
       (requested_time < closing_time)
   end

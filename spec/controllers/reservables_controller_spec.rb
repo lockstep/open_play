@@ -72,6 +72,17 @@ describe ReservablesController do
               expect(reservable.per_person_weekday_price).to eq 10
               expect(reservable.per_person_weekend_price).to eq 30
             end
+            context '24-hour reservable defined by using the same start and end time' do
+              it 'creates an 24-hour reservable successfully' do
+                post :create, params: room_params(
+                  start_time: '12:00',
+                  end_time: '12:00',
+                  activity_id: @laser_tag.id
+                )
+                expect(Reservable.count).to eq 1
+                expect(Reservable.first.opens_24_hours?).to eq true
+              end
+            end
           end
           context 'user is not a business owner' do
             before { post :create, params: room_params(activity_id: @laser_tag.id) }
@@ -90,8 +101,8 @@ describe ReservablesController do
             room: {
               name: 'kitty',
               interval: 60,
-              start_time: '08:00:00.000',
-              end_time: '16:00:00.000',
+              start_time: overrides[:start_time] || '08:00:00.000',
+              end_time: overrides[:end_time] || '16:00:00.000',
               maximum_players: 30,
               weekday_price: 15,
               weekend_price: 20,
@@ -315,32 +326,7 @@ describe ReservablesController do
           end
         end
       end
-
-      context 'a bowling exists' do
-        before { @bowling = create(:bowling, business: @business) }
-        context 'a lane exists' do
-          before { @lane = create(:lane, activity: @bowling) }
-          context 'user is logged in' do
-            login_user
-            context 'user is a business owner' do
-              before { @business.update(user: @user) }
-              it 'destroy a lane(archived)' do
-                delete :destroy, params: { id: @lane }
-                expect(Reservable.count).to eq 1
-                expect(Reservable.first.reload.archived).to be_truthy
-              end
-            end
-            context 'user is not a business owner' do
-              before { delete :destroy, params: { id: @lane } }
-              it_behaves_like 'an unauthorized request'
-            end
-          end
-          context 'user is not logged in' do
-            before { delete :destroy, params: { id: @lane } }
-            it_behaves_like 'it requires authentication'
-          end
-        end
-      end
     end
   end
+
 end

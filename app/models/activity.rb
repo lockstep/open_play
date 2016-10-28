@@ -11,17 +11,19 @@ class Activity < ApplicationRecord
     %w(bowling laser_tag)
   end
 
+  def self.search(booking_time, activity_type)
+    unless booking_time.present?
+      return Activity.active.where("type = ?", activity_type)
+    end
+    Activity.active.where("type = ? AND (start_time <= ? AND end_time > ?)
+      OR (start_time = end_time)", activity_type, booking_time, booking_time)
+  end
+
   def end_time_is_after_start_time
-    if ( end_time.seconds_since_midnight.to_i <=
+    if ( end_time.seconds_since_midnight.to_i <
       start_time.seconds_since_midnight.to_i)
       errors.add(:end_time, 'must be after the start time')
     end
-  end
-
-  def self.search(booking_time, activity_type)
-    return Activity.active.where("type = ?", activity_type) unless booking_time.present?
-    Activity.active.where("type = ? AND start_time <= ? AND end_time > ?",
-      activity_type, booking_time, booking_time)
   end
 
 end
