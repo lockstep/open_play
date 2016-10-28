@@ -63,6 +63,34 @@ feature 'View Business Owner Reservations', :js do
           expect(page).to_not have_content @room_one.name
           expect(page).to_not have_content @room_two.name
         end
+
+        scenario 'export reservations as CSV' do
+          travel_to Time.new(2016, 10, 13) do
+            visit root_path
+            click_link 'Manage Business'
+            within("#activity_#{@bowling.id}") do
+              click_link 'View reservations'
+            end
+          end
+
+          click_link 'Export to CSV'
+          expect(page.status_code).to eq 200
+          expect(page.response_headers['Content-Type']).to eq "text/csv"
+        end
+
+        scenario 'export reservations as XLS' do
+          travel_to Time.new(2016, 10, 13) do
+            visit root_path
+            click_link 'Manage Business'
+            within("#activity_#{@bowling.id}") do
+              click_link 'View reservations'
+            end
+          end
+
+          click_link 'Export to XLS'
+          expect(page.status_code).to eq 200
+          expect(page.response_headers['Content-Type']).to eq "application/xls"
+        end
       end
 
       context 'booking_date and system date are not the same' do

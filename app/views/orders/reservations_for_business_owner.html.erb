@@ -23,3 +23,20 @@
 <div class='spacer-30'></div>
 
 <%= render 'orders/reservations' %>
+
+<% if @orders.present? %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= link_to "Export to CSV",
+        business_owner_reservations_path(
+        format: "csv",
+        activity_id: params[:activity_id]),
+        class: "btn btn-primary" %>
+      <%= link_to "Export to XLS",
+        business_owner_reservations_path(
+        format: "xls",
+        activity_id: params[:activity_id]),
+        class: "btn btn-primary" %>
+    </div>
+  </div>
+<%end%>
