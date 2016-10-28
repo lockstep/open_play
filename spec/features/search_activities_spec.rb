@@ -166,8 +166,32 @@ feature 'Search Activities', js: true do
             visit root_path
             search_activities(activity_type: 'Laser tag')
             expect(page).to have_button('11:00', disabled: true)
-            expect(page).to have_button('12:00', disabled: true)
             expect(page).to have_button('13:00', disabled: true)
+          end
+          context 'some spots left on the booked time slot' do
+            scenario 'enables the booked time slot' do
+              visit root_path
+              search_activities(activity_type: 'Laser tag')
+              expect(page).to have_button('12:00', disabled: false)
+            end
+          end
+          context 'no spots left on the booked time slot' do
+            background do
+              @booking = create(
+                :booking,
+                start_time: '12:00',
+                end_time: '13:00',
+                booking_date: '2020-01-20',
+                number_of_players: 28,
+                reservable: @room,
+                order: @order
+              )
+            end
+            scenario 'disabled the booked time slot' do
+              visit root_path
+              search_activities(activity_type: 'Laser tag')
+              expect(page).to have_button('12:00', disabled: true)
+            end
           end
         end
       end

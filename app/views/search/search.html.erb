@@ -23,11 +23,10 @@
 
                       <div class="row-times">
                         <% i = 0 %>
-                        <% build_time_slots(reservable, @booking_date, @booking_time, current_user).each do |slot| %>
+                        <% build_time_slots(reservable, @booking_date, @booking_time).each do |slot| %>
                           <%= button_tag(type: 'button', class: 'btn btn-danger timeslot ' +
-                            ( activity.prevent_back_to_back_booking &&
-                              ( slot[:booking_info][:booked_by] == current_user.id ) ?
-                                'current-user-booked-slot' : '' ),
+                            (slot[:booking_info][:booked_by] == current_user.id ?
+                                'current-user-booked-slot' : ''),
                             data: {
                               activity_id: activity.id,
                               reservable_id: reservable.id,

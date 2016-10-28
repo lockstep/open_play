@@ -1,7 +1,7 @@
 module TimeSlotsHelper
   include DateTimeHelper
 
-  def build_time_slots(reservable, requested_date, requested_time, user)
+  def build_time_slots(reservable, requested_date, requested_time)
     requested_date = DateTime.parse(requested_date)
     if requested_time.present?
       requested_time = requested_date + Time.parse(requested_time)
@@ -16,7 +16,7 @@ module TimeSlotsHelper
       time_slots.push(
         {
           time: subsequent_time,
-          booking_info: booking_info(reservable, subsequent_time, user)
+          booking_info: booking_info(reservable, subsequent_time)
         }
       )
       subsequent_time += reservable.interval.minutes
@@ -26,7 +26,7 @@ module TimeSlotsHelper
 
   private
 
-  def booking_info(reservable, requested_time, user)
+  def booking_info(reservable, requested_time)
     return { available: false } unless reservable_is_open?(reservable,requested_time)
     requested_date = requested_time.beginning_of_day
     bookings = reservable.bookings.where(booking_date: requested_date)
@@ -37,15 +37,17 @@ module TimeSlotsHelper
       time_was_booked = (requested_time >= start_booking_time) &&
         (requested_time < end_booking_time)
       if time_was_booked
-        return { available: false, booked_by: booking.user.id } unless
-          reservable_available_for_multi_party?(reservable, booking, requested_date, user)
+        unless reservable_available_for_multi_party?(reservable,booking, requested_date)
+          return { available: false, booked_by: booking.user_id }
+        end
+        return { available: true, booked_by: booking.user_id }
       end
     end
     return { available: true }
   end
 
-  def reservable_available_for_multi_party?(reservable, booking, requested_date, user)
-    user.id != booking.user.id && reservable.allow_multi_party_bookings &&
+  def reservable_available_for_multi_party?(reservable, booking, requested_date)
+    reservable.allow_multi_party_bookings &&
       reservable.available_players(
         booking.start_time,
         booking.end_time,
