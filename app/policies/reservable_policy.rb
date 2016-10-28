@@ -14,6 +14,6 @@ class ReservablePolicy < ApplicationPolicy
   private
 
   def belongs_to_user?
-    user == record.activity.business.user
+    user == record.user
   end
 end
