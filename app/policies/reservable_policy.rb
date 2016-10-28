@@ -1,12 +1,4 @@
-class ActivityPolicy < ApplicationPolicy
-  def index?
-    belongs_to_user?
-  end
-
-  def new?
-    belongs_to_user?
-  end
-
+class ReservablePolicy < ApplicationPolicy
   def create?
     belongs_to_user?
   end
@@ -18,10 +10,10 @@ class ActivityPolicy < ApplicationPolicy
   def destroy?
     belongs_to_user?
   end
-  
+
   private
 
   def belongs_to_user?
-    user == record.business.user
+    user == record.activity.business.user
   end
 end

@@ -58,18 +58,7 @@ describe ReservablesController do
           context 'user is a business owner' do
             before { @business.update(user: @user) }
             it 'creates a room' do
-              post :create, params: {
-                activity_id: @laser_tag.id,
-                room: {
-                  name: 'kitty',
-                  interval: 60,
-                  start_time: '08:00:00.000',
-                  end_time: '16:00:00.000',
-                  maximum_players: 30,
-                  weekday_price: 15,
-                  weekend_price: 20
-                }
-              }
+              create_a_room
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
@@ -83,40 +72,29 @@ describe ReservablesController do
             end
           end
           context 'user is not a business owner' do
-            before do
-              post :create, params: {
-                activity_id: @laser_tag.id,
-                room: {
-                  name: 'kitty',
-                  interval: 60,
-                  start_time: '08:00:00.000',
-                  end_time: '16:00:00.000',
-                  maximum_players: 30,
-                  weekday_price: 15,
-                  weekend_price: 20
-                }
-              }
-            end
+            before { create_a_room }
             it_behaves_like 'an unauthorized request'
           end
         end
 
         context 'user is not logged in' do
-          before do
-            post :create, params: {
-              activity_id: @laser_tag.id,
-              room: {
-                name: 'kitty',
-                interval: 60,
-                start_time: '08:00:00.000',
-                end_time: '16:00:00.000',
-                maximum_players: 30,
-                weekday_price: 15,
-                weekend_price: 20
-              }
-            }
-          end
+          before { create_a_room }
           it_behaves_like 'it requires authentication'
+        end
+
+        def create_a_room
+          post :create, params: {
+            activity_id: @laser_tag.id,
+            room: {
+              name: 'kitty',
+              interval: 60,
+              start_time: '08:00:00.000',
+              end_time: '16:00:00.000',
+              maximum_players: 30,
+              weekday_price: 15,
+              weekend_price: 20
+            }
+          }
         end
       end
 
@@ -127,18 +105,7 @@ describe ReservablesController do
           context 'user is a business owner' do
             before { @business.update(user: @user) }
             it 'creates a lane' do
-              post :create, params: {
-                activity_id: @bowling.id,
-                lane: {
-                  name: 'kitty',
-                  interval: 60,
-                  start_time: '08:00:00.000',
-                  end_time: '16:00:00.000',
-                  maximum_players: 30,
-                  weekday_price: 15,
-                  weekend_price: 20
-                }
-              }
+              create_a_lane
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
@@ -152,40 +119,29 @@ describe ReservablesController do
             end
           end
           context 'user is not a business owner' do
-            before do
-              post :create, params: {
-                activity_id: @bowling.id,
-                lane: {
-                  name: 'kitty',
-                  interval: 60,
-                  start_time: '08:00:00.000',
-                  end_time: '16:00:00.000',
-                  maximum_players: 30,
-                  weekday_price: 15,
-                  weekend_price: 20
-                }
-              }
-            end
+            before { create_a_lane }
             it_behaves_like 'an unauthorized request'
           end
         end
         context 'user is not logged in' do
-          before do
-            post :create, params: {
-              activity_id: @bowling.id,
-              lane: {
-                name: 'kitty',
-                interval: 60,
-                start_time: '08:00:00.000',
-                end_time: '16:00:00.000',
-                maximum_players: 30,
-                weekday_price: 15,
-                weekend_price: 20
-              }
-            }
-          end
+          before { create_a_lane }
           it_behaves_like 'it requires authentication'
         end
+      end
+
+      def create_a_lane
+        post :create, params: {
+          activity_id: @bowling.id,
+          lane: {
+            name: 'kitty',
+            interval: 60,
+            start_time: '08:00:00.000',
+            end_time: '16:00:00.000',
+            maximum_players: 30,
+            weekday_price: 15,
+            weekend_price: 20
+          }
+        }
       end
     end
   end

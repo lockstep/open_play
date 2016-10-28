@@ -91,7 +91,7 @@ describe ActivitiesController do
     end
   end
 
-  describe 'Get edit' do
+  describe 'GET edit' do
     context 'a business exists' do
       before { @business = create(:business) }
       context 'an activity already exists' do
