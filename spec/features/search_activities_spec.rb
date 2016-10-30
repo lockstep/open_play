@@ -90,6 +90,14 @@ feature 'Search Activities', js: true do
             expect(page).to have_button('16:00', disabled: true)
             expect(page).to have_button('18:00', disabled: true)
           end
+          context 'allow back-to-back bookings' do
+            scenario 'shows the back-to-back time slots as available' do
+              visit root_path
+              search_activities(booking_date: '20 Jan 2020')
+              expect(page).to have_button('17:00', disabled: false)
+              expect(page).to have_button('19:00', disabled: false)
+            end
+          end
         end
         context 'search with no time' do
           scenario 'displays every time slots of each activity' do
