@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit]
+  before_action :set_user, only: [:show, :edit, :update]
 
   def show
   end
@@ -9,7 +9,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(current_user.id)
     if @user.update(user_params)
       bypass_sign_in(@user)
       redirect_to root_path, notice: 'Successfully updated user profile'
