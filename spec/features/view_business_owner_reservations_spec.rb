@@ -108,6 +108,18 @@ feature 'View Business Owner Reservations', :js do
           expect(page).to_not have_content @room_one.name
         end
 
+        scenario 'does not export buttons' do
+          travel_to Time.new(2016, 10, 14) do
+            visit root_path
+            click_link 'Manage Business'
+            within("#activity_#{@bowling.id}") do
+              click_link 'View reservations'
+            end
+          end
+          expect(page).to_not have_link 'Export to CSV'
+          expect(page).to_not have_link 'Export to XLS'
+        end
+
         context 'select a booking_date from calendar' do
           scenario 'shows reservations' do
             travel_to Time.new(2016, 10, 14) do

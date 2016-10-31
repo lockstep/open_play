@@ -17,6 +17,8 @@ class Order < ApplicationRecord
   scope :filterd_by_activity, -> (id) { where(activity_id: id) }
   scope :filterd_by_user, -> (id) { where(user_id: id) }
 
+  delegate :name, to: :activity, prefix: true
+
   def booking
     bookings.first
   end
@@ -25,9 +27,6 @@ class Order < ApplicationRecord
     booking.booking_date
   end
 
-  def activity_name
-    activity.name
-  end
   def booking_place
     booking.reservable_activity_name
   end
@@ -58,6 +57,7 @@ class Order < ApplicationRecord
   def self.booking_date(date)
     date.strftime("%A, %B %e")
   end
+  
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << DEFAULT_ORDER_HEADER
