@@ -58,7 +58,7 @@ describe ReservablesController do
           context 'user is a business owner' do
             before { @business.update(user: @user) }
             it 'creates a room' do
-              create_a_room
+              post :create, params: room_params(activity_id: @laser_tag.id)
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
@@ -72,19 +72,19 @@ describe ReservablesController do
             end
           end
           context 'user is not a business owner' do
-            before { create_a_room }
+            before { post :create, params: room_params(activity_id: @laser_tag.id) }
             it_behaves_like 'an unauthorized request'
           end
         end
 
         context 'user is not logged in' do
-          before { create_a_room }
+          before { post :create, params: room_params(activity_id: @laser_tag.id) }
           it_behaves_like 'it requires authentication'
         end
 
-        def create_a_room
-          post :create, params: {
-            activity_id: @laser_tag.id,
+        def room_params(overrides={})
+          {
+            activity_id: overrides[:activity_id],
             room: {
               name: 'kitty',
               interval: 60,
@@ -105,7 +105,7 @@ describe ReservablesController do
           context 'user is a business owner' do
             before { @business.update(user: @user) }
             it 'creates a lane' do
-              create_a_lane
+              post :create, params: lane_params(activity_id: @bowling.id)
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
@@ -119,19 +119,19 @@ describe ReservablesController do
             end
           end
           context 'user is not a business owner' do
-            before { create_a_lane }
+            before { post :create, params: lane_params(activity_id: @bowling.id) }
             it_behaves_like 'an unauthorized request'
           end
         end
         context 'user is not logged in' do
-          before { create_a_lane }
+          before { post :create, params: lane_params(activity_id: @bowling.id) }
           it_behaves_like 'it requires authentication'
         end
       end
 
-      def create_a_lane
-        post :create, params: {
-          activity_id: @bowling.id,
+      def lane_params(overrides={})
+        {
+          activity_id: overrides[:activity_id],
           lane: {
             name: 'kitty',
             interval: 60,
@@ -213,24 +213,30 @@ describe ReservablesController do
             context 'user is a business owner' do
               before { @business.update(user: @user) }
               it 'updates a room' do
-                patch :update, params: { id: @room, room: { name: 'Death Room 123'} }
+                patch :update, params: room_params(reservable_id: @room)
                 expect(Reservable.count).to eq 1
                 expect(Reservable.first.reload.name).to eq 'Death Room 123'
               end
             end
             context 'user is not a business owner' do
               before do
-                patch :update, params: { id: @room, room: { name: 'Death Room 123'} }
+                patch :update, params: room_params(reservable_id: @room)
               end
               it_behaves_like 'an unauthorized request'
             end
           end
           context 'user is not logged in' do
             before do
-              patch :update, params: { id: @room, room: { name: 'Death Room 123'} }
+              patch :update, params: room_params(reservable_id: @room)
             end
             it_behaves_like 'it requires authentication'
           end
+        end
+        def room_params(overrides={})
+          {
+            id: overrides[:reservable_id],
+            room: { name: 'Death Room 123'}
+          }
         end
       end
 
@@ -243,24 +249,31 @@ describe ReservablesController do
             context 'user is a business owner' do
               before { @business.update(user: @user) }
               it 'updates a lane' do
-                patch :update, params: { id: @lane, lane: { name: 'Death Room 123'} }
+                patch :update, params: lane_params(reservable_id: @lane)
                 expect(Reservable.count).to eq 1
                 expect(Reservable.first.reload.name).to eq 'Death Room 123'
               end
             end
             context 'user is not a business owner' do
               before do
-                patch :update, params: { id: @lane, lane: { name: 'Death Room 123'} }
+                patch :update, params: lane_params(reservable_id: @lane)
               end
               it_behaves_like 'an unauthorized request'
             end
           end
           context 'user is not logged in' do
             before do
-              patch :update, params: { id: @lane, lane: { name: 'Death Room 123'} }
+              patch :update, params: lane_params(reservable_id: @lane)
             end
             it_behaves_like 'it requires authentication'
           end
+        end
+
+        def lane_params(overrides={})
+          {
+            id: overrides[:reservable_id],
+            lane: { name: 'Death Room 123'}
+          }
         end
       end
     end
