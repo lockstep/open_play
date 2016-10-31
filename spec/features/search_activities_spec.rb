@@ -62,6 +62,16 @@ feature 'Search Activities', js: true do
           expect(page).to have_content @lane_2.name
           expect(page).to_not have_content @lane_3.name
         end
+        context '24-hour activity' do
+          background do
+            @bowling.update(start_time: '09:00', end_time: '09:00')
+          end
+          scenario 'shows 24-hour activity' do
+            visit root_path
+            search_activities(booking_time: '4:00pm')
+            expect(page).to have_content @bowling.name
+          end
+        end
         context 'has bookings' do
           background do
             @order = create(:order, activity: @bowling, user: @user)

@@ -72,6 +72,18 @@ describe ActivitiesController do
             expect(activity.allow_multi_party_bookings).to eq true
             expect(response).to redirect_to business_activities_path
           end
+          context '24-hour activity defined by using the same start and end time' do
+            it 'creates an 24-hour activity successfully' do
+              post :create, params: activity_params(
+                start_time: '12:00',
+                end_time: '12:00'
+              ).merge({ business_id: @business.id })
+              expect(Activity.count).to eq 1
+              activity = Activity.first
+              expect(activity.start_time.to_s).to match '12:00'
+              expect(activity.end_time.to_s).to match '12:00'
+            end
+          end
         end
 
         context 'user is not a business owner' do
@@ -181,13 +193,13 @@ describe ActivitiesController do
     end
   end
 
-  def activity_params
+  def activity_params(overrides={})
     {
       activity: {
         type: 'Bowling',
         name: 'Country Club Lanes',
-        start_time: '8:00:00',
-        end_time: '16:00:00',
+        start_time: overrides[:start_time] || '8:00:00',
+        end_time: overrides[:end_time] || '16:00:00',
         prevent_back_to_back_booking: true,
         allow_multi_party_bookings: true
       }

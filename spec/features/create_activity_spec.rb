@@ -24,6 +24,15 @@ feature 'Create Activity' do
           expect(page).to have_content activity_name
           expect(page.current_path).to eq(business_activities_path(@business))
         end
+        context 'end_time is equal start_time' do
+          scenario 'creates 24-hour activity' do
+            complete_activity_form(
+              start_time: '08:00',
+              end_time: '08:00'
+            )
+            expect(page).to have_content 'Successfully created activity'
+          end
+        end
       end
 
       context 'the activity name is omitted' do
@@ -38,15 +47,6 @@ feature 'Create Activity' do
           scenario 'user sees end_time need to schedule after start_time' do
             complete_activity_form(
               start_time: '12:30',
-              end_time: '08:00'
-            )
-            expect(page).to have_content 'must be after the start time'
-          end
-        end
-        context 'end_time is equal start_time' do
-          scenario 'user sees end_time need to schedule after start_time' do
-            complete_activity_form(
-              start_time: '08:00',
               end_time: '08:00'
             )
             expect(page).to have_content 'must be after the start time'

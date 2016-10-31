@@ -104,6 +104,19 @@ describe TimeSlotsHelper do
           end
         end
       end
+      context '24-hour reservable' do
+        before do
+          @bowling.update(start_time: '09:00', end_time: '09:00')
+          @lane.update(start_time: '09:00', end_time: '09:00')
+        end
+        scenario 'shows the rest of time slots until midnight' do
+          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          expect(time_slots.size).to eq 7
+          expect(time_slots.first[:time].strftime("%H:%M")).to eq '17:00'
+          expect(time_slots.second[:time].strftime("%H:%M")).to eq '18:00'
+          expect(time_slots.last[:time].strftime("%H:%M")).to eq '23:00'
+        end
+      end
     end
   end
 end
