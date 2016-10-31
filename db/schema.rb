@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021131719) do
+ActiveRecord::Schema.define(version: 20161027041943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20161021131719) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "activity_id"
+    t.float    "total_price"
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
@@ -93,12 +94,14 @@ ActiveRecord::Schema.define(version: 20161021131719) do
     t.time     "start_time"
     t.time     "end_time"
     t.integer  "activity_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "maximum_players"
-    t.float    "weekday_price"
-    t.float    "weekend_price"
-    t.boolean  "archived",        default: false
+    t.float    "weekday_price",            default: 0.0
+    t.float    "weekend_price",            default: 0.0
+    t.boolean  "archived",                 default: false
+    t.float    "per_person_weekday_price"
+    t.float    "per_person_weekend_price"
     t.index ["activity_id"], name: "index_reservables_on_activity_id", using: :btree
   end
 

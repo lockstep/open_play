@@ -9,7 +9,7 @@ describe Order do
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
 
         total_price = @order.reload.total_price
-        expect(total_price).to eq 175.0
+        expect(total_price).to eq 190.0
       end
     end
   end
@@ -24,7 +24,7 @@ describe Order do
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
 
         total_price_in_cents = @order.reload.total_price_in_cents
-        expect(total_price_in_cents).to eq 17500.0
+        expect(total_price_in_cents).to eq 19000.0
       end
     end
   end

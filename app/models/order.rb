@@ -25,8 +25,10 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    bookings.map { |booking| booking.number_of_players * booking.booking_price }
-      .reduce(0, :+)
+    bookings.map do |booking|
+      persons_price = booking.number_of_players * booking.per_person_price
+      persons_price + booking.base_booking_price
+    end.reduce(0, :+)
   end
 
   def total_price_in_cents

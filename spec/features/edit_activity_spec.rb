@@ -68,6 +68,54 @@ feature 'edit activity' do
         expect(page).to have_content "can't be blank"
         expect(page).to have_content "is not a number"
       end
+
+      context 'editting per_person_weekday_price' do
+        scenario 'successfully edited reservable' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'Edit'
+          click_link 'Edit'
+          fill_in :lane_per_person_weekday_price, with: '15.8'
+          click_on 'Submit'
+
+          expect(page).to have_content '$15.8'
+        end
+
+        scenario 'unsuccessfully edited reservable' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'Edit'
+          click_link 'Edit'
+          fill_in :lane_per_person_weekday_price, with: 'abc'
+          click_on 'Submit'
+
+          expect(page).to have_content 'is not a number'
+        end
+      end
+
+      context 'editting per_person_weekend_price' do
+        scenario 'successfully edited reservable' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'Edit'
+          click_link 'Edit'
+          fill_in :lane_per_person_weekend_price, with: '20'
+          click_on 'Submit'
+
+          expect(page).to have_content '$20.0'
+        end
+
+        scenario 'unsuccessfully edited reservable' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'Edit'
+          click_link 'Edit'
+          fill_in :lane_per_person_weekend_price, with: 'abc'
+          click_on 'Submit'
+
+          expect(page).to have_content 'is not a number'
+        end
+      end
     end
   end
 

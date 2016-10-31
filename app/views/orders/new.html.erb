@@ -30,7 +30,8 @@
         <th class='text-xs-center'>Time</th>
         <th class='text-xs-center'># Players</th>
         <th class='text-xs-center'>Options</th>
-        <th class='text-xs-center'>Price(Per Person)</th>
+        <th class='text-xs-center'>Base Price</th>
+        <th class='text-xs-center'>Price Per Person</th>
       </tr>
     </thead>
     <tbody>
@@ -66,7 +67,10 @@
             <% end %>
           </td>
           <td class='text-xs-center'>
-            <%= present_booking_price(booking.booking_price) %>
+            <%= present_booking_price(booking.base_booking_price) %>
+          </td>
+          <td class='text-xs-center'>
+            <%= present_booking_price(booking.per_person_price) %>
           </td>
         </tr>
       <% end %>

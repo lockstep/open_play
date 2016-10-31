@@ -89,6 +89,8 @@
           <th>Maximum players</th>
           <th>Weekday price</th>
           <th>Weekend price</th>
+          <th>Per Person Weekday Price</th>
+          <th>Per Person Weekend Price</th>
           <th></th>
         </tr>
       </thead>
@@ -102,6 +104,8 @@
             <td><%= reservable.maximum_players %></td>
             <td>$<%= reservable.weekday_price %></td>
             <td>$<%= reservable.weekend_price %></td>
+            <td>$<%= reservable.per_person_weekday_price %></td>
+            <td>$<%= reservable.per_person_weekend_price %></td>
             <td>
               <%= link_to 'Edit', edit_reservable_path(reservable), class: 'btn btn-primary'%>
               <%= link_to 'Delete', reservable_path(reservable), class: 'btn btn-danger', method: :delete %>

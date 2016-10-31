@@ -19,6 +19,8 @@ class Booking < ApplicationRecord
   delegate :weekend_price, to: :reservable
   delegate :user, to: :order
   delegate :id, to: :user, prefix: true
+  delegate :per_person_weekday_price, to: :reservable
+  delegate :per_person_weekend_price, to: :reservable
 
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)
@@ -31,8 +33,17 @@ class Booking < ApplicationRecord
     end
   end
 
-  def booking_price
-    return weekend_price if booking_date.saturday? || booking_date.sunday?
-    weekday_price
+  def base_booking_price
+    weekend_booking? ? weekend_price : weekday_price
+  end
+
+  def per_person_price
+    weekend_booking? ? per_person_weekend_price : per_person_weekday_price
+  end
+
+  private
+
+  def weekend_booking?
+    booking_date.saturday? || booking_date.sunday?
   end
 end

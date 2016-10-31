@@ -11,8 +11,10 @@ class Reservable < ApplicationRecord
   validates_presence_of :name
   validates :interval, numericality: { only_integer: true }
   validates :maximum_players, numericality: { only_integer: true, greater_than: 0 }
-  validates :weekday_price, numericality: { greater_than: 0 }
-  validates :weekend_price, numericality: { greater_than: 0 }
+  validates :weekday_price, numericality: { greater_than_or_equal_to: 0 }
+  validates :weekend_price, numericality: { greater_than_or_equal_to: 0 }
+  validates :per_person_weekday_price, numericality: { greater_than_or_equal_to: 0 }
+  validates :per_person_weekend_price, numericality: { greater_than_or_equal_to: 0 }
   validate :end_time_is_after_start_time
 
   delegate :name, to: :activity, prefix: true
