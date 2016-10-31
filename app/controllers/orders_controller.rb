@@ -42,10 +42,7 @@ class OrdersController < ApplicationController
     @orders = Order.reservations_for_business_owner(@date, params[:activity_id])
     respond_to do |format|
       format.html
-      format.xls do
-        send_data @orders.to_csv
-        headers['Content-Type'] = 'application/xls'
-      end
+      format.xls { headers['Content-Type'] = 'application/xls' }
       format.csv do
         send_data @orders.to_csv
         headers['Content-Type'] = 'text/csv'

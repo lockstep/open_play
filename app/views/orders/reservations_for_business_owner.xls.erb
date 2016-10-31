@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">No</Data></Cell>
+        <Cell><Data ss:Type="String">Activity</Data></Cell>
+        <Cell><Data ss:Type="String">Reservable</Data></Cell>
+        <Cell><Data ss:Type="String">Time</Data></Cell>
+        <Cell><Data ss:Type="String">Date</Data></Cell>
+        <Cell><Data ss:Type="String">Number of People</Data></Cell>
+        <Cell><Data ss:Type="String">Total Price</Data></Cell>
+      </Row>
+      <% @orders.each_with_index do |order, order_index| %>
+        <% order.bookings.each_with_index do |booking, booking_index| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= order_index + 1 if booking_index == 0 %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= order.activity_name if booking_index == 0%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= booking.reservable_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= present_range_of_time(booking.start_time, booking.end_time) %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= present_date_in_day_month_format(booking.booking_date) %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= booking.number_of_players %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= present_booking_price(order.total_price)  if booking_index == 0 %></Data></Cell>
+          </Row>
+        <% end %>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
