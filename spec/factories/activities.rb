@@ -3,6 +3,8 @@ FactoryGirl.define do
     name "Country Club"
     start_time '09:00:00'
     end_time '17:00:00'
+    prevent_back_to_back_booking false
+    allow_multi_party_bookings false
     business { create(:business) }
   end
 

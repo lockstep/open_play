@@ -2,6 +2,7 @@ describe TimeSlotsHelper do
   describe '#build_time_slots' do
     context 'Bowling exists' do
       before do
+        @user = create(:user)
         @bowling = create(:bowling, start_time: '09:00', end_time: '20:00')
         @lane = create(
           :lane,
@@ -21,9 +22,9 @@ describe TimeSlotsHelper do
         end
         scenario 'returns the available of each slot correctly' do
           time_slots = build_time_slots(@lane, '2016-10-10', '5:00pm')
-          expect(time_slots.first[:available]).to eq true
-          expect(time_slots.second[:available]).to eq true
-          expect(time_slots.last[:available]).to eq true
+          expect(time_slots.first[:booking_info][:available]).to eq true
+          expect(time_slots.second[:booking_info][:available]).to eq true
+          expect(time_slots.last[:booking_info][:available]).to eq true
         end
         context 'passes no time' do
           scenario 'returns every possible time slots' do
@@ -36,7 +37,7 @@ describe TimeSlotsHelper do
       end
       context 'the lane has one booking' do
         before do
-          @order = create(:order, activity: @bowling)
+          @order = create(:order, activity: @bowling, user: @user)
           @booking = create(
             :booking,
             start_time: '17:00',
@@ -56,20 +57,30 @@ describe TimeSlotsHelper do
         end
         scenario 'returns the available of each slot correctly' do
           time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
-          expect(time_slots.first[:available]).to eq false
-          expect(time_slots.second[:available]).to eq true
-          expect(time_slots.last[:available]).to eq true
+          expect(time_slots.first[:booking_info][:available]).to eq false
+          expect(time_slots.second[:booking_info][:available]).to eq true
+          expect(time_slots.last[:booking_info][:available]).to eq true
+        end
+        scenario 'returns who booked the time slots' do
+          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          expect(time_slots.first[:booking_info][:available]).to eq false
+          expect(time_slots.first[:booking_info][:booked_by]).to eq @user.id
+          expect(time_slots.second[:booking_info][:available]).to eq true
+          expect(time_slots.second[:booking_info][:booked_by]).to be_nil
         end
         context 'multi-party bookings are allowed' do
           before do
             @bowling.update(allow_multi_party_bookings: true)
           end
           context 'has some spots left' do
-            scenario 'shows that the time slot is still available' do
-              time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
-              expect(time_slots.first[:available]).to eq true
-              expect(time_slots.second[:available]).to eq true
-              expect(time_slots.last[:available]).to eq true
+            context 'any user wants to book' do
+              scenario 'shows that the booked time slot is still available' do
+                time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+                expect(time_slots.first[:booking_info][:available]).to eq true
+                expect(time_slots.first[:booking_info][:booked_by]).to eq @user.id
+                expect(time_slots.second[:booking_info][:available]).to eq true
+                expect(time_slots.last[:booking_info][:available]).to eq true
+              end
             end
           end
           context 'no spots left' do
@@ -86,9 +97,9 @@ describe TimeSlotsHelper do
             end
             scenario 'shows that the time slot is unavailable' do
               time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
-              expect(time_slots.first[:available]).to eq false
-              expect(time_slots.second[:available]).to eq true
-              expect(time_slots.last[:available]).to eq true
+              expect(time_slots.first[:booking_info][:available]).to eq false
+              expect(time_slots.second[:booking_info][:available]).to eq true
+              expect(time_slots.last[:booking_info][:available]).to eq true
             end
           end
         end

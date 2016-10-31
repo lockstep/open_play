@@ -64,8 +64,9 @@ feature 'Search Activities', js: true do
         end
         context 'has bookings' do
           background do
-            @order = Order.create(user: create(:user))
-            Booking.create(
+            @order = create(:order, activity: @bowling, user: @user)
+            create(
+              :booking,
               start_time: '16:00',
               end_time: '17:00',
               booking_date: '2020-01-20',
@@ -73,7 +74,8 @@ feature 'Search Activities', js: true do
               reservable: @lane,
               order: @order
             )
-            Booking.create(
+            create(
+              :booking,
               start_time: '18:00',
               end_time: '19:00',
               booking_date: '2020-01-20',
@@ -87,6 +89,14 @@ feature 'Search Activities', js: true do
             search_activities(booking_date: '20 Jan 2020', booking_time: '4:00pm')
             expect(page).to have_button('16:00', disabled: true)
             expect(page).to have_button('18:00', disabled: true)
+          end
+          context 'allow back-to-back bookings' do
+            scenario 'shows the back-to-back time slots as available' do
+              visit root_path
+              search_activities(booking_date: '20 Jan 2020')
+              expect(page).to have_button('17:00', disabled: false)
+              expect(page).to have_button('19:00', disabled: false)
+            end
           end
         end
         context 'search with no time' do
@@ -136,6 +146,62 @@ feature 'Search Activities', js: true do
         click_on '12:00'
         expect(page).to have_button('11:00', disabled: true)
         expect(page).to have_button('13:00', disabled: true)
+      end
+      context 'the user tries to do back-to-back bookings by searching again' do
+        background do
+          @order = create(:order, user: @user, activity: @laser_tag)
+          @booking = create(
+            :booking,
+            start_time: '12:00',
+            end_time: '13:00',
+            booking_date: '2020-01-20',
+            number_of_players: 2,
+            reservable: @room,
+            order: @order
+          )
+        end
+        scenario 'still disables the back-to-back slots' do
+          visit root_path
+          search_activities(activity_type: 'Laser tag')
+          expect(page).to have_button('11:00', disabled: true)
+          expect(page).to have_button('13:00', disabled: true)
+        end
+        context 'allows multi-party bookings' do
+          background do
+            @laser_tag.update(allow_multi_party_bookings: true)
+          end
+          scenario 'still disables the back-to-back slots' do
+            visit root_path
+            search_activities(activity_type: 'Laser tag')
+            expect(page).to have_button('11:00', disabled: true)
+            expect(page).to have_button('13:00', disabled: true)
+          end
+          context 'some spots left on the booked time slot' do
+            scenario 'enables the booked time slot' do
+              visit root_path
+              search_activities(activity_type: 'Laser tag')
+              expect(page).to have_button('12:00', disabled: false)
+            end
+          end
+          context 'no spots left on the booked time slot' do
+            background do
+              @booking = create(
+                :booking,
+                start_time: '12:00',
+                end_time: '13:00',
+                booking_date: '2020-01-20',
+                number_of_players: 28,
+                reservable: @room,
+                order: @order
+              )
+            end
+            scenario 'disabled the booked time slot' do
+              visit root_path
+              search_activities(activity_type: 'Laser tag')
+              expect(page).to have_button('12:00', disabled: true)
+            end
+          end
+        end
       end
     end
   end

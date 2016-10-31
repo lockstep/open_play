@@ -70,12 +70,12 @@ feature 'Complete Reservation', :js do
       context 'books on the weekend' do
         scenario 'displays the booking info correctly' do
           visit root_path
-          search_activities(booking_date: '29 Oct 2016')
+          search_activities(booking_date: '28 Oct 2017')
 
           click_on '11:00'
           click_on 'Book'
 
-          expect(page).to have_content 'Saturday, October 29'
+          expect(page).to have_content 'Saturday, October 28'
           expect(page).to have_content @bowling.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(page).to have_content '0/30'
@@ -280,11 +280,11 @@ feature 'Complete Reservation', :js do
       context 'books on the weekend' do
         scenario 'displays the booking info correctly' do
           visit root_path
-          search_activities(activity_type: 'Laser tag', booking_date: '29 Oct 2016')
+          search_activities(activity_type: 'Laser tag', booking_date: '28 Oct 2017')
           click_on '11:00'
           click_on 'Book'
 
-          expect(page).to have_content 'Saturday, October 29'
+          expect(page).to have_content 'Saturday, October 28'
           expect(page).to have_content @laser_tag.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
