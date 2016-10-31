@@ -1,0 +1,2 @@
+class BowlingPolicy < ActivityPolicy
+end

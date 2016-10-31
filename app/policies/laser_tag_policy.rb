@@ -1,0 +1,2 @@
+class LaserTagPolicy < ActivityPolicy
+end

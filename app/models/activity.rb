@@ -5,6 +5,8 @@ class Activity < ApplicationRecord
   validates_presence_of :name
   validate :end_time_is_after_start_time
   scope :active, -> { where(archived: false) }
+  delegate :user, to: :business
+
   def self.types
     %w(bowling laser_tag)
   end

@@ -1,0 +1,2 @@
+class LanePolicy < ReservablePolicy
+end

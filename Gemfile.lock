@@ -131,6 +131,8 @@ GEM
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     puma (3.6.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.1)
     rack-protection (1.5.3)
       rack
@@ -268,6 +270,7 @@ DEPENDENCIES
   pg (~> 0.18)
   poltergeist
   puma (~> 3.0)
+  pundit
   rack-timeout
   rails (~> 5.0.0, >= 5.0.0.1)
   rails-assets-tether (>= 1.1.0)!
