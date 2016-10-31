@@ -24,9 +24,7 @@ class Reservable < ApplicationRecord
 
   def end_time_is_after_start_time
     return unless start_time.present? && end_time.present?
-    if start_time > end_time
-      errors.add(:end_time, 'must be after the start time')
-    end
+    errors.add(:end_time, 'must be after the start time') if start_time > end_time
   end
 
   def number_of_booked_players(start_time, end_time, date)
