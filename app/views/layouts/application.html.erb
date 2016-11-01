@@ -6,12 +6,12 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= render 'layouts/javascript_variables' %>
-    <%= javascript_include_tag 'application' %>
     <% if Rails.env.production? %>
       <%= javascript_include_tag 'https://checkout.stripe.com/checkout.js' %>
     <% else %>
         <%= javascript_include_tag 'checkout' %>
     <% end %>
+    <%= javascript_include_tag 'application' %>
   </head>
   <body>
     <%= render 'layouts/shared/navbar' %>
