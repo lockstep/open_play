@@ -24,6 +24,14 @@ module TimeSlotsHelper
     time_slots
   end
 
+  def booked_by_current_user(slot)
+    if current_user && (current_user.id == slot[:booking_info][:booked_by])
+      return 'current-user-booked-slot'
+    else
+      ''
+    end
+  end
+
   private
 
   def booking_info(reservable, requested_time)

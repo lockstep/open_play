@@ -119,6 +119,19 @@ feature 'Search Activities', js: true do
           end
         end
       end
+
+      context 'user is not logged in' do
+        scenario 'still shows the list of activities' do
+          visit root_path
+          within("nav") do
+            click_button @user.email
+          end
+          click_link 'Log Out'
+          search_activities
+          expect(page).to have_content @bowling.name
+          expect(page).to have_content @bowling_2.name
+        end
+      end
     end
 
     context 'no results found' do
