@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'activities/search', to: 'activities#search'
   get 'orders/success', to: 'orders#success'
   get 'search', to: 'search#search'
+  get 'search/more_reservables', to: 'search#get_more_reservables'
   get 'activities/:activity_id/reservations',
     to: 'orders#reservations_for_business_owner', as: 'business_owner_reservations'
   get 'users/:user_id/reservations', to: 'orders#reservations_for_users',
