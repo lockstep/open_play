@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027041943) do
+ActiveRecord::Schema.define(version: 20161102043312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.string   "type"
-    t.boolean  "archived",                     default: false
     t.boolean  "prevent_back_to_back_booking", default: false
+    t.boolean  "archived",                     default: false
     t.boolean  "allow_multi_party_bookings",   default: false
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
@@ -69,9 +69,12 @@ ActiveRecord::Schema.define(version: 20161027041943) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "activity_id"
+    t.string   "guest_first_name", default: ""
+    t.string   "guest_last_name",  default: ""
+    t.string   "guest_email",      default: ""
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
