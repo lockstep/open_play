@@ -29,6 +29,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
+          expect(page).to_not have_content 'Client Detail'
         end
 
         context 'the lane has options for users to choose' do
@@ -290,6 +291,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content "(0/30)"
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
+          expect(page).to_not have_content 'Client Detail'
         end
       end
 
@@ -412,6 +414,7 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content "(0/30)"
         expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
+        expect(page).to_not have_content 'Client Detail'
       end
 
       context 'complete reservation' do
