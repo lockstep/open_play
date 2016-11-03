@@ -46,6 +46,7 @@ feature 'Search Activities', js: true do
           expect(page).to have_content @bowling.name
           expect(page).to have_content @bowling_2.name
           expect(page).to_not have_content @bowling_3.name
+          expect(page).to_not have_content 'view more'
         end
         scenario 'shows the requested time first and go to the end of the day' do
           visit root_path
@@ -118,6 +119,35 @@ feature 'Search Activities', js: true do
             expect(page).to have_content '14:00 15:00 16:00 17:00 18:00 19:00'
           end
         end
+
+        context 'Bowling has many lanes' do
+          before do
+            @lane_4 = create(
+              :lane,
+              name: 'Lane 4',
+              activity: @bowling
+            )
+          end
+          scenario 'shows the view more link' do
+            visit root_path
+            search_activities
+            expect(page).to have_content @lane.name
+            expect(page).to have_content @lane_2.name
+            expect(page).to_not have_content @lane_4.name
+            expect(page).to have_content 'view more'
+          end
+          context 'view more link exists' do
+            scenario 'shows the rest of the lanes' do
+              visit root_path
+              search_activities
+              click_on 'view more'
+              expect(page).to have_content @lane.name
+              expect(page).to have_content @lane_2.name
+              expect(page).to have_content @lane_4.name
+            end
+          end
+        end
+
       end
 
       context 'user is not logged in' do

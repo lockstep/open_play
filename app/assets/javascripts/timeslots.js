@@ -2,17 +2,7 @@
 // All this logic will automatically be available in application.js.
 $(function() {
 
-  // To prevent back-to-back bookings if a current user tries to book them by
-  // searching again.
-  $('.activity-result').each(function(index, activity) {
-    var preventBackToBack = $(activity).find("input[name|='prevent-btb-booking']");
-    if (preventBackToBack.val() == 'true') {
-      $(activity).find('.current-user-booked-slot').each(function(index, slot) {
-          $(slot).nextAll('button').first().prop('disabled', true);
-          $(slot).prevAll('button').first().prop('disabled', true);
-      });
-    }
-  });
+  Utilities.preventBackToBackBooking();
 
   var showHideCheckIcon = function(icon) {
     icon.hasClass('fa-check') ? icon.removeClass('fa-check') : icon.addClass('fa-check')
@@ -48,7 +38,7 @@ $(function() {
     return slot.find('i').hasClass('fa-check')
   };
 
-  $('.timeslot').on('click', function() {
+  $('.activity-info').on('click', '.timeslot', function() {
     var activityId = $(this).data('activity-id');
     var reservableId = $(this).data('reservable-id');
     var slot = $(this).data('slot');
@@ -60,3 +50,19 @@ $(function() {
   });
 
 });
+
+var Utilities = {
+  // To prevent back-to-back bookings if a current user tries to book them by
+  // searching again.
+  preventBackToBackBooking: function(){
+    $('.activity-result').each(function(index, activity) {
+      var preventBackToBack = $(activity).find("input[name|='prevent-btb-booking']");
+      if (preventBackToBack.val() == 'true') {
+        $(activity).find('.current-user-booked-slot').each(function(index, slot) {
+          $(slot).nextAll('button').first().prop('disabled', true);
+          $(slot).prevAll('button').first().prop('disabled', true);
+        });
+      }
+    });
+  }
+}

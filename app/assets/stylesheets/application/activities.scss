@@ -43,5 +43,14 @@
     .book-btn {
       margin-top: 75px;
     }
+    .remaining-slots {
+      margin-top: 10px;
+      .view-more {
+        a {
+          font-size: 15px;
+          text-decoration: underline;
+        }
+      }
+    }
   }
 }
