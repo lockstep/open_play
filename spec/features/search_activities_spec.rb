@@ -141,6 +141,8 @@ feature 'Search Activities', js: true do
               visit root_path
               search_activities
               click_on 'view more'
+              expect(page).to have_content @lane.name
+              expect(page).to have_content @lane_2.name
               expect(page).to have_content @lane_4.name
             end
           end
