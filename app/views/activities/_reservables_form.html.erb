@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th><%=@activity.reservable_type%></th>
+          <th>Interval</th>
+          <th>Start time</th>
+          <th>End time</th>
+          <th>Maximum players</th>
+          <th>Weekday price</th>
+          <th>Weekend price</th>
+          <th>Per Person Weekday Price</th>
+          <th>Per Person Weekend Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activity.reservables.active.each do |reservable| %>
+          <tr>
+            <td><%= reservable.name %></td>
+            <td><%= reservable.interval %></td>
+            <td><%= present_time(reservable.start_time)%></td>
+            <td><%= present_time(reservable.end_time)%></td>
+            <td><%= reservable.maximum_players %></td>
+            <td>$<%= reservable.weekday_price %></td>
+            <td>$<%= reservable.weekend_price %></td>
+            <td>$<%= reservable.per_person_weekday_price %></td>
+            <td>$<%= reservable.per_person_weekend_price %></td>
+            <td>
+              <%= link_to 'Edit', edit_reservable_path(reservable), class: 'btn btn-primary'%>
+              <%= link_to 'Delete', reservable_path(reservable), class: 'btn btn-danger', method: :delete %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

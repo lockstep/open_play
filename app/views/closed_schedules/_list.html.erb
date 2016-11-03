@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div>
+      <center>
+        <h2>List Closing Time</h2>
+      </center>
+    </div>
+    <div class="spacer-30"></div>
+  </div>
+</div>
+
+<% if @schedules.any? %>
+  <table class="table" id='list-closing-time'>
+    <thead>
+      <tr>
+        <th class='text-xs-center'>#</th>
+        <th class='text-xs-center'>Label</th>
+        <th class='text-xs-center'></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @schedules.each_with_index do |schedule, index| %>
+        <tr>
+          <th scope="row" class='text-xs-center'><%= index+1 %></th>
+          <td class='text-xs-center'><%= schedule.label %></td>
+          <td class='text-xs-center'>
+            <%= link_to closed_schedule_path(schedule) , class: 'btn btn-danger',
+            id: "destroy-schedule-#{index+1}", method: :delete,
+            data: { confirm: "Are you sure?" } do %>
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="font-weight-bold text-xs-center">There is no closing time.</p>
+<% end %>
