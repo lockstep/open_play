@@ -40,9 +40,9 @@ $(function() {
 
   var validGuestForm = function() {
     var have_errors = false;
-    var $firstName = $('#first-name-order');
-    var $lastName = $('#last-name-order');
-    var $email = $('#email-order');
+    var $firstName = $('#order_guest_first_name');
+    var $lastName = $('#order_guest_last_name');
+    var $email = $('#order_guest_email');
     if (!hasRequireFieldError($firstName, 'First name') &&
       !hasRequireFieldError($lastName, 'Last name') &&
       !hasRequireFieldError($email, 'Email') && !hasEmailError($email) ) {
@@ -50,12 +50,6 @@ $(function() {
     } else {
       return false;
     }
-  };
-
-  var transferGuestFormToOrderForm = function() {
-    $('#order_guest_first_name').val($('#first-name-order').val());
-    $('#order_guest_last_name').val($('#last-name-order').val());
-    $('#order_guest_email').val($('#email-order').val());
   };
 
   var clearFieldInForm = function($field) {
@@ -67,9 +61,9 @@ $(function() {
   }
 
   var clearGuestForm = function() {
-    clearFieldInForm($('#first-name-order'));
-    clearFieldInForm($('#last-name-order'));
-    clearFieldInForm($('#email-order'));
+    clearFieldInForm($('#order_guest_first_name'));
+    clearFieldInForm($('#order_guest_last_name'));
+    clearFieldInForm($('#order_guest_email'));
   };
 
   var completeReservation = function() {
@@ -97,15 +91,8 @@ $(function() {
 
   $('#guest-complete-reservation').click(function(e) {
     e.preventDefault();
-    $('#guest-modal').modal('show');
-  });
-
-  $('#submit-order-form').click(function(e) {
-    e.preventDefault();
     clearGuestForm();
     if (validGuestForm()) {
-      transferGuestFormToOrderForm();
-      $('#guest-modal').modal('hide');
       completeReservation();
     }
   });
