@@ -67,6 +67,18 @@ ActiveRecord::Schema.define(version: 20161107082718) do
     t.index ["user_id"], name: "index_businesses_on_user_id", using: :btree
   end
 
+  create_table "closed_schedules", force: :cascade do |t|
+    t.string  "label"
+    t.date    "closed_on"
+    t.string  "closed_days",         default: [], array: true
+    t.boolean "closed_all_day"
+    t.boolean "closed_specific_day"
+    t.time    "closing_begins_at"
+    t.time    "closing_ends_at"
+    t.integer "activity_id"
+    t.index ["activity_id"], name: "index_closed_schedules_on_activity_id", using: :btree
+  end
+
   create_table "guests", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -77,9 +89,12 @@ ActiveRecord::Schema.define(version: 20161107082718) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "activity_id"
+    t.string   "guest_first_name", default: ""
+    t.string   "guest_last_name",  default: ""
+    t.string   "guest_email",      default: ""
     t.integer  "guest_id"
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["guest_id"], name: "index_orders_on_guest_id", using: :btree
@@ -145,6 +160,7 @@ ActiveRecord::Schema.define(version: 20161107082718) do
   add_foreign_key "bookings", "orders"
   add_foreign_key "bookings", "reservables"
   add_foreign_key "businesses", "users"
+  add_foreign_key "closed_schedules", "activities"
   add_foreign_key "orders", "activities"
   add_foreign_key "orders", "guests"
   add_foreign_key "orders", "users"

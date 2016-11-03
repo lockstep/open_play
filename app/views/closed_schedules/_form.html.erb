@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div>
+      <center>
+        <h2>New Closing Time</h2>
+      </center>
+    </div>
+    <div class="spacer-30"></div>
+  </div>
+</div>
+
+<% if @schedule.errors.any? %>
+  <div class='row'>
+    <div class='alert alert-danger' role='alert'>
+      <ul>
+        <% @schedule.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<% activity_id = @schedule.activity.id %>
+<%= form_tag("/activities/#{activity_id}/closed_schedules", method: :POST) do %>
+  <div class='row card card-block'>
+    <div clas'col-xs-12'>
+      <div class="custom-controls-stacked">
+        <%= text_field_tag 'closed_schedule[label]', '', class: 'form-control',
+         placeholder: 'Label name' %>
+      </div>
+    </div>
+  </div>
+
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'closed_schedule[closed_specific_day]', 'true',
+            @schedule.closed_specific_day, id: 'specific-day-checkbox',
+            class: 'form-check-input' %> On specific day
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'closed_schedule[closed_specific_day]', 'false',
+            !@schedule.closed_specific_day, id: 'every-x-checkbox',
+            class: 'form-check-input' %> Every
+        </label>
+      </div>
+      <div class="spacer-20"> </div>
+    </div>
+    <div class='col-xs-6'>
+      <div class="row <%= 'closing-time-inactive' unless @schedule.closed_specific_day %>" id='closed-on'>
+        <div class='col-xs-6'>
+          <%= text_field_tag 'closed_schedule[closed_on]', '', class: 'form-control', id: 'closed_on' %>
+        </div>
+      </div>
+      <div class="row <%= 'closing-time-inactive' if @schedule.closed_specific_day %>" id='list-of-days'>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'monday', false,
+              id: 'closed_schedule_closed_days_monday' %> Monday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'tuesday', false,
+             id: 'closed_schedule_closed_days_tuesday' %> Tuesday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'wednesday', false,
+            id: 'closed_schedule_closed_days_wednesday' %> Wednesday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'thursday', false,
+             id: 'closed_schedule_closed_days_thursday' %> Thursday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'friday', false,
+             id: 'closed_schedule_closed_days_friday' %> Friday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'saturday', false,
+             id: 'closed_schedule_closed_days_saturday' %> Saturday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "closed_schedule[closed_days][]", 'sunday', false,
+             id: 'closed_schedule_closed_days_sunday' %> Sunday
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'closed_schedule[closed_all_day]', 'true',
+            @schedule.closed_all_day, id: 'all-day-checkbox',
+            class: 'form-check-input' %> All day
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag  'closed_schedule[closed_all_day]', 'false',
+          !@schedule.closed_all_day, id: 'specific-time-range-checkbox',
+          class: 'form-check-input' %> Time range
+        </label>
+      </div>
+
+      <div class="spacer-20"></div>
+    </div>
+
+    <div class='col-xs-6'>
+      <div class="row <%= 'closing-time-inactive' if @schedule.closed_all_day %>" id='closing-time-range'>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'closed_schedule[closing_begins_at]', '',
+          class: 'form-control', id: 'closing_begins_at' %>
+        </div>
+        <span class='col-xs-2 text-xs-center'>-</span>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'closed_schedule[closing_ends_at]', '',
+          class: 'form-control', id: 'closing_ends_at' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="spacer-20"></div>
+
+  <%= hidden_field_tag 'closed_schedule[activity_id]', activity_id %>
+  <div class='row text-xs-center'>
+    <button type='submit' class='btn btn-primary'>Submit</button>
+  </div>
+<% end %>
