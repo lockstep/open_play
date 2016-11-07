@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.string   "type"
-    t.boolean  "archived",                     default: false
     t.boolean  "prevent_back_to_back_booking", default: false
+    t.boolean  "archived",                     default: false
     t.boolean  "allow_multi_party_bookings",   default: false
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
