@@ -1,9 +1,9 @@
 <div class="reservable">
   <span class="reservable-name"><%= reservable.name %></span>
   <div class="row-times" data-slick='{"initialSlide":
-    <%= requested_time_slot_index(reservable, @booking_date, @booking_time ) %>}'>
+    <%= requested_time_slot_index(reservable, @booking_date, @booking_time) %>}'>
     <% i = 0 %>
-    <% build_time_slots(reservable, @booking_date).each do |slot| %>
+    <% build_time_slots(reservable, @booking_date, @booking_time).each do |slot| %>
       <div>
         <%= button_tag(type: 'button', class: 'btn btn-danger timeslot ' +
           booked_by_current_user(slot),

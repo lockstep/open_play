@@ -50,7 +50,7 @@ class Reservable < ApplicationRecord
 
   def closing_time
     return end_time unless opens_24_hours?
-    Time.parse('23:59')
+    Time.parse('23:59:59')
   end
 
 end
