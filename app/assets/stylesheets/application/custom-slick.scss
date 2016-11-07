@@ -1,0 +1,11 @@
+.slick-prev:before,
+.slick-next:before
+{
+  color: #e0332e;
+}
+
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before
+{
+  cursor: not-allowed;
+}

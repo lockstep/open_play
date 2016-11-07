@@ -3,6 +3,7 @@
 $(function() {
 
   Utilities.preventBackToBackBooking();
+  Utilities.slidingSlot();
 
   var showHideCheckIcon = function(icon) {
     icon.hasClass('fa-check') ? icon.removeClass('fa-check') : icon.addClass('fa-check')
@@ -59,10 +60,41 @@ var Utilities = {
       var preventBackToBack = $(activity).find("input[name|='prevent-btb-booking']");
       if (preventBackToBack.val() == 'true') {
         $(activity).find('.current-user-booked-slot').each(function(index, slot) {
-          $(slot).nextAll('button').first().prop('disabled', true);
-          $(slot).prevAll('button').first().prop('disabled', true);
+          // Have to wrap the slot with a div due to using slick.js
+          slot_parent = $(slot).parent();
+          $(slot_parent).next().children('button').prop('disabled', true);
+          $(slot_parent).prev().children('button').prop('disabled', true);
         });
       }
+    });
+  },
+  slidingSlot: function(){
+    $('.row-times').not('.slick-initialized').slick({
+      slidesToShow: 7,
+      slidesToScroll: 1,
+      arrows: true,
+      infinite: false,
+      responsive    : [
+        {
+          breakpoint: 1100,
+          settings  : {
+              slidesToShow  : 6
+          }
+        },
+        {
+          breakpoint: 990,
+          settings  : {
+              slidesToShow  : 5
+          }
+        },
+        {
+          breakpoint: 770,
+          settings  : {
+              slidesToShow  : 3
+          }
+        }
+
+      ]
     });
   }
 }

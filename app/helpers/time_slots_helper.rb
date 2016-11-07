@@ -2,6 +2,7 @@ module TimeSlotsHelper
   include DateTimeHelper
 
   def build_time_slots(reservable, requested_date, requested_time)
+    time_slots = []
     requested_date = DateTime.parse(requested_date)
     if requested_time.present?
       requested_time = requested_date + Time.parse(requested_time)
@@ -10,16 +11,20 @@ module TimeSlotsHelper
       requested_time = merge_date_and_time(requested_date, reservable.opening_time)
     end
     closing_time = merge_date_and_time(requested_date, reservable.closing_time)
-    time_slots = []
-    subsequent_time = requested_time
-    while subsequent_time < closing_time do
+    subsequent_time = merge_date_and_time(
+      requested_date,
+      start_time(requested_time, reservable.opening_time)
+    )
+    game_time_length = reservable.interval.minutes
+    # add 1 more second for handling 24-hour activity
+    while (subsequent_time + game_time_length) <= (closing_time + 1.second) do
       time_slots.push(
         {
           time: subsequent_time,
           booking_info: booking_info(reservable, subsequent_time)
         }
       )
-      subsequent_time += reservable.interval.minutes
+      subsequent_time += game_time_length
     end
     time_slots
   end
@@ -32,7 +37,32 @@ module TimeSlotsHelper
     end
   end
 
+  def requested_time_slot_index(reservable, requested_date, requested_time)
+    requested_date = DateTime.parse(requested_date)
+    if requested_time.present?
+      requested_time = requested_date + Time.parse(requested_time)
+        .seconds_since_midnight.seconds
+    else
+      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
+    end
+    opening_time = merge_date_and_time(requested_date, reservable.opening_time)
+    time_since_opening_in_mins = (requested_time - opening_time) * 24 * 60
+    (time_since_opening_in_mins / reservable.interval).to_i
+  end
+
   private
+
+  def start_time(requested_time, opening_time)
+    if start_on_half_hour?(requested_time) == start_on_half_hour?(opening_time)
+      opening_time
+    else
+      opening_time + 30.minutes
+    end
+  end
+
+  def start_on_half_hour?(time)
+    time.strftime('%M') == '30'
+  end
 
   def booking_info(reservable, requested_time)
     return { available: false } unless reservable_is_open?(reservable,requested_time)
