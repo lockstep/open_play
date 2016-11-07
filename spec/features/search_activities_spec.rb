@@ -48,13 +48,15 @@ feature 'Search Activities', js: true do
           expect(page).to_not have_content @bowling_3.name
           expect(page).to_not have_content 'view more'
         end
-        scenario 'shows the requested time first and go to the end of the day' do
+        scenario 'returns the opening time till the closing time' do
           visit root_path
-          search_activities(booking_time: '4:00pm')
+          search_activities(booking_time: '1:00pm')
           expect(page).to have_content @lane.name
+          expect(page).to have_content '08:00'
           expect(page).to have_content '16:00'
           expect(page).to have_content @lane_2.name
-          expect(page).to have_content '16:00 17:00 18:00 19:00'
+          expect(page).to have_content '10:00'
+          expect(page).to have_content '19:00'
         end
         scenario 'not show archived reservables' do
           visit root_path

@@ -7,16 +7,14 @@
         <div class="col-xs-12">
           <div class="col-xs-3">
             <div class="activity-preview">
-              <%= link_to image_tag("bowling_lane", class: 'img-rounded img-fluid'), '/' %>
+              <%= image_tag("bowling_lane", class: 'img-rounded img-fluid') %>
             </div>
           </div>
           <div class="col-xs-9">
             <%= form_tag(new_order_path, method: :get) do %>
               <div class="col-xs-9">
                 <div class="activity-info">
-                  <%= link_to "/", class: 'activity-name' do %>
-                    <span class=''><%= activity.name %></span>
-                  <% end %>
+                  <span class='activity-name'><%= activity.name %></span>
                   <% reservables_per_page(activity, @number_of_reservables_per_page).each do |reservable| %>
                     <%= render 'search/reservable', reservable: reservable %>
                   <% end %>
@@ -37,7 +35,7 @@
               <%= hidden_field_tag("prevent-btb-booking-#{activity.id}",
                 activity.prevent_back_to_back_booking) %>
               <%= hidden_field_tag('activity_id', activity.id) %>
-              <div class-"col-xs-3">
+              <div class="col-xs-3">
                 <%= submit_tag 'Book', class: 'btn btn-info book-btn' %>
               </div>
             <% end %>

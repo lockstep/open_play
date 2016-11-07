@@ -1,17 +1,11 @@
 module TimeSlotsHelper
   include DateTimeHelper
 
-  def build_time_slots(reservable, requested_date, requested_time)
-    requested_date = DateTime.parse(requested_date)
-    if requested_time.present?
-      requested_time = requested_date + Time.parse(requested_time)
-        .seconds_since_midnight.seconds
-    else
-      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
-    end
-    closing_time = merge_date_and_time(requested_date, reservable.closing_time)
+  def build_time_slots(reservable, requested_date)
     time_slots = []
-    subsequent_time = requested_time
+    requested_date = DateTime.parse(requested_date)
+    closing_time = merge_date_and_time(requested_date, reservable.closing_time)
+    subsequent_time = merge_date_and_time(requested_date, reservable.opening_time)
     while subsequent_time < closing_time do
       time_slots.push(
         {
@@ -30,6 +24,19 @@ module TimeSlotsHelper
     else
       ''
     end
+  end
+
+  def requested_time_slot_index(reservable, requested_date, requested_time)
+    requested_date = DateTime.parse(requested_date)
+    if requested_time.present?
+      requested_time = requested_date + Time.parse(requested_time)
+        .seconds_since_midnight.seconds
+    else
+      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
+    end
+    opening_time = merge_date_and_time(requested_date, reservable.opening_time)
+    time_since_opening_in_mins = (requested_time - opening_time) * 24 * 60
+    (time_since_opening_in_mins / reservable.interval).to_i
   end
 
   private

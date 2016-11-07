@@ -22,3 +22,4 @@
 //= require timeslots
 //= require orders
 //= require orders_reservations
+//= require slick.min
