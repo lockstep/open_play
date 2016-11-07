@@ -1,5 +1,4 @@
 feature 'Search Activities', js: true do
-  include ReservationHelpers
 
   background do
     @user = create(:user)

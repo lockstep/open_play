@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027041943) do
+ActiveRecord::Schema.define(version: 20161107082718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,12 +67,22 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.index ["user_id"], name: "index_businesses_on_user_id", using: :btree
   end
 
+  create_table "guests", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "activity_id"
+    t.integer  "guest_id"
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
+    t.index ["guest_id"], name: "index_orders_on_guest_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
@@ -123,6 +133,8 @@ ActiveRecord::Schema.define(version: 20161027041943) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "first_name"
+    t.string   "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
@@ -134,6 +146,7 @@ ActiveRecord::Schema.define(version: 20161027041943) do
   add_foreign_key "bookings", "reservables"
   add_foreign_key "businesses", "users"
   add_foreign_key "orders", "activities"
+  add_foreign_key "orders", "guests"
   add_foreign_key "orders", "users"
   add_foreign_key "reservable_options_availables", "reservable_options"
   add_foreign_key "reservable_options_availables", "reservables"

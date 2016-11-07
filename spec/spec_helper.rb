@@ -86,6 +86,8 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, :type => :controller
   config.extend ControllerMacros, :type => :controller
   config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include ReservationHelpers, type: :feature
+  config.include StripeHelpers, type: :feature
 
   config.before do
     stub_request(:post, "https://api.stripe.com/v1/charges")

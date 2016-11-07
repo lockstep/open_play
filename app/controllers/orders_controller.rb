@@ -1,5 +1,4 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
   before_action :ensure_time_slot_selection_is_present, only: [:new]
   before_action :set_booking_date, only: [:reservations_for_business_owner,
     :reservations_for_users]
@@ -21,13 +20,18 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
+    if user_signed_in?
+      @order.user = current_user
+    else
+      @order.guest = Guest.create(guest_params)
+    end
     if @order.save
       Stripe::Charge.create(
         amount: @order.total_price_in_cents.to_i,
         currency: 'usd',
         source: params[:token_id]
       )
-      redirect_to orders_success_path
+      redirect_to success_order_path(@order)
     else
       render :new
     end
@@ -36,6 +40,7 @@ class OrdersController < ApplicationController
   end
 
   def success
+    @order = Order.find(params[:id])
   end
 
   def reservations_for_business_owner
@@ -55,20 +60,36 @@ class OrdersController < ApplicationController
   end
 
   def prepare_complete_order
-    order = Order.new(order_params)
-    if order.valid?
-      render json: { meta: {
-          number_of_bookings: order.bookings.length,
-          total_price: order.total_price_in_cents
-        }
-      }, status: :ok
+    @order = Order.new(order_params)
+    if @order.valid?
+      if user_signed_in?
+        order_is_ready_to_book!
+      else
+        # TODO: Refactor this disgusting if/else tree.
+        guest = Guest.new(guest_params)
+        if guest.valid?
+          order_is_ready_to_book!
+        else
+          render json: { meta: { errors: guest.errors.full_messages }},
+            status: :unprocessable_entity
+        end
+      end
     else
-      render json: { meta: { errors: order.errors.full_messages }},
+      render json: { meta: { errors: @order.errors.full_messages }},
         status: :unprocessable_entity
     end
   end
 
   private
+
+  def order_is_ready_to_book!
+    render json: {
+      meta: {
+        number_of_bookings: @order.bookings.length,
+        total_price: @order.total_price_in_cents
+      }
+    }
+  end
 
   def ensure_time_slot_selection_is_present
     redirect_back(
@@ -95,5 +116,9 @@ class OrdersController < ApplicationController
       :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
       reservable_options_attributes: [:reservable_option_id]
     ])
+  end
+
+  def guest_params
+    params.require(:guest).permit(:first_name, :last_name, :email)
   end
 end

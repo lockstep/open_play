@@ -24,7 +24,7 @@ describe OrdersController do
               time_slots: { '1': ["01:00:00, 02:00:00"] }
             }
           end
-          it_behaves_like 'it requires authentication'
+          it_behaves_like 'a successful request'
         end
       end
     end
@@ -56,15 +56,11 @@ describe OrdersController do
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
             expect(bookings.first.reservable_options.size).to eq 2
-            expect(response).to redirect_to orders_success_path
+            expect(response).to redirect_to success_order_path(Order.last)
           end
         end
       end
 
-      context 'user is not logged in' do
-        before { post :create, params: order_params }
-        it_behaves_like 'it requires authentication'
-      end
     end
   end
 
@@ -86,6 +82,9 @@ describe OrdersController do
             ]
           }
         ]
+      },
+      guest: {
+        first_name: 'test', last_name: 'test', email: 'test@example.com'
       },
       token_id: 'tokenId12345'
     }

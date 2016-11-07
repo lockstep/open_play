@@ -7,17 +7,20 @@ class Order < ApplicationRecord
   ]
 
   has_many :bookings, inverse_of: :order
-  belongs_to :user
+  belongs_to :user, optional: true
+  belongs_to :guest, optional: true
   belongs_to :activity
   accepts_nested_attributes_for :bookings
 
   scope :reservations, -> { includes(:activity, :bookings) }
   scope :reservations_on, -> (date) {
     reservations.where(bookings: { booking_date: date }) }
-  scope :filterd_by_activity, -> (id) { where(activity_id: id) }
-  scope :filterd_by_user, -> (id) { where(user_id: id) }
+  scope :filtered_by_activity, -> (id) { where(activity_id: id) }
+  scope :filtered_by_user, -> (id) { where(user_id: id) }
 
   delegate :name, to: :activity, prefix: true
+  delegate :full_name, to: :user, prefix: true
+  delegate :full_name, to: :guest, prefix: true
 
   def booking
     bookings.first
@@ -25,6 +28,14 @@ class Order < ApplicationRecord
 
   def booking_date
     booking.booking_date
+  end
+
+  def reserver_full_name
+    guest_order? ? guest_full_name : user_full_name
+  end
+
+  def guest_order?
+    guest_id.present?
   end
 
   def booking_place
@@ -43,11 +54,11 @@ class Order < ApplicationRecord
   end
 
   def self.reservations_for_business_owner(date, activity_id)
-    reservations_on(date).filterd_by_activity(activity_id)
+    reservations_on(date).filtered_by_activity(activity_id)
   end
 
   def self.reservations_for_users(date, user_id)
-    reservations_on(date).filterd_by_user(user_id)
+    reservations_on(date).filtered_by_user(user_id)
   end
 
   def self.game_period(start_time, end_time)

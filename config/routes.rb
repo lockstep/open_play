@@ -8,13 +8,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders, only: [:new, :create]
+  resources :orders, only: [:new, :create] do
+    get :success, on: :member
+  end
   get 'businesses/show', to: 'businesses#show'
   resources :users, only: [:show, :edit, :update]
 
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
-  get 'orders/success', to: 'orders#success'
   get 'search', to: 'search#search'
   get 'search/more_reservables', to: 'search#get_more_reservables'
   get 'activities/:activity_id/reservations',
