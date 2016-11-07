@@ -8,25 +8,25 @@ describe OrdersController do
           login_user
           before do
             @business.update(user: @user)
-            get :new, params: {
-              activity_id: @activity.id,
-              date: '4/10/2016',
-              time_slots: { '1': ["01:00:00, 02:00:00"] }
-            }
+            get :new, params: order_params(activity_id: @activity.id)
           end
           it_behaves_like 'a successful request'
         end
         context 'user is not logged in' do
           before do
-            get :new, params: {
-              activity_id: @activity.id,
-              date: '4/10/2016',
-              time_slots: { '1': ["01:00:00, 02:00:00"] }
-            }
-          end
-          it_behaves_like 'it requires authentication'
+            get :new, params: order_params(activity_id: @activity.id)
+            end
+          it_behaves_like 'a successful request'
         end
       end
+    end
+
+    def order_params(overrides={})
+      {
+        activity_id: overrides[:activity_id],
+        date: '4/10/2016',
+        time_slots: { '1': ["01:00:00, 02:00:00"] }
+      }
     end
   end
 
@@ -51,6 +51,11 @@ describe OrdersController do
             post :create, params: order_params(user_id: @user.id)
 
             expect(Order.count).to eq 1
+            expect(Order.first.user).to eq @user
+            expect(Order.first.guest_first_name).to eq ''
+            expect(Order.first.guest_last_name).to eq ''
+            expect(Order.first.guest_email).to eq ''
+
             bookings = Order.first.bookings
             expect(bookings.length).to eq 1
             expect(bookings.first.start_time.to_s).to match '08:00:00'
@@ -62,8 +67,28 @@ describe OrdersController do
       end
 
       context 'user is not logged in' do
-        before { post :create, params: order_params }
-        it_behaves_like 'it requires authentication'
+        before { @user = create(:user, email: 'guest_user@gmail.com') }
+        it 'creates a booking' do
+          post :create, params: order_params(
+            user_id: @user.id,
+            guest_first_name: 'peter',
+            guest_last_name: 'pan',
+            guest_email: 'peter-pan@gmail.com'
+          )
+
+          expect(Order.count).to eq 1
+          expect(Order.first.user).to eq @user
+          expect(Order.first.guest_first_name).to eq 'peter'
+          expect(Order.first.guest_last_name).to eq 'pan'
+          expect(Order.first.guest_email).to eq 'peter-pan@gmail.com'
+
+          bookings = Order.first.bookings
+          expect(bookings.length).to eq 1
+          expect(bookings.first.start_time.to_s).to match '08:00:00'
+          expect(bookings.first.end_time.to_s).to match '09:00:00'
+          expect(bookings.first.reservable_options.size).to eq 2
+          expect(response).to redirect_to orders_success_path
+        end
       end
     end
   end
@@ -73,6 +98,9 @@ describe OrdersController do
       order: {
         user_id: overrides[:user_id],
         activity_id: @reservable.activity.id,
+        guest_first_name: overrides[:guest_first_name] || '',
+        guest_last_name: overrides[:guest_last_name] || '',
+        guest_email: overrides[:guest_email] || '',
         bookings_attributes: [
           {
             start_time: '08:00:00',

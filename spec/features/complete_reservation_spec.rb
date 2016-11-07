@@ -1,5 +1,6 @@
 feature 'Complete Reservation', :js do
   include ReservationHelpers
+  include StripeHelpers
 
   background do
     @user = create(:user)
@@ -28,6 +29,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
+          expect(page).to_not have_content 'Client Detail'
         end
 
         context 'the lane has options for users to choose' do
@@ -289,6 +291,7 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content "(0/30)"
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
+          expect(page).to_not have_content 'Client Detail'
         end
       end
 
@@ -411,6 +414,7 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content "(0/30)"
         expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
+        expect(page).to_not have_content 'Client Detail'
       end
 
       context 'complete reservation' do
@@ -431,24 +435,5 @@ feature 'Complete Reservation', :js do
         end
       end
     end
-  end
-
-  def stub_stripe_charge_create
-    expect(Stripe::Charge).to receive(:create)
-  end
-
-  def stub_stripe_checkout_handler
-    page.execute_script(<<-JS)
-      OPEN_PLAY.checkoutHandler = {
-        open: function() {
-          OPEN_PLAY.successfulChargeCallback({
-            id: 'testId'
-          });
-        },
-        close: function() {
-          // NOOP
-        }
-      };
-    JS
   end
 end

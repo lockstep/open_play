@@ -5,4 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_one :business
   has_many :orders
+
+  def self.get_guest_user
+    User.find_by(email: 'guest-user@gmail.com')
+  end
 end

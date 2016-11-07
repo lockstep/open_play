@@ -1,10 +1,12 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:reservations_for_business_owner,
+    :reservations_for_users]
   before_action :ensure_time_slot_selection_is_present, only: [:new]
   before_action :set_booking_date, only: [:reservations_for_business_owner,
     :reservations_for_users]
 
   def new
+    @guest_user = User.get_guest_user unless user_signed_in?
     @order = Order.new(activity_id: params[:activity_id])
     params[:time_slots].each do |reservable_id, reservable_time_slots|
       reservable_time_slots.each do |time_slots|
@@ -91,7 +93,8 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:user_id, :activity_id, bookings_attributes: [
+    params.require(:order).permit(:user_id, :activity_id, :guest_first_name,
+      :guest_last_name, :guest_email, bookings_attributes: [
       :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
       reservable_options_attributes: [:reservable_option_id]
     ])
