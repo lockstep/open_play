@@ -1,5 +1,6 @@
 class Booking < ApplicationRecord
   belongs_to :order, inverse_of: :bookings
+  has_one :user, through: :order
   belongs_to :reservable
   has_many :reservable_options, class_name: 'BookingReservableOption',
     inverse_of: :booking
@@ -17,8 +18,7 @@ class Booking < ApplicationRecord
   delegate :options_available, to: :reservable, prefix: true
   delegate :weekday_price, to: :reservable
   delegate :weekend_price, to: :reservable
-  delegate :user, to: :order
-  delegate :id, to: :user, prefix: true
+  delegate :id, to: :user, prefix: true, allow_nil: true
   delegate :per_person_weekday_price, to: :reservable
   delegate :per_person_weekend_price, to: :reservable
 
