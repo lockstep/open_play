@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
     if user_signed_in?
       @order.user = current_user
     else
-      @order.guest = Guest.create(guest_params)
+      @order.guest = Guest.create(guest_params[:guest])
     end
     if @order.save
       Stripe::Charge.create(
@@ -66,7 +66,7 @@ class OrdersController < ApplicationController
         order_is_ready_to_book!
       else
         # TODO: Refactor this disgusting if/else tree.
-        guest = Guest.new(guest_params)
+        guest = Guest.new(guest_params[:guest])
         if guest.valid?
           order_is_ready_to_book!
         else
@@ -119,6 +119,6 @@ class OrdersController < ApplicationController
   end
 
   def guest_params
-    params.permit(:guest).permit(:first_name, :last_name, :email)
+    params.permit(guest: [:first_name, :last_name, :email])
   end
 end
