@@ -30,6 +30,31 @@ describe OrdersController do
     end
   end
 
+  describe 'GET prepare_complete_order' do
+    before do
+      @reservable = create(:reservable)
+      @option_1 = ReservableOption.create(
+        name: 'bumper',
+        reservable_type: 'Lane'
+      )
+      @option_2 = ReservableOption.create(
+        name: 'handicap_accessible',
+        reservable_type: 'Lane'
+      )
+    end
+    context 'user is not logged in' do
+      context 'guest param is missing' do
+        it 'is handled gracefully' do
+          params = order_params
+          params.delete(:guest)
+          get :prepare_complete_order, params: params
+          error = JSON.parse(response.body)['meta']['errors'].first
+          expect(error).to match 'First name'
+        end
+      end
+    end
+  end
+
   describe 'POST create' do
     context 'a reservable and reservable options are exist' do
       before do
@@ -43,6 +68,7 @@ describe OrdersController do
           reservable_type: 'Lane'
         )
       end
+
 
       context 'user is logged in' do
         login_user

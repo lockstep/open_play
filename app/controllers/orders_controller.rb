@@ -119,6 +119,6 @@ class OrdersController < ApplicationController
   end
 
   def guest_params
-    params.require(:guest).permit(:first_name, :last_name, :email)
+    params.permit(:guest).permit(:first_name, :last_name, :email)
   end
 end
