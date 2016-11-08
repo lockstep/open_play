@@ -22,7 +22,8 @@ feature 'Search Closing Time Activities', js: true do
           create(:closed_schedule,
             closed_all_day: true,
             closed_specific_day: true,
-            closed_on: '10 Nov 2016'
+            closed_on: '10 Nov 2016',
+            activity: @bowling
           )
         end
 
@@ -40,7 +41,8 @@ feature 'Search Closing Time Activities', js: true do
           create(:closed_schedule,
             closed_all_day: true,
             closed_specific_day: false,
-            closed_days: ['monday', 'tuesday']
+            closed_days: ['monday', 'tuesday'],
+            activity: @bowling
           )
         end
 
@@ -74,7 +76,8 @@ feature 'Search Closing Time Activities', js: true do
             closing_begins_at: '10:00am',
             closing_ends_at: '11:00am',
             closed_specific_day: true,
-            closed_on: '7 Nov 2016'
+            closed_on: '7 Nov 2016',
+            activity: @bowling
           )
         end
 
@@ -83,21 +86,21 @@ feature 'Search Closing Time Activities', js: true do
             travel_to Time.new(2016, 11, 5) do
               visit root_path
               search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
-              expect(page).to have_button('10:00', disabled: true)
-              expect(page).to have_button('11:00', disabled: false)
+              expect(page).to have_content 'No results found'
             end
           end
         end
       end
 
-      context 'in every monday' do
+      context 'in every monday and friday' do
         background do
           create(:closed_schedule,
             closed_all_day: false,
             closing_begins_at: '10:00am',
             closing_ends_at: '11:00am',
             closed_specific_day: false,
-            closed_days: ['monday']
+            closed_days: ['monday', 'friday'],
+            activity: @bowling
           )
         end
 
@@ -105,9 +108,18 @@ feature 'Search Closing Time Activities', js: true do
           scenario 'shows the appropiate message' do
             travel_to Time.new(2016, 11, 5) do
               visit root_path
-              search_activities(booking_date: '12 Nov 2016', booking_time: '10:00am')
-              expect(page).to have_button('10:00', disabled: true)
-              expect(page).to have_button('11:00', disabled: false)
+              search_activities(booking_date: '14 Nov 2016', booking_time: '10:00am')
+              expect(page).to have_content 'No results found'
+            end
+          end
+        end
+
+        context 'searchs on friday' do
+          scenario 'shows the appropiate message' do
+            travel_to Time.new(2016, 11, 5) do
+              visit root_path
+              search_activities(booking_date: '18 Nov 2016', booking_time: '10:00am')
+              expect(page).to have_content 'No results found'
             end
           end
         end

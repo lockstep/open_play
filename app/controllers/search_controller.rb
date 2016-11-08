@@ -7,7 +7,7 @@ class SearchController < ApplicationController
       redirect_to root_path, alert: 'Date is required.'
     end
     @number_of_reservables_per_page = 2
-    @activities = Activity.search(@booking_time, params[:activity_type])
+    @activities = Activity.search(@booking_date, @booking_time, params[:activity_type])
   end
 
   def get_more_reservables
