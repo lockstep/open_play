@@ -1,4 +1,6 @@
 class ClosedSchedule < ApplicationRecord
+  include DateTimeUtilities
+
   belongs_to :activity
 
   delegate :user, to: :activity
@@ -15,5 +17,32 @@ class ClosedSchedule < ApplicationRecord
   def days_need_to_be_checked
     return if closed_specific_day
     errors.add(:closed_days, 'must be checked') if closed_days.blank?
+  end
+
+  def day_is_in_range_of_schedule?(day)
+    closed_days.include?(day)
+  end
+
+  def checking_schedule_in_case_of_closed_all_day(booking_date)
+    date = Date.parse(booking_date)
+    return date == closed_on if closed_specific_day
+    day_is_in_range_of_schedule?(get_small_case_day_from_date(date))
+  end
+
+  def checking_schedule_in_case_of_closed_on_specific_day(booking_date, booking_time)
+    if closed_specific_day
+      checking_date_time_is_in_range_of_begins_and_end(
+        booking_date, booking_time, closing_begins_at, closing_ends_at)
+    else
+      date = Date.parse(booking_date)
+      return false unless day_is_in_range_of_schedule?(get_small_case_day_from_date(date))
+      checking_date_time_is_in_range_of_begins_and_end(
+        booking_date, booking_time, closing_begins_at, closing_ends_at)
+    end
+  end
+
+  def match?(booking_date, booking_time)
+    return checking_schedule_in_case_of_closed_all_day(booking_date) if closed_all_day
+    checking_schedule_in_case_of_closed_on_specific_day(booking_date, booking_time)
   end
 end
