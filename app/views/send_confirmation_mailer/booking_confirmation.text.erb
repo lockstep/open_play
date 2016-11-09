@@ -1,0 +1,27 @@
+Hello <%= "#{@user.first_name} #{@user.last_name}" %>,
+
+Thank you for booking with OpenPlay. We are happy to confirm that your booking was successful.
+Your booking details are shown below for your reference:
+
+Booking Number: <%= @order.id %>
+Date: <%= present_date_in_weekday_month_day_format(@order.booking_date) %>
+Place: <%= @order.booking_place %>
+Price: <%= present_booking_price(@order.total_price) %>
+
+Booking Details:
+<% @order.bookings.each do |booking| %>
+  <%= @order.reservable_type %>: <%= booking.reservable_name %>
+  Time: <%= present_range_of_time(booking.start_time, booking.end_time) %>
+  # Players: <%= booking.number_of_players %>
+  Options:
+    <% booking.reservable_options.each do |option| %>
+      <%= option.reservable_option_name.humanize %>
+    <% end %>
+  ------------------------------
+<% end %>
+
+For further clarifications, kindly email us at info@openplay.com
+
+Thank you
+OpenPlay Team
+
