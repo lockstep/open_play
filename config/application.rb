@@ -26,6 +26,7 @@ module OpenPlay
     config.time_zone = 'Eastern Time (US & Canada)'
     config.active_record.time_zone_aware_attributes = false
 
+    config.active_job.queue_adapter = :sidekiq
     config.autoload_paths += %W(#{config.root}/lib)
   end
 end

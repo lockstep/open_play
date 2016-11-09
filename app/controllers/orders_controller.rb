@@ -31,7 +31,7 @@ class OrdersController < ApplicationController
         currency: 'usd',
         source: params[:token_id]
       )
-      SendConfirmationMailer.booking_confirmation(@order).deliver_later
+      SendConfirmationMailer.booking_confirmation(@order.id).deliver_later
       redirect_to success_order_path(@order)
     else
       render :new

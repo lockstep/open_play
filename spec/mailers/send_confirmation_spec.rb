@@ -15,7 +15,7 @@ describe SendConfirmationMailer do
       )
     end
     it 'shows booking information' do
-      SendConfirmationMailer.booking_confirmation(@order).deliver_now
+      SendConfirmationMailer.booking_confirmation(@order.id).deliver_now
       mail = ActionMailer::Base.deliveries.last
       expect(mail.to).to eq [@user.email]
 
