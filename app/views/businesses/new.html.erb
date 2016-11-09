@@ -27,7 +27,7 @@
         <% end %>
       </div>
       <div class="<%= ('has-danger' if @business.errors[:phone_number].any?) %> form-group row">
-        <%= f.telephone_field :phone_number, placeholder: 'Business phone number', class: 'form-control' %>
+        <%= f.telephone_field :phone_number, placeholder: 'Phone (000-000-0000)', class: 'form-control', maxlength: 15 %>
         <% @business.errors[:phone_number].each do |error| %>
           <div class="form-control-feedback">
             <%= error %>
