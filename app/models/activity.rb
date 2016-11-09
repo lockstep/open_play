@@ -25,8 +25,8 @@ class Activity < ApplicationRecord
     activities.select { |activity| !activity.out_of_service?(booking_date, booking_time) }
   end
 
-  def out_of_service?(booking_date, booking_time)
-    closed_schedules.any? { |schedule| schedule.match?(booking_date, booking_time) }
+  def out_of_service?(booking_date, booking_time, interval=nil)
+    closed_schedules.any? { |schedule| schedule.match?(booking_date, booking_time, interval) }
   end
 
   def end_time_is_after_start_time
