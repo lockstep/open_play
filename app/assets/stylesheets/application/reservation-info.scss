@@ -1,0 +1,40 @@
+.booking-section {
+  margin-top: 30px;
+  padding: 12px 14px;
+  background-color: #fbfbfb;
+  border: 1px solid #f9f9f9;
+}
+.booking-header {
+  color: #266fa8;
+  .left {
+    float: left;
+  }
+  .right {
+    text-align: right;
+  }
+}
+.booking-options {
+  padding-left: 20px;
+}
+.list-table {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: table;
+}
+.list-table, table {
+  border-collapse: collapse;
+}
+.list-table li {
+  margin: 0;
+  list-style: none;
+  border-top: 1px dotted #d1d1d1;
+  display: table-row;
+}
+.list-table li span {
+  padding: 6px 0;
+  display: table-cell;
+}
+.table-bordered thead th {
+  text-align: center;
+}

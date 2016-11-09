@@ -1,7 +1,60 @@
 <div class='row'>
-  <div class='col-xs-12'>
-    <h2 class='text-xs-center'>Reservation Info</h2>
-    <h3>Guest Info:</h3>
-    <%= @order.reserver_full_name %>
+  <h2 class='text-xs-center'>Reservation Info</h2>
+  <div class='row'>
+    <div class='col-xs-2'></div>
+    <div class='col-xs-8 booking-section'>
+      <div class='booking-header'>
+        <div class='left'>
+          <strong>Booking Number:</strong>
+          <span><%= @order.id %></span>
+        </div>
+        <div class='right'>
+          <strong>Date:</strong>
+          <span><%= present_date_in_weekday_month_day_format(@order.booking_date) %></span>
+        </div>
+      </div>
+      <ul class='list-table'>
+        <li>
+          <span><strong>Guest:</strong></span>
+          <span><%= @order.reserver_full_name %></span>
+        </li>
+        <li>
+          <span><strong>Place:</strong></span>
+          <span><%= @order.booking_place %></span>
+        </li>
+        <li>
+          <span><strong>Price:</strong></span>
+          <span><%= present_booking_price(@order.total_price) %></span>
+        </li>
+      </ul>
+      <table class='table table-bordered'>
+        <thead class='thead-default'>
+          <tr>
+            <th><%= @order.reservable_type %></th>
+            <th>Time</th>
+            <th># Players</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order.bookings.each do |booking| %>
+            <tr>
+              <td><%= booking.reservable_name %></td>
+              <td><%= present_range_of_time(booking.start_time, booking.end_time) %></td>
+              <td><%= booking.number_of_players %></td>
+              <td>
+                <ul class='booking-options'>
+                  <% booking.reservable_options.each do |option| %>
+                    <li><%= option.reservable_option_name.humanize %><br></li>
+                  <% end %>
+                </ul>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class='col-xs-2'></div>
   </div>
 </div>
+
