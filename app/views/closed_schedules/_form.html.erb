@@ -22,11 +22,11 @@
 <% end %>
 
 <% activity_id = @schedule.activity.id %>
-<%= form_tag("/activities/#{activity_id}/closed_schedules", method: :POST) do %>
+<%= form_tag("/activities/#{activity_id}/closed_schedules", method: :POST, id: 'new-closing-time-form') do %>
   <div class='row card card-block'>
     <div clas'col-xs-12'>
       <div class="custom-controls-stacked">
-        <%= text_field_tag 'closed_schedule[label]', '', class: 'form-control',
+        <%= text_field_tag 'closed_schedule[label]', @schedule.label , class: 'form-control',
          placeholder: 'Label name' %>
       </div>
     </div>
@@ -53,50 +53,57 @@
     <div class='col-xs-6'>
       <div class="row <%= 'closing-time-inactive' unless @schedule.closed_specific_day %>" id='closed-on'>
         <div class='col-xs-6'>
-          <%= text_field_tag 'closed_schedule[closed_on]', '', class: 'form-control', id: 'closed_on' %>
+          <%= text_field_tag 'closed_schedule[closed_on]', @schedule.closed_on, class: 'form-control', id: 'closed_on' %>
         </div>
       </div>
       <div class="row <%= 'closing-time-inactive' if @schedule.closed_specific_day %>" id='list-of-days'>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'monday', false,
-              id: 'closed_schedule_closed_days_monday' %> Monday
+            <%= check_box_tag "closed_schedule[closed_days][]", 'monday',
+            shouldCheckDay(@schedule.closed_days, 'monday'),
+            id: 'closed_schedule_closed_days_monday' %> Monday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'tuesday', false,
+            <%= check_box_tag "closed_schedule[closed_days][]", 'tuesday',
+            shouldCheckDay(@schedule.closed_days, 'tuesday'),
              id: 'closed_schedule_closed_days_tuesday' %> Tuesday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'wednesday', false,
+            <%= check_box_tag "closed_schedule[closed_days][]", 'wednesday',
+            shouldCheckDay(@schedule.closed_days, 'wednesday'),
             id: 'closed_schedule_closed_days_wednesday' %> Wednesday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'thursday', false,
-             id: 'closed_schedule_closed_days_thursday' %> Thursday
+            <%= check_box_tag "closed_schedule[closed_days][]", 'thursday',
+            shouldCheckDay(@schedule.closed_days, 'thursday'),
+            id: 'closed_schedule_closed_days_thursday' %> Thursday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'friday', false,
-             id: 'closed_schedule_closed_days_friday' %> Friday
+            <%= check_box_tag "closed_schedule[closed_days][]", 'friday',
+            shouldCheckDay(@schedule.closed_days, 'friday'),
+            id: 'closed_schedule_closed_days_friday' %> Friday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'saturday', false,
-             id: 'closed_schedule_closed_days_saturday' %> Saturday
+            <%= check_box_tag "closed_schedule[closed_days][]", 'saturday',
+            shouldCheckDay(@schedule.closed_days, 'saturday'),
+            id: 'closed_schedule_closed_days_saturday' %> Saturday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_days][]", 'sunday', false,
-             id: 'closed_schedule_closed_days_sunday' %> Sunday
+            <%= check_box_tag "closed_schedule[closed_days][]", 'sunday',
+            shouldCheckDay(@schedule.closed_days, 'sunday'),
+            id: 'closed_schedule_closed_days_sunday' %> Sunday
           </label>
         </div>
       </div>
@@ -141,6 +148,6 @@
 
   <%= hidden_field_tag 'closed_schedule[activity_id]', activity_id %>
   <div class='row text-xs-center'>
-    <button type='submit' class='btn btn-primary'>Submit</button>
+    <button type='submit' class='btn btn-primary' id='create-schedule-btn'>Submit</button>
   </div>
 <% end %>
