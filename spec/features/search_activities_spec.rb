@@ -259,5 +259,4 @@ feature 'Search Activities', js: true do
       end
     end
   end
-
 end

@@ -8,6 +8,9 @@
     <%= render 'layouts/javascript_variables' %>
     <% if Rails.env.production? %>
       <%= javascript_include_tag 'https://checkout.stripe.com/checkout.js' %>
+    <% elsif Rails.env.test? %>
+      <%= javascript_include_tag 'sinon.min' %>
+      <%= render 'layouts/synchronize_time_in_js' %>
     <% else %>
         <%= javascript_include_tag 'checkout' %>
     <% end %>

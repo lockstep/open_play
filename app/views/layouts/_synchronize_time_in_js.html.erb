@@ -1,0 +1,4 @@
+<% unix_millis = (Time.now.to_f * 1000.0).to_i %>
+<script>
+  sinon.useFakeTimers(<%= unix_millis %>, 'Date')
+</script>
