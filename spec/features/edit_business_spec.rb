@@ -35,10 +35,9 @@ feature 'Edit Business' do
       click_link 'Your Business'
       click_link 'Edit Your Business'
       fill_in 'business_name', with: ''
-      fill_in 'business_phone_number', with: 12345678910111213
+      fill_in 'business_phone_number', with: 123456789012345
       click_button 'Save'
       expect(page).to have_content "can't be blank"
-      expect(page).to have_content "is too long"
     end
   end
 end
