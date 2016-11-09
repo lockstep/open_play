@@ -22,11 +22,11 @@ class Activity < ApplicationRecord
   end
 
   def self.filter_activities_by_closed_schedules(activities, booking_date, booking_time)
-    activities.select do |activity|
-      !activity.closed_schedules.any? do |schedule|
-        schedule.match?(booking_date, booking_time)
-      end
-    end
+    activities.select { |activity| !activity.out_of_service?(booking_date, booking_time) }
+  end
+
+  def out_of_service?(booking_date, booking_time)
+    closed_schedules.any? { |schedule| schedule.match?(booking_date, booking_time) }
   end
 
   def end_time_is_after_start_time
