@@ -54,6 +54,8 @@ class Reservable < ApplicationRecord
   end
 
   def out_of_service?(date_time)
-    activity.out_of_service?(date_time.to_date.to_s, date_time.to_time.to_s)
+    booking_date = date_time.to_date.to_s
+    booking_time = date_time.to_time.to_s
+    activity.out_of_service?(booking_date, booking_time, interval)
   end
 end

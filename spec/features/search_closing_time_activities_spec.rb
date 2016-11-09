@@ -7,11 +7,16 @@ feature 'Search Closing Time Activities', js: true do
 
   describe 'A lane exists' do
     background do
-      @bowling = create(:bowling, business: @business)
+      @bowling = create(:bowling,
+        business: @business,
+        start_time: '08:00:00',
+        end_time: '18:00:00',
+      )
       @lane = create(:lane,
         start_time: '08:00',
         end_time: '17:00',
-        activity: @bowling
+        activity: @bowling,
+        interval: 60
       )
     end
 
@@ -113,177 +118,283 @@ feature 'Search Closing Time Activities', js: true do
     end
 
     context 'An activity is scheduled to close on specific time' do
-      context 'on specific day' do
-        background do
-          create(:closed_schedule,
-            closed_all_day: false,
-            closing_begins_at: '10:00am',
-            closing_ends_at: '11:00am',
-            closed_specific_day: true,
-            closed_on: '7 Nov 2016',
-            activity: @bowling
-          )
+      context 'time that exactly math with reservable lane' do
+        context 'on specific day' do
+          background do
+            create(:closed_schedule,
+              closed_all_day: false,
+              closing_begins_at: '10:00am',
+              closing_ends_at: '11:00am',
+              closed_specific_day: true,
+              closed_on: '7 Nov 2016',
+              activity: @bowling
+            )
+          end
+
+          context 'user search on that day' do
+            context 'user search on closed time' do
+              scenario 'shows the appropiate message' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
+                  expect(page).to have_content 'No results found'
+                end
+              end
+            end
+
+            context 'user search on other time' do
+              scenario 'returns available time' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '7 Nov 2016', booking_time: '11:00am')
+
+                  expect(page).to have_content @bowling.name
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_content '11:00'
+                  expect(page).to have_content '16:00'
+                  expect(page).to have_button('10:00', disabled: true)
+                  expect(page).to have_button('11:00', disabled: false)
+                  expect(page).to have_button('11:00', disabled: false)
+                end
+              end
+            end
+          end
+
+          context 'user search on other day' do
+            context 'user search on closed time' do
+              scenario 'returns available time' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '8 Nov 2016', booking_time: '10:00am')
+
+                  expect(page).to have_content @bowling.name
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_button('10:00', disabled: false)
+                  expect(page).to have_button('11:00', disabled: false)
+                  expect(page).to have_button('16:00', disabled: false)
+                end
+              end
+            end
+            context 'user search on other time' do
+              scenario 'returns available time' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '8 Nov 2016', booking_time: '11:00am')
+
+                  expect(page).to have_content @bowling.name
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_button('11:00', disabled: false)
+                  expect(page).to have_button('16:00', disabled: false)
+                end
+              end
+            end
+          end
         end
 
-        context 'user search on that day' do
-          context 'user search on closed time' do
-            scenario 'shows the appropiate message' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
-                expect(page).to have_content 'No results found'
+        context 'in every monday and friday' do
+          background do
+            create(:closed_schedule,
+              closed_all_day: false,
+              closing_begins_at: '10:00am',
+              closing_ends_at: '11:00am',
+              closed_specific_day: false,
+              closed_days: ['monday', 'friday'],
+              activity: @bowling
+            )
+          end
+
+          context 'user search on closed days' do
+            context 'user search on monday' do
+              context 'user search on closed time' do
+                scenario 'shows the appropiate message' do
+                  travel_to Time.new(2016, 11, 5) do
+                    visit root_path
+                    search_activities(booking_date: '14 Nov 2016', booking_time: '10:00am')
+                    expect(page).to have_content 'No results found'
+                  end
+                end
+              end
+              context 'user search on other time' do
+                scenario 'returns available time' do
+                  travel_to Time.new(2016, 11, 5) do
+                    visit root_path
+                    search_activities(booking_date: '14 Nov 2016', booking_time: '11:00am')
+
+                    expect(page).to have_content @bowling.name
+                    expect(page).to have_content @lane.name
+                    expect(page).to have_content '11:00'
+                    expect(page).to have_content '16:00'
+                    expect(page).to have_button('10:00', disabled: true)
+                    expect(page).to have_button('11:00', disabled: false)
+                    expect(page).to have_button('11:00', disabled: false)
+                  end
+                end
+              end
+            end
+            context 'user search on friday' do
+              context 'user search on closed time' do
+                scenario 'shows the appropiate message' do
+                  travel_to Time.new(2016, 11, 5) do
+                    visit root_path
+                    search_activities(booking_date: '18 Nov 2016', booking_time: '10:00am')
+                    expect(page).to have_content 'No results found'
+                  end
+                end
+              end
+              context 'user search on other time' do
+                scenario 'returns available time' do
+                  travel_to Time.new(2016, 11, 5) do
+                    visit root_path
+                    search_activities(booking_date: '18 Nov 2016', booking_time: '11:00am')
+
+                    expect(page).to have_content @bowling.name
+                    expect(page).to have_content @lane.name
+                    expect(page).to have_content '11:00'
+                    expect(page).to have_content '16:00'
+                    expect(page).to have_button('10:00', disabled: true)
+                    expect(page).to have_button('11:00', disabled: false)
+                    expect(page).to have_button('11:00', disabled: false)
+                  end
+                end
               end
             end
           end
 
-          context 'user search on other time' do
-            scenario 'returns available time' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '7 Nov 2016', booking_time: '11:00am')
+          context 'user search on other day' do
+            context 'user search on closed time' do
+              scenario 'shows the appropiate message' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '15 Nov 2016', booking_time: '10:00am')
 
-                expect(page).to have_content @bowling.name
-                expect(page).to have_content @lane.name
-                expect(page).to have_content '11:00'
-                expect(page).to have_content '16:00'
-                expect(page).to have_button('10:00', disabled: true)
-                expect(page).to have_button('11:00', disabled: false)
-                expect(page).to have_button('11:00', disabled: false)
+                  expect(page).to have_content @bowling.name
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_content '10:00'
+                  expect(page).to have_content '16:00'
+                  expect(page).to have_button('10:00', disabled: false)
+                  expect(page).to have_button('16:00', disabled: false)
+                end
               end
             end
-          end
-        end
+            context 'user search on other time' do
+              scenario 'shows the appropiate message' do
+                travel_to Time.new(2016, 11, 5) do
+                  visit root_path
+                  search_activities(booking_date: '15 Nov 2016', booking_time: '11:00am')
 
-        context 'user search on other day' do
-          context 'user search on closed time' do
-            scenario 'returns available time' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '8 Nov 2016', booking_time: '10:00am')
-
-                expect(page).to have_content @bowling.name
-                expect(page).to have_content @lane.name
-                expect(page).to have_button('10:00', disabled: false)
-                expect(page).to have_button('11:00', disabled: false)
-                expect(page).to have_button('16:00', disabled: false)
-              end
-            end
-          end
-          context 'user search on other time' do
-            scenario 'returns available time' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '8 Nov 2016', booking_time: '11:00am')
-
-                expect(page).to have_content @bowling.name
-                expect(page).to have_content @lane.name
-                expect(page).to have_button('11:00', disabled: false)
-                expect(page).to have_button('16:00', disabled: false)
+                  expect(page).to have_content @bowling.name
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_content '11:00'
+                  expect(page).to have_content '16:00'
+                  expect(page).to have_button('11:00', disabled: false)
+                  expect(page).to have_button('16:00', disabled: false)
+                end
               end
             end
           end
         end
       end
 
-      context 'in every monday and friday' do
-        background do
+      context 'time that does not exactly math with reservable lane' do
+        scenario 'shows the appropiate message' do
           create(:closed_schedule,
             closed_all_day: false,
-            closing_begins_at: '10:00am',
-            closing_ends_at: '11:00am',
-            closed_specific_day: false,
-            closed_days: ['monday', 'friday'],
+            closing_begins_at: '09:30am',
+            closing_ends_at: '10:00am',
+            closed_specific_day: true,
+            closed_on: '7 Nov 2016',
             activity: @bowling
           )
-        end
 
-        context 'user search on closed days' do
-          context 'user search on monday' do
-            context 'user search on closed time' do
-              scenario 'shows the appropiate message' do
-                travel_to Time.new(2016, 11, 5) do
-                  visit root_path
-                  search_activities(booking_date: '14 Nov 2016', booking_time: '10:00am')
-                  expect(page).to have_content 'No results found'
-                end
-              end
-            end
-            context 'user search on other time' do
-              scenario 'returns available time' do
-                travel_to Time.new(2016, 11, 5) do
-                  visit root_path
-                  search_activities(booking_date: '14 Nov 2016', booking_time: '11:00am')
+          travel_to Time.new(2016, 11, 5) do
+            visit root_path
+            search_activities(booking_date: '7 Nov 2016', booking_time: '8:00am')
 
-                  expect(page).to have_content @bowling.name
-                  expect(page).to have_content @lane.name
-                  expect(page).to have_content '11:00'
-                  expect(page).to have_content '16:00'
-                  expect(page).to have_button('10:00', disabled: true)
-                  expect(page).to have_button('11:00', disabled: false)
-                  expect(page).to have_button('11:00', disabled: false)
-                end
-              end
-            end
-          end
-          context 'user search on friday' do
-            context 'user search on closed time' do
-              scenario 'shows the appropiate message' do
-                travel_to Time.new(2016, 11, 5) do
-                  visit root_path
-                  search_activities(booking_date: '18 Nov 2016', booking_time: '10:00am')
-                  expect(page).to have_content 'No results found'
-                end
-              end
-            end
-            context 'user search on other time' do
-              scenario 'returns available time' do
-                travel_to Time.new(2016, 11, 5) do
-                  visit root_path
-                  search_activities(booking_date: '18 Nov 2016', booking_time: '11:00am')
-
-                  expect(page).to have_content @bowling.name
-                  expect(page).to have_content @lane.name
-                  expect(page).to have_content '11:00'
-                  expect(page).to have_content '16:00'
-                  expect(page).to have_button('10:00', disabled: true)
-                  expect(page).to have_button('11:00', disabled: false)
-                  expect(page).to have_button('11:00', disabled: false)
-                end
-              end
-            end
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane.name
+            expect(page).to have_button('08:00', disabled: false)
+            expect(page).to have_button('09:00', disabled: true)
+            expect(page).to have_button('10:00', disabled: false)
+            expect(page).to have_button('11:00', disabled: false)
+            expect(page).to have_button('16:00', disabled: false)
           end
         end
 
-        context 'user search on other day' do
-          context 'user search on closed time' do
-            scenario 'shows the appropiate message' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '15 Nov 2016', booking_time: '10:00am')
+        scenario 'shows the appropiate message' do
+          create(:closed_schedule,
+            closed_all_day: false,
+            closing_begins_at: '10:30am',
+            closing_ends_at: '11:00am',
+            closed_specific_day: true,
+            closed_on: '7 Nov 2016',
+            activity: @bowling
+          )
 
-                expect(page).to have_content @bowling.name
-                expect(page).to have_content @lane.name
-                expect(page).to have_content '10:00'
-                expect(page).to have_content '16:00'
-                expect(page).to have_button('10:00', disabled: false)
-                expect(page).to have_button('16:00', disabled: false)
-              end
-            end
+          travel_to Time.new(2016, 11, 5) do
+            visit root_path
+            search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
+
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane.name
+            expect(page).to have_button('10:00', disabled: true)
+            expect(page).to have_button('11:00', disabled: false)
+            expect(page).to have_button('16:00', disabled: false)
           end
-          context 'user search on other time' do
-            scenario 'shows the appropiate message' do
-              travel_to Time.new(2016, 11, 5) do
-                visit root_path
-                search_activities(booking_date: '15 Nov 2016', booking_time: '11:00am')
+        end
 
-                expect(page).to have_content @bowling.name
-                expect(page).to have_content @lane.name
-                expect(page).to have_content '11:00'
-                expect(page).to have_content '16:00'
-                expect(page).to have_button('11:00', disabled: false)
-                expect(page).to have_button('16:00', disabled: false)
-              end
-            end
+        scenario 'returns available time' do
+          create(:closed_schedule,
+            closed_all_day: false,
+            closing_begins_at: '9:30am',
+            closing_ends_at: '10:00am',
+            closed_specific_day: true,
+            closed_on: '7 Nov 2016',
+            activity: @bowling
+          )
+
+          travel_to Time.new(2016, 11, 5) do
+            visit root_path
+            search_activities(booking_date: '8 Nov 2016', booking_time: '10:00am')
+
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane.name
+            expect(page).to have_button('10:00', disabled: false)
+            expect(page).to have_button('11:00', disabled: false)
+            expect(page).to have_button('16:00', disabled: false)
+          end
+        end
+
+        scenario 'shows the appropiate message' do
+          create(:closed_schedule,
+            closed_all_day: false,
+            closing_begins_at: '9:30am',
+            closing_ends_at: '10:30am',
+            closed_specific_day: true,
+            closed_on: '7 Nov 2016',
+            activity: @bowling
+          )
+
+          travel_to Time.new(2016, 11, 5) do
+            visit root_path
+            search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
+            expect(page).to have_content 'No results found'
+          end
+        end
+
+        scenario 'shows the appropiate message' do
+          create(:closed_schedule,
+            closed_all_day: false,
+            closing_begins_at: '9:30am',
+            closing_ends_at: '11:00am',
+            closed_specific_day: true,
+            closed_on: '7 Nov 2016',
+            activity: @bowling
+          )
+
+          travel_to Time.new(2016, 11, 5) do
+            visit root_path
+            search_activities(booking_date: '7 Nov 2016', booking_time: '10:00am')
+            expect(page).to have_content 'No results found'
           end
         end
       end
