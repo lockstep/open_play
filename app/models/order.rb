@@ -39,6 +39,10 @@ class Order < ApplicationRecord
     guest_id.present?
   end
 
+  def reserver
+    guest_order? ? guest : user
+  end
+
   def booking_place
     booking.reservable_activity_name
   end
@@ -69,7 +73,7 @@ class Order < ApplicationRecord
   def self.booking_date(date)
     date.strftime("%A, %B %e")
   end
-  
+
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << DEFAULT_ORDER_HEADER

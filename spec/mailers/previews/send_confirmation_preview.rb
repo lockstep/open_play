@@ -1,7 +1,14 @@
 # Preview all emails at http://localhost:3000/rails/mailers/send_confirmation
 class SendConfirmationPreview < ActionMailer::Preview
   def booking_confirmation
-    user = User.create(email: 'test@example.com', password: 'password')
+    order = Order.first || create_order
+    SendConfirmationMailer.booking_confirmation(order.id)
+  end
+
+  private
+
+  def create_order
+    user = User.first || User.create(email: 'test@example.com', password: 'password')
     business = Business.create(
       name: 'Johns Avenue',
       user: user
@@ -31,6 +38,6 @@ class SendConfirmationPreview < ActionMailer::Preview
       order: order,
       reservable: lane
     )
-    SendConfirmationMailer.booking_confirmation(order)
+    order
   end
 end
