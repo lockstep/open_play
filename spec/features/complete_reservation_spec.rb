@@ -62,7 +62,10 @@ feature 'Complete Reservation', :js do
             stub_stripe_checkout_handler
 
             click_on 'Complete Reservation'
+            expect(page).to have_content 'Thank you for booking with us!'
             expect(page).to have_content 'Reservation Info'
+            expect(page).to have_content 'Monday, January 20'
+            expect(page).to have_content 'Country Club Lanes'
             expect(page).to have_content 'Tom Cruise'
           end
         end
