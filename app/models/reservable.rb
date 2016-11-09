@@ -53,4 +53,7 @@ class Reservable < ApplicationRecord
     Time.parse('23:59:59')
   end
 
+  def out_of_service?(date_time)
+    activity.out_of_service?(date_time.to_date.to_s, date_time.to_time.to_s)
+  end
 end

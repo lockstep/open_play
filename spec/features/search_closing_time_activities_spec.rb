@@ -137,7 +137,7 @@ feature 'Search Closing Time Activities', js: true do
           end
 
           context 'user search on other time' do
-            xscenario 'returns available time' do
+            scenario 'returns available time' do
               travel_to Time.new(2016, 11, 5) do
                 visit root_path
                 search_activities(booking_date: '7 Nov 2016', booking_time: '11:00am')
@@ -156,7 +156,7 @@ feature 'Search Closing Time Activities', js: true do
 
         context 'user search on other day' do
           context 'user search on closed time' do
-            xscenario 'returns available time' do
+            scenario 'returns available time' do
               travel_to Time.new(2016, 11, 5) do
                 visit root_path
                 search_activities(booking_date: '8 Nov 2016', booking_time: '10:00am')
@@ -164,6 +164,7 @@ feature 'Search Closing Time Activities', js: true do
                 expect(page).to have_content @bowling.name
                 expect(page).to have_content @lane.name
                 expect(page).to have_button('10:00', disabled: false)
+                expect(page).to have_button('11:00', disabled: false)
                 expect(page).to have_button('16:00', disabled: false)
               end
             end
@@ -207,7 +208,7 @@ feature 'Search Closing Time Activities', js: true do
                 end
               end
             end
-            xcontext 'user search on other time' do
+            context 'user search on other time' do
               scenario 'returns available time' do
                 travel_to Time.new(2016, 11, 5) do
                   visit root_path
@@ -235,7 +236,7 @@ feature 'Search Closing Time Activities', js: true do
               end
             end
             context 'user search on other time' do
-              xscenario 'returns available time' do
+              scenario 'returns available time' do
                 travel_to Time.new(2016, 11, 5) do
                   visit root_path
                   search_activities(booking_date: '18 Nov 2016', booking_time: '11:00am')

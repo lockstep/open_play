@@ -31,6 +31,7 @@ class ClosedSchedule < ApplicationRecord
 
   def checking_schedule_in_case_of_closed_on_specific_day(booking_date, booking_time)
     if closed_specific_day
+      return false if Date.parse(booking_date) != closed_on
       checking_date_time_is_in_range_of_begins_and_end(
         booking_date, booking_time, closing_begins_at, closing_ends_at)
     else
