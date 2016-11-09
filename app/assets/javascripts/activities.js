@@ -24,4 +24,17 @@ $(function() {
   $("#all-day-checkbox, #specific-time-range-checkbox").change(function() {
     $('#closing-time-range').toggleClass('closing-time-inactive');
   });
+
+  $('#create-schedule-btn').click(function(e) {
+    e.preventDefault();
+    if ($("#specific-day-checkbox").is(":checked")) {
+      $('#list-of-days input[type=checkbox]').attr('checked', false); }
+    else { $('#closed_on').val(''); }
+
+    if ($("#all-day-checkbox").is(":checked")) {
+      $('#closing_begins_at, #closing_ends_at').val('');
+    }
+    $('#new-closing-time-form').submit();
+  });
+
 });
