@@ -74,6 +74,7 @@ var Utilities = {
       slidesToScroll: 1,
       arrows: true,
       infinite: false,
+      speed: 250,
       responsive    : [
         {
           breakpoint: 1100,
