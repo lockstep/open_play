@@ -21,6 +21,7 @@ class Order < ApplicationRecord
   delegate :name, to: :activity, prefix: true
   delegate :full_name, to: :user, prefix: true
   delegate :full_name, to: :guest, prefix: true
+  delegate :reservable_type, to: :activity
 
   def booking
     bookings.first

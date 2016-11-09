@@ -1,4 +1,5 @@
 describe OrdersController do
+  include ActiveJob::TestHelper
   describe 'GET new' do
     context 'a business exists' do
       before { @business = create(:business) }
@@ -74,8 +75,10 @@ describe OrdersController do
         login_user
         context 'all params are valid' do
           it 'creates a booking' do
-            post :create, params: order_params(user_id: @user.id)
+            expect { post :create, params: order_params(user_id: @user.id)}
+              .to change { enqueued_jobs.size }.by(1)
 
+            expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
             expect(Order.count).to eq 1
             bookings = Order.first.bookings
             expect(bookings.length).to eq 1
