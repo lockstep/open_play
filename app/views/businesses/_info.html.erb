@@ -13,10 +13,16 @@
     <div class="col-md-8  col-xs-12 business-frame">
       <div class="business-info">
         <h2><%= current_business.name %></h2>
-        <hr>
+        <hr/>
         <p><i class="fa fa-lg fa-book icon-info"></i><%= current_business.description %></p>
         <p><i class="fa fa-lg fa-phone icon-info"></i><%= current_business.phone_number %></p>
         <p><i class="fa fa-lg fa-home icon-info"></i><%= current_business.address %></p>
+        <br/>
+      </div>
+      <div>
+        <center>
+          <%= link_to 'Edit Your Business', edit_business_path(@business), class: 'btn btn-primary'%>
+        </center>
       </div>
     </div>
   </div>

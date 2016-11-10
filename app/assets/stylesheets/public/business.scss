@@ -11,11 +11,6 @@
       color : #808080;
       margin-top:45%;
   }
-  .business-frame{
-    height: 270px;
-    border: 1px solid #e0e2e5;
-    border-left: none;
-  }
   .bg-blur {
       background: linear-gradient(141deg, #686B70 0%, #494A4E 51%, #202020 75%);
       height: 270px;
@@ -41,10 +36,4 @@
       left: 28%;
       bottom: 15%;
   }
-}
-
-@media (max-width: 768px) {
-    .business-frame{
-      border-left: 1px solid #e0e2e5 !important;
-    }
 }
