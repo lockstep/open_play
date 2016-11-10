@@ -10,10 +10,6 @@ feature 'View User Profile' do
       click_button @user.email
     end
     click_link 'Your Profile'
-
-    within '#user-information' do
-      expect(page).to have_content 'superman@gmail.com'
-      expect(page).to have_link 'Edit Profile'
-    end
+    expect(page).to have_content 'Edit Profile'
   end
 end

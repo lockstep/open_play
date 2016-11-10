@@ -10,9 +10,6 @@ feature 'Edit User Profile' do
       complete_user_form
 
       expect(page).to have_content 'Successfully updated user profile'
-      within("nav") do
-        expect(page).to have_content 'peter@gmail.com'
-      end
     end
   end
 
@@ -51,7 +48,6 @@ feature 'Edit User Profile' do
       click_button @user.email
     end
     click_link 'Your Profile'
-    click_link 'Edit Profile'
   end
 
   def complete_user_form(overrides={})

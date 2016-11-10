@@ -1,7 +1,7 @@
 <% current_business = @business || business %>
-<div class="business" style="margin-top: 20px; margin-bottom: 20px;">
+<div class="business">
   <div class="row">
-    <div class="col-md-3 offset-md-1 bg-blur ">
+    <div class="col-md-3 offset-md-1">
       <% if current_business.profile_picture? %>
         <%= image_tag current_business.profile_picture.url(:medium), class: "img-thumbnail picture hidden-sm-down" %>
         <%= image_tag current_business.profile_picture.url(:medium), class: "img-thumbnail hidden-md-up picture-mob" %>
@@ -14,7 +14,7 @@
       <div class="business-info">
         <h2><%= current_business.name %></h2>
         <hr/>
-        <p><i class="fa fa-lg fa-book icon-info"></i><%= current_business.description %></p>
+        <p><%= current_business.description %></p>
         <p><i class="fa fa-lg fa-phone icon-info"></i><%= current_business.phone_number %></p>
         <p><i class="fa fa-lg fa-home icon-info"></i><%= current_business.address %></p>
         <br/>
