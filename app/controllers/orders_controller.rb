@@ -88,7 +88,7 @@ class OrdersController < ApplicationController
       meta: {
         number_of_bookings: @order.bookings.length,
         total_price: @order.total_price_in_cents,
-        email: user_signed_in? ? current_user.email : ''
+        email: user_signed_in? ? current_user.email : params[:guest][:email]
       }
     }
   end

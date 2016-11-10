@@ -20,7 +20,7 @@ $(function() {
         OPEN_PLAY.checkoutInitiator(
           response.meta.number_of_bookings,
           response.meta.total_price,
-          response.meta.email == '' ? $('#guest_email').val() : response.meta.email
+          response.meta.email
         );
       },
       error: function(xhr, status, error) {
