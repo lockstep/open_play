@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th class='text-xs-center'>No.</th>
+      <th class='text-xs-center'>Customer</th>
       <th class='text-xs-center'>Activity</th>
       <th class='text-xs-center'>Reservable</th>
       <th class='text-xs-center'>Time</th>
@@ -15,7 +16,10 @@
       <% order.bookings.each_with_index do |booking, booking_index| %>
         <tr>
           <td class='text-xs-center'>
-            <%= order_index + 1 if booking_index == 0 %>
+            <%= order.id %>
+          </td>
+          <td class='text-xs-center'>
+            <%= order.reserver_full_name %>
           </td>
           <td class='text-xs-center'>
             <%= order.activity_name if booking_index == 0 %>
