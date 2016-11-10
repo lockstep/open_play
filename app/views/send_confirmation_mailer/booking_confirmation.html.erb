@@ -9,9 +9,9 @@
         <td valign="top" style="padding:48px">
           <div style="color:#737373;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
 
-            <p style="margin:0 0 16px">Hello <%= "#{@reserver.first_name} #{@reserver.last_name}" %>,</p>
+            <p style="margin:0 0 16px">Hi <%= "#{@reserver.first_name}" %>,</p>
 
-            <p style="margin:0 0 16px">Thank you for booking with OpenPlay. We are happy to confirm that your booking was successful.<br> Your booking details are shown below for your reference:</p>
+            <p style="margin:0 0 16px">Thank you for booking with OpenPlay! Your booking details are shown below for your reference:</p>
 
             <h2 style="color:#557da1;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:16px 0 8px;text-align:left">Booking Number: <%= @order.id %></h2>
             <ul>
@@ -61,7 +61,7 @@
                 </tbody>
             </table>
             <p style="margin:30px 0 0 0">
-              Thank you<br>OpenPlay Team
+              Thank you,<br>The OpenPlay Team
             </p>
           </div>
         </td>
