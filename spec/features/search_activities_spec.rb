@@ -123,28 +123,46 @@ feature 'Search Activities', js: true do
 
         context 'Bowling has many lanes' do
           before do
-            @lane_4 = create(
-              :lane,
-              name: 'Lane 4',
-              activity: @bowling
-            )
+            # TODO refactor this to use Factory Girl later
+            create(:lane, name: 'Lane 4', activity: @bowling)
+            create(:lane, name: 'Lane 5', activity: @bowling)
+            create(:lane, name: 'Lane 6', activity: @bowling)
+            create(:lane, name: 'Lane 7', activity: @bowling)
+            create(:lane, name: 'Lane 8', activity: @bowling)
+            create(:lane, name: 'Lane 9', activity: @bowling)
           end
           scenario 'shows the view more link' do
             visit root_path
             search_activities
-            expect(page).to have_content @lane.name
-            expect(page).to have_content @lane_2.name
-            expect(page).to_not have_content @lane_4.name
+            expect(page).to have_content 'Lane 1'
+            expect(page).to have_content 'Lane 2'
+            expect(page).to_not have_content 'Lane 4'
+            expect(page).to_not have_content 'Lane 8'
             expect(page).to have_content 'view more'
           end
           context 'view more link exists' do
+            scenario 'shows 5 more lanes' do
+              visit root_path
+              search_activities
+              click_on 'view more'
+              expect(page).to have_content 'Lane 1'
+              expect(page).to have_content 'Lane 2'
+              expect(page).to have_content 'Lane 4'
+              expect(page).to have_content 'Lane 8'
+              expect(page).to_not have_content 'Lane 9'
+              expect(page).to have_content 'view more'
+            end
             scenario 'shows the rest of the lanes' do
               visit root_path
               search_activities
               click_on 'view more'
-              expect(page).to have_content @lane.name
-              expect(page).to have_content @lane_2.name
-              expect(page).to have_content @lane_4.name
+              expect(page).to have_content 'Lane 1'
+              expect(page).to have_content 'Lane 2'
+              expect(page).to have_content 'Lane 4'
+              expect(page).to have_content 'Lane 8'
+              click_on 'view more'
+              expect(page).to have_content 'Lane 9'
+              expect(page).to_not have_content 'view more'
             end
           end
         end
