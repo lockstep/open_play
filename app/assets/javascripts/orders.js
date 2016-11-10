@@ -19,7 +19,8 @@ $(function() {
       success: function(response) {
         OPEN_PLAY.checkoutInitiator(
           response.meta.number_of_bookings,
-          response.meta.total_price
+          response.meta.total_price,
+          response.meta.email == '' ? $('#guest_email').val() : response.meta.email
         );
       },
       error: function(xhr, status, error) {
@@ -35,12 +36,13 @@ $(function() {
 });
 
 
-OPEN_PLAY.checkoutInitiator = function(number_of_bookings ,total_price) {
+OPEN_PLAY.checkoutInitiator = function(number_of_bookings ,total_price, email) {
   var unit = number_of_bookings == 1 ? 'booking' : 'bookings';
   OPEN_PLAY.checkoutHandler.open({
     name: 'Open Play',
     description: number_of_bookings + ' ' + unit,
-    amount: total_price
+    amount: total_price,
+    email: email
   });
 }
 

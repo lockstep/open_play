@@ -87,7 +87,8 @@ class OrdersController < ApplicationController
     render json: {
       meta: {
         number_of_bookings: @order.bookings.length,
-        total_price: @order.total_price_in_cents
+        total_price: @order.total_price_in_cents,
+        email: user_signed_in? ? current_user.email : ''
       }
     }
   end
