@@ -71,10 +71,10 @@ var Utilities = {
   slidingSlot: function(){
     $('.row-times').not('.slick-initialized').slick({
       slidesToShow: 7,
-      slidesToScroll: 3,
+      slidesToScroll: 1,
       arrows: true,
       infinite: false,
-      speed: 350,
+      speed: 200,
       responsive    : [
         {
           breakpoint: 1100,
