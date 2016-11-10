@@ -13,9 +13,11 @@ class SearchController < ApplicationController
   def get_more_reservables
     @booking_date = params[:booking_date]
     @booking_time = params[:booking_time]
-    activity = Activity.find(params[:activity_id])
-    @reservables = activity.reservables.active.order(:name)
-      .offset(2)
+    reservables_count = params[:reservables_count].to_i
+    @activity = Activity.find(params[:activity_id])
+    @reservables = @activity.reservables.active.order(:name)
+      .offset(reservables_count).limit(5)
+    @number_of_reservables_per_page =  reservables_count + 5
     respond_to do |format|
       format.js
     end

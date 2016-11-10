@@ -19,10 +19,11 @@
                     <%= render 'search/reservable', reservable: reservable %>
                   <% end %>
                   <% if remaining_reservables?(activity, @number_of_reservables_per_page) %>
-                    <div class='remaining-slots'>
+                    <div class='remaining-slots-<%=activity.id%>'>
                       <span class='view-more'>
                         <%= link_to 'view more', search_more_reservables_path(
                           activity_id: activity.id,
+                          reservables_count: @number_of_reservables_per_page,
                           booking_date: @booking_date,
                           booking_time: @booking_time), remote: true %>
                       </span>
