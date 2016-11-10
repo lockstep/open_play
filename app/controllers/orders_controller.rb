@@ -33,8 +33,10 @@ class OrdersController < ApplicationController
       )
       SendConfirmationMailer.booking_confirmation(@order.id).deliver_later
       redirect_to success_order_path(@order),
-        notice: 'Thank you for booking with us!
-          Please check your email for a confirmation.'
+        notice: <<-EOS
+                  Thank you for your reservation!
+                  You will receive an email confirmation shortly.
+                EOS
     else
       render :new
     end
