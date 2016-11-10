@@ -60,8 +60,7 @@ feature 'View Activities' do
         scenario 'shows all lanes of the activity' do
           visit root_path
           click_link 'Manage Business'
-          expect(page).to have_content @activity.reservables.first.name
-          expect(page).to have_content @activity.reservables.second.name
+          expect(page).to have_content '2 Lanes'
         end
 
         scenario 'shows link to view reservations' do

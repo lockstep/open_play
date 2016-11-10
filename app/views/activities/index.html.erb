@@ -30,12 +30,8 @@
                 <td class='text-xs-center'>
                   <%= activity.name %>
                 </td>
-                <td>
-                  <% activity.reservables.active.each do |reservable| %>
-                    <div>
-                      <%= reservable.name %>
-                    </div>
-                  <% end %>
+                <td class='text-xs-center'>
+                  <%= pluralize(activity.reservables.count, activity.reservable_type.to_s ) %>
                 </td>
                 <td class='text-xs-center'>
                   <%= link_to 'View reservations',
