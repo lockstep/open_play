@@ -12,11 +12,7 @@ class Business < ApplicationRecord
       secret_access_key: ENV['S3_SECRET'],
     },
     s3_protocol: "https",
-    styles: {
-      large: "500x500>",
-      medium: "300x300>",
-      thumb: "150x150#"
-    }
+    styles:  { original: ["300x300>"] }
 
   validates_attachment_content_type :profile_picture,
     content_type: /\Aimage\/.*\z/

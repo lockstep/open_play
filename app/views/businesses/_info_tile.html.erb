@@ -1,0 +1,21 @@
+<% current_business = @business || business %>
+<div class="row card business">
+  <div class='col-xs-12'>
+    <%if current_business.profile_picture? %>
+      <%= image_tag current_business.profile_picture, class: "img-fluid logo" %>
+    <%else%>
+      <%= image_tag("icon",class: "img-fluid logo") %>
+    <%end%>
+  </div>
+  <div class="card-block col-xs-12 business-info-minimal text-xs-center">
+    <hr/>
+    <h4><%= current_business.name %></h4><br/>
+    <span>
+      <i class="fa fa-lg fa-home icon-info"></i>&nbsp;<%= current_business.address %>
+    </span><br/>
+    <div class='spacer-10'></div>
+    <span>
+      <i class="fa fa-lg fa-phone icon-info"></i>&nbsp;<%= current_business.phone_number %>
+    </span>
+  </div>
+</div>
