@@ -11,4 +11,8 @@ module OrderHelper
   def present_booking_price(booking_price)
     booking_price.zero? ? '-' : "$ #{booking_price}"
   end
+
+  def display_checked_in?(action_name, checked_in)
+    action_name == 'reservations_for_business_owner' && checked_in == false
+  end
 end

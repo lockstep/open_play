@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get 'businesses/show', to: 'businesses#show'
   resources :users, only: [:show, :edit, :update]
   resources :closed_schedules, only: [:destroy]
+  patch 'bookings/:id/check_in', to: 'bookings#check_in', as: 'booking_check_in'
 
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
