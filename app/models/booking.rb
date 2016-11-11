@@ -22,9 +22,14 @@ class Booking < ApplicationRecord
   delegate :per_person_weekday_price, to: :reservable
   delegate :per_person_weekend_price, to: :reservable
   delegate :activity, to: :reservable, prefix: true
+  delegate :id, to: :order, prefix: true
+  delegate :reserver_full_name, to: :order, prefix: true
 
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)
+  }
+  scope :find_by_order_ids, -> (order_ids, date) {
+    where(order_id: order_ids, booking_date: date).order(:start_time)
   }
 
   def number_of_players_cannot_exceed_maximum
@@ -40,6 +45,10 @@ class Booking < ApplicationRecord
 
   def per_person_price
     weekend_booking? ? per_person_weekend_price : per_person_weekday_price
+  end
+
+  def booking_price
+    base_booking_price + (number_of_players * per_person_price)
   end
 
   private

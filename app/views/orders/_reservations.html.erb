@@ -1,4 +1,4 @@
-<table class="table"<div class='row'>
+<table class="table">
   <thead>
     <tr>
       <th class='text-xs-center'>No.</th>
@@ -9,45 +9,45 @@
       <th class='text-xs-center'>Date</th>
       <th class='text-xs-center'>Number of People</th>
       <th class='text-xs-center'>Total Price</th>
-      <th class='text-xs-center'></th>
+      <% if controller.action_name == 'reservations_for_business_owner' %>
+        <th class='text-xs-center'></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
-    <% @orders.each_with_index do |order, order_index| %>
-      <% order.bookings.each_with_index do |booking, booking_index| %>
-        <tr class="<%= 'table-success' if booking.checked_in %>" id="booking_<%= booking.id %>">
-          <td class='text-xs-center'>
-            <%= order.id %>
-          </td>
-          <td class='text-xs-center'>
-            <%= order.reserver_full_name %>
-          </td>
-          <td class='text-xs-center'>
-            <%= order.activity_name if booking_index == 0 %>
-          </td>
-          <td class='text-xs-center'>
-            <%= booking.reservable_name %>
-          </td>
-          <td class='text-xs-center'>
-            <%= present_range_of_time(booking.start_time, booking.end_time) %>
-          </td>
-          <td class='text-xs-center'>
-            <%= present_date_in_day_month_format(booking.booking_date) %>
-          </td>
-          <td class='text-xs-center' id="number_of_people_from_booking_<%= booking.id %>">
-            <%= booking.number_of_players %>
-          </td>
-          <td class='text-xs-center'>
-            <%= present_booking_price(order.total_price) if booking_index == 0 %>
-          </td>
-          <td class='text-xs-center'>
-            <% unless booking.checked_in %>
-              <%= link_to 'Checked in', booking_checked_in_path(booking),
-                class: 'btn btn-success', method: 'PATCH' %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
+    <% @bookings.each do |booking| %>
+      <tr class="<%= 'table-success' if booking.checked_in %>" id="booking_<%= booking.id %>">
+        <td class='text-xs-center'>
+          <%= booking.order_id %>
+        </td>
+        <td class='text-xs-center'>
+          <%= booking.order_reserver_full_name %>
+        </td>
+        <td class='text-xs-center'>
+          <%= booking.reservable_activity_name %>
+        </td>
+        <td class='text-xs-center'>
+          <%= booking.reservable_name %>
+        </td>
+        <td class='text-xs-center'>
+          <%= present_range_of_time(booking.start_time, booking.end_time) %>
+        </td>
+        <td class='text-xs-center'>
+          <%= present_date_in_day_month_format(booking.booking_date) %>
+        </td>
+        <td class='text-xs-center' id="number_of_people_from_booking_<%= booking.id %>">
+          <%= booking.number_of_players %>
+        </td>
+        <td class='text-xs-center'>
+          <%= present_booking_price(booking.booking_price) %>
+        </td>
+        <td class='text-xs-center'>
+          <% if display_checked_in?(controller.action_name, booking.checked_in) %>
+            <%= link_to 'Checked in', booking_checked_in_path(booking),
+              class: 'btn btn-success', method: 'PATCH' %>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>

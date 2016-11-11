@@ -19,22 +19,27 @@ feature 'View Business Owner Reservations', :js do
 
   context 'bookings exist' do
     background do
-      order_1 = create(:order, user: @user, activity: @bowling)
-      @booking_1 = create(:booking, order: order_1, reservable: @lane_one,
-        start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-13',
-        number_of_players: 2)
-      @booking_2 = create(:booking, order: order_1, reservable: @lane_two,
+      @order_1 = create(:order, user: @user, activity: @bowling)
+      @booking_1 = create(:booking, order: @order_1, reservable: @lane_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
+      @booking_2 = create(:booking, order: @order_1, reservable: @lane_one,
+        start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-13',
+        number_of_players: 2)
 
       @user_2 = create(:user)
-      order_2 = create(:order, user: @user_2, activity: @laser_tag)
-      @booking_3 = create(:booking, order: order_2, reservable: @room_one,
-        start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-22',
-        number_of_players: 4)
-      @booking_4 = create(:booking, order: order_2, reservable: @room_two,
+      @order_2 = create(:order, user: @user_2, activity: @laser_tag)
+      @booking_3 = create(:booking, order: @order_2, reservable: @room_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-22',
         number_of_players: 5)
+      @booking_4 = create(:booking, order: @order_2, reservable: @room_one,
+        start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-22',
+        number_of_players: 4)
+
+      @order_3 = create(:order, user: @user, activity: @bowling)
+      @booking_5 = create(:booking, order: @order_3, reservable: @lane_two,
+        start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
+        number_of_players: 3)
     end
 
     context 'checking bowling activity' do
@@ -48,18 +53,42 @@ feature 'View Business Owner Reservations', :js do
             end
           end
 
-          expect(page).to have_content @bowling.name
-          expect(page).to have_content @lane_one.name
-          expect(page).to have_content '10:00 AM - 11:00 AM'
-          expect(page).to have_content '13 October'
-          expect(find("#number_of_people_from_booking_#{@booking_1.id}")).to have_content 2
-          expect(page).to have_content @lane_two.name
-          expect(page).to have_content '02:00 PM - 03:00 PM'
-          expect(page).to have_content '13 October'
-          expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
-          expect(page).to have_content '$ 80.0'
-          expect(page).to have_link 'Checked in'
-
+          within(:xpath, "//table/tbody/tr[1]") do
+            expect(page).to have_content @order_3.id
+            expect(page).to have_content @order_3.reserver_full_name
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane_two.name
+            expect(page).to have_content('09:00 AM - 10:00 AM')
+            expect(page).to have_content '13 October'
+            expect(find("#number_of_people_from_booking_#{@booking_5.id}"))
+              .to have_content @booking_5.number_of_players
+            expect(page).to have_content '$ 55.0'
+            expect(page).to have_link 'Checked in'
+          end
+          within(:xpath, "//table/tbody/tr[2]") do
+            expect(page).to have_content @order_1.id
+            expect(page).to have_content @order_1.reserver_full_name
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane_one.name
+            expect(page).to have_content('10:00 AM - 11:00 AM')
+            expect(page).to have_content '13 October'
+            expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
+              .to have_content @booking_2.number_of_players
+            expect(page).to have_content '$ 25.0'
+            expect(page).to have_link 'Checked in'
+          end
+          within(:xpath, "//table/tbody/tr[3]") do
+            expect(page).to have_content @order_1.id
+            expect(page).to have_content @order_1.reserver_full_name
+            expect(page).to have_content @bowling.name
+            expect(page).to have_content @lane_two.name
+            expect(page).to have_content('02:00 PM - 03:00 PM')
+            expect(page).to have_content '13 October'
+            expect(find("#number_of_people_from_booking_#{@booking_1.id}"))
+              .to have_content @booking_1.number_of_players
+            expect(page).to have_content '$ 55.0'
+            expect(page).to have_link 'Checked in'
+          end
           expect(page).to_not have_content @laser_tag.name
           expect(page).to_not have_content @room_one.name
           expect(page).to_not have_content @room_two.name
@@ -132,18 +161,42 @@ feature 'View Business Owner Reservations', :js do
               select_a_booking_date('2016-10-13')
             end
 
-            expect(page).to have_content @bowling.name
-            expect(page).to have_content @lane_one.name
-            expect(page).to have_content '10:00 AM - 11:00 AM'
-            expect(page).to have_content '13 October'
-            expect(find("#number_of_people_from_booking_#{@booking_1.id}")).to have_content 2
-            expect(page).to have_content @lane_two.name
-            expect(page).to have_content '02:00 PM - 03:00 PM'
-            expect(page).to have_content '13 October'
-            expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
-            expect(page).to have_content '$ 80.0'
-            expect(page).to have_link 'Checked in'
-
+            within(:xpath, "//table/tbody/tr[1]") do
+              expect(page).to have_content @order_3.id
+              expect(page).to have_content @order_3.reserver_full_name
+              expect(page).to have_content @bowling.name
+              expect(page).to have_content @lane_two.name
+              expect(page).to have_content('09:00 AM - 10:00 AM')
+              expect(page).to have_content '13 October'
+              expect(find("#number_of_people_from_booking_#{@booking_5.id}"))
+                .to have_content @booking_5.number_of_players
+              expect(page).to have_content '$ 55.0'
+              expect(page).to have_link 'Checked in'
+            end
+            within(:xpath, "//table/tbody/tr[2]") do
+              expect(page).to have_content @order_1.id
+              expect(page).to have_content @order_1.reserver_full_name
+              expect(page).to have_content @bowling.name
+              expect(page).to have_content @lane_one.name
+              expect(page).to have_content('10:00 AM - 11:00 AM')
+              expect(page).to have_content '13 October'
+              expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
+                .to have_content @booking_2.number_of_players
+              expect(page).to have_content '$ 25.0'
+              expect(page).to have_link 'Checked in'
+            end
+            within(:xpath, "//table/tbody/tr[3]") do
+              expect(page).to have_content @order_1.id
+              expect(page).to have_content @order_1.reserver_full_name
+              expect(page).to have_content @bowling.name
+              expect(page).to have_content @lane_two.name
+              expect(page).to have_content('02:00 PM - 03:00 PM')
+              expect(page).to have_content '13 October'
+              expect(find("#number_of_people_from_booking_#{@booking_1.id}"))
+                .to have_content @booking_1.number_of_players
+              expect(page).to have_content '$ 55.0'
+              expect(page).to have_link 'Checked in'
+            end
             expect(page).to_not have_content @laser_tag.name
             expect(page).to_not have_content @room_one.name
             expect(page).to_not have_content @room_two.name
@@ -163,17 +216,35 @@ feature 'View Business Owner Reservations', :js do
             end
           end
 
-          expect(page).to have_content @laser_tag.name
-          expect(page).to have_content @room_one.name
-          expect(page).to have_content '10:00 AM - 11:00 AM'
-          expect(page).to have_content '22 October'
-          expect(find("#number_of_people_from_booking_#{@booking_3.id}")).to have_content 4
-          expect(page).to have_content @room_two.name
-          expect(page).to have_content '02:00 PM - 03:00 PM'
-          expect(page).to have_content '22 October'
-          expect(find("#number_of_people_from_booking_#{@booking_4.id}")).to have_content 5
-          expect(page).to have_content '$ 155.0'
-          expect(page).to have_link 'Checked in'
+          within(:xpath, "//table/tbody/tr[1]") do
+            expect(page).to have_content @order_2.id
+            expect(page).to have_content @order_2.reserver_full_name
+
+            expect(page).to have_content @laser_tag.name
+            expect(page).to have_content @room_one.name
+            expect(page).to have_content '10:00 AM - 11:00 AM'
+            expect(page).to have_content '22 October'
+
+            expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
+              .to have_content @booking_4.number_of_players
+            expect(page).to have_content '$ 45.0'
+            expect(page).to have_link 'Checked in'
+          end
+
+          within(:xpath, "//table/tbody/tr[2]") do
+            expect(page).to have_content @order_2.id
+            expect(page).to have_content @order_2.reserver_full_name
+
+            expect(page).to have_content @laser_tag.name
+            expect(page).to have_content @room_two.name
+            expect(page).to have_content '02:00 PM - 03:00 PM'
+            expect(page).to have_content '22 October'
+
+            expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
+              .to have_content @booking_3.number_of_players
+            expect(page).to have_content '$ 110.0'
+            expect(page).to have_link 'Checked in'
+          end
 
           expect(page).to_not have_content @bowling.name
           expect(page).to_not have_content @lane_one.name
@@ -208,18 +279,35 @@ feature 'View Business Owner Reservations', :js do
               select_a_booking_date('2016-10-22')
             end
 
-            expect(page).to have_content @laser_tag.name
-            expect(page).to have_content @room_one.name
-            expect(page).to have_content '10:00 AM - 11:00 AM'
-            expect(page).to have_content '22 October'
-            expect(find("#number_of_people_from_booking_#{@booking_3.id}")).to have_content 4
-            expect(page).to have_content @room_two.name
-            expect(page).to have_content '02:00 PM - 03:00 PM'
-            expect(page).to have_content '22 October'
-            expect(find("#number_of_people_from_booking_#{@booking_4.id}")).to have_content 5
-            expect(page).to have_content '$ 155.0'
-            expect(page).to have_content 'Tom Cruise'
-            expect(page).to have_link 'Checked in'
+            within(:xpath, "//table/tbody/tr[1]") do
+              expect(page).to have_content @order_2.id
+              expect(page).to have_content @order_2.reserver_full_name
+
+              expect(page).to have_content @laser_tag.name
+              expect(page).to have_content @room_one.name
+              expect(page).to have_content '10:00 AM - 11:00 AM'
+              expect(page).to have_content '22 October'
+
+              expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
+                .to have_content @booking_4.number_of_players
+              expect(page).to have_content '$ 45.0'
+              expect(page).to have_link 'Checked in'
+            end
+
+            within(:xpath, "//table/tbody/tr[2]") do
+              expect(page).to have_content @order_2.id
+              expect(page).to have_content @order_2.reserver_full_name
+
+              expect(page).to have_content @laser_tag.name
+              expect(page).to have_content @room_two.name
+              expect(page).to have_content '02:00 PM - 03:00 PM'
+              expect(page).to have_content '22 October'
+
+              expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
+                .to have_content @booking_3.number_of_players
+              expect(page).to have_content '$ 110.0'
+              expect(page).to have_link 'Checked in'
+            end
 
             expect(page).to_not have_content @bowling.name
             expect(page).to_not have_content @lane_one.name
