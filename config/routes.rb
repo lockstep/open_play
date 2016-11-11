@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
   get 'businesses/show', to: 'businesses#show'
   resources :users, only: [:show, :edit, :update]
+  patch 'bookings/:id/checked_in', to: 'bookings#checked_in', as: 'booking_checked_in'
 
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'

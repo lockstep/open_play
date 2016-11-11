@@ -21,6 +21,7 @@ class Booking < ApplicationRecord
   delegate :id, to: :user, prefix: true, allow_nil: true
   delegate :per_person_weekday_price, to: :reservable
   delegate :per_person_weekend_price, to: :reservable
+  delegate :activity, to: :reservable, prefix: true
 
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)

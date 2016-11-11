@@ -58,6 +58,7 @@ feature 'View Business Owner Reservations', :js do
           expect(page).to have_content '13 October'
           expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
           expect(page).to have_content '$ 80.0'
+          expect(page).to have_link 'Checked in'
 
           expect(page).to_not have_content @laser_tag.name
           expect(page).to_not have_content @room_one.name
@@ -141,6 +142,7 @@ feature 'View Business Owner Reservations', :js do
             expect(page).to have_content '13 October'
             expect(find("#number_of_people_from_booking_#{@booking_2.id}")).to have_content 3
             expect(page).to have_content '$ 80.0'
+            expect(page).to have_link 'Checked in'
 
             expect(page).to_not have_content @laser_tag.name
             expect(page).to_not have_content @room_one.name
@@ -171,6 +173,7 @@ feature 'View Business Owner Reservations', :js do
           expect(page).to have_content '22 October'
           expect(find("#number_of_people_from_booking_#{@booking_4.id}")).to have_content 5
           expect(page).to have_content '$ 155.0'
+          expect(page).to have_link 'Checked in'
 
           expect(page).to_not have_content @bowling.name
           expect(page).to_not have_content @lane_one.name
@@ -216,6 +219,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_4.id}")).to have_content 5
             expect(page).to have_content '$ 155.0'
             expect(page).to have_content 'Tom Cruise'
+            expect(page).to have_link 'Checked in'
 
             expect(page).to_not have_content @bowling.name
             expect(page).to_not have_content @lane_one.name

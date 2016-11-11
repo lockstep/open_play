@@ -9,12 +9,13 @@
       <th class='text-xs-center'>Date</th>
       <th class='text-xs-center'>Number of People</th>
       <th class='text-xs-center'>Total Price</th>
+      <th class='text-xs-center'></th>
     </tr>
   </thead>
   <tbody>
     <% @orders.each_with_index do |order, order_index| %>
       <% order.bookings.each_with_index do |booking, booking_index| %>
-        <tr>
+        <tr class="<%= 'table-success' if booking.checked_in %>" id="booking_<%= booking.id %>">
           <td class='text-xs-center'>
             <%= order.id %>
           </td>
@@ -38,6 +39,12 @@
           </td>
           <td class='text-xs-center'>
             <%= present_booking_price(order.total_price) if booking_index == 0 %>
+          </td>
+          <td class='text-xs-center'>
+            <% unless booking.checked_in %>
+              <%= link_to 'Checked in', booking_checked_in_path(booking),
+                class: 'btn btn-success', method: 'PATCH' %>
+            <% end %>
           </td>
         </tr>
       <% end %>
