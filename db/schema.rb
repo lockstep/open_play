@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107082718) do
+ActiveRecord::Schema.define(version: 20161111073718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,8 +46,9 @@ ActiveRecord::Schema.define(version: 20161107082718) do
     t.string   "options"
     t.integer  "order_id"
     t.integer  "reservable_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "checked_in",        default: false
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
     t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
   end
@@ -89,12 +90,9 @@ ActiveRecord::Schema.define(version: 20161107082718) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "activity_id"
-    t.string   "guest_first_name", default: ""
-    t.string   "guest_last_name",  default: ""
-    t.string   "guest_email",      default: ""
     t.integer  "guest_id"
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["guest_id"], name: "index_orders_on_guest_id", using: :btree

@@ -13,6 +13,7 @@ feature 'Edit Closing Schedules', js: true do
     context 'user create closing time' do
       scenario 'does not show closing time' do
         navigate_to_closing_time
+        expect(page).to have_content "#{@activity.name} Closing Time"
         expect(page).to have_content 'There is no closing time'
       end
       context 'All day on specific day' do
@@ -28,6 +29,8 @@ feature 'Edit Closing Schedules', js: true do
           expect(page).to have_content 'Successfully created schedule'
           expect(current_path).to eq activity_closed_schedules_path(@activity)
           expect(page).to have_content 'Meeting in Korea'
+          expect(page).to have_content '6 Nov 2016'
+          expect(page).to have_content 'All day'
           expect(page).to have_selector '#destroy-schedule-1'
         end
       end
@@ -45,6 +48,8 @@ feature 'Edit Closing Schedules', js: true do
             expect(page).to have_content 'Successfully created schedule'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to have_content 'Meeting in Korea'
+            expect(page).to have_content 'Every monday'
+            expect(page).to have_content 'All day'
             expect(page).to have_selector '#destroy-schedule-1'
           end
         end
@@ -65,6 +70,27 @@ feature 'Edit Closing Schedules', js: true do
           end
         end
       end
+      context 'All day in every monday and sunday' do
+        context 'a day was checked' do
+          scenario 'creates closing time successfully' do
+            travel_to Time.new(2016, 11, 5) do
+              navigate_to_closing_time
+              fill_in 'closed_schedule[label]', with: 'Meeting in Korea'
+              choose 'every-x-checkbox'
+              check 'closed_schedule_closed_days_monday'
+              check 'closed_schedule_closed_days_sunday'
+              choose 'all-day-checkbox'
+              click_button 'Submit'
+            end
+            expect(page).to have_content 'Successfully created schedule'
+            expect(current_path).to eq activity_closed_schedules_path(@activity)
+            expect(page).to have_content 'Meeting in Korea'
+            expect(page).to have_content 'Every monday,sunday'
+            expect(page).to have_content 'All day'
+            expect(page).to have_selector '#destroy-schedule-1'
+          end
+        end
+      end
       context 'on specific time and specific day' do
         context 'closing_ends_at is after closing_begins_at' do
           scenario 'creates closing time successfully' do
@@ -81,6 +107,8 @@ feature 'Edit Closing Schedules', js: true do
             expect(page).to have_content 'Successfully created schedule'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to have_content 'Meeting in Korea'
+            expect(page).to have_content '6 Nov 2016'
+            expect(page).to have_content '10:00 AM - 11:00 AM'
             expect(page).to have_selector '#destroy-schedule-1'
           end
         end
@@ -119,6 +147,8 @@ feature 'Edit Closing Schedules', js: true do
           expect(page).to have_content 'Successfully created schedule'
           expect(current_path).to eq activity_closed_schedules_path(@activity)
           expect(page).to have_content 'Meeting in Korea'
+          expect(page).to have_content 'Every monday'
+          expect(page).to have_content '10:00 AM - 11:00 AM'
           expect(page).to have_selector '#destroy-schedule-1'
         end
         context 'closing_ends_at is before closing_begins_at' do

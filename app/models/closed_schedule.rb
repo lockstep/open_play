@@ -4,7 +4,8 @@ class ClosedSchedule < ApplicationRecord
   belongs_to :activity
 
   delegate :user, to: :activity
-  
+  delegate :name, to: :activity, prefix: true
+
   validates_presence_of :label
   validate :closing_ends_at_is_after_closing_begins_at
   validate :days_need_to_be_checked

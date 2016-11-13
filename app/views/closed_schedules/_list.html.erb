@@ -15,6 +15,8 @@
       <tr>
         <th class='text-xs-center'>#</th>
         <th class='text-xs-center'>Label</th>
+        <th class='text-xs-center'>Closed on day</th>
+        <th class='text-xs-center'>Closed on time</th>
         <th class='text-xs-center'></th>
       </tr>
     </thead>
@@ -23,6 +25,8 @@
         <tr>
           <th scope="row" class='text-xs-center'><%= index+1 %></th>
           <td class='text-xs-center'><%= schedule.label %></td>
+          <td class='text-xs-center'><%= display_closed_on_days(schedule) %></td>
+          <td class='text-xs-center'><%= display_closed_time(schedule) %></td>
           <td class='text-xs-center'>
             <%= link_to closed_schedule_path(schedule) , class: 'btn btn-danger',
             id: "destroy-schedule-#{index+1}", method: :delete,
