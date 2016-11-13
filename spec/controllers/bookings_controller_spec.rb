@@ -14,20 +14,20 @@ describe BookingsController do
         context 'user is a business owner' do
           before { @business.update(user: @user) }
           it 'check a reservation in' do
-            patch :checked_in, params: { id: @booking.id }
+            patch :check_in, params: { id: @booking.id }
             expect(Booking.first.checked_in).to be true
           end
         end
         context 'user is not a business owner' do
           before do
-            patch :checked_in, params: { id: @booking.id }
+            patch :check_in, params: { id: @booking.id }
           end
           it_behaves_like 'an unauthorized request'
         end
       end
       context 'user is not logged in' do
         before do
-          patch :checked_in, params: { id: @booking.id }
+          patch :check_in, params: { id: @booking.id }
         end
         it_behaves_like 'it requires authentication'
       end
