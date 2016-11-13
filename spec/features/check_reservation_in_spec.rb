@@ -26,14 +26,25 @@ feature 'Check Reservation In', :js do
           expect(page).to_not have_css("#booking_#{@booking.id}.table-success")
         end
       end
-
-      context 'after checked in' do
-        scenario 'display row in table correctly' do
+      context 'checking in' do
+        scenario 'booking is updated' do
           travel_to Time.new(2016, 10, 13) do
             visit root_path
             click_link 'Manage Business'
             click_link 'View reservations'
             click_link 'Checked in'
+          end
+          expect(page).to have_content 'Successfully checked in'
+          expect(page).to_not have_link 'Checked in'
+        end
+      end
+      context 'after checked in' do
+        before { @booking.update(checked_in: true) }
+        scenario 'displays row in table correctly' do
+          travel_to Time.new(2016, 10, 13) do
+            visit root_path
+            click_link 'Manage Business'
+            click_link 'View reservations'
           end
           expect(page).to_not have_link 'Checked in'
           expect(page).to have_css("#booking_#{@booking.id}.table-success")

@@ -1,10 +1,10 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!
 
-  def checked_in
+  def check_in
     booking = Booking.find(params[:id])
     authorize booking
-    booking.update_attribute(:checked_in, true)
-    redirect_to business_owner_reservations_path(booking.reservable_activity)
+    booking.update(checked_in: true)
+    redirect_to root_path, notice: 'Successfully checked in'
   end
 end

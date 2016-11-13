@@ -1,5 +1,5 @@
 class BookingPolicy < ApplicationPolicy
-  def checked_in?
+  def check_in?
     belongs_to_user?
   end
 

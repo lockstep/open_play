@@ -9,9 +9,7 @@
       <th class='text-xs-center'>Date</th>
       <th class='text-xs-center'>Number of People</th>
       <th class='text-xs-center'>Total Price</th>
-      <% if controller.action_name == 'reservations_for_business_owner' %>
-        <th class='text-xs-center'></th>
-      <% end %>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -43,7 +41,7 @@
         </td>
         <td class='text-xs-center'>
           <% if display_checked_in?(controller.action_name, booking.checked_in) %>
-            <%= link_to 'Checked in', booking_checked_in_path(booking),
+            <%= link_to 'Checked in', booking_check_in_path(booking),
               class: 'btn btn-success', method: 'PATCH' %>
           <% end %>
         </td>
