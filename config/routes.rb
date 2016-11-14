@@ -1,21 +1,23 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    resources :users
-resources :activities
-resources :bookings
-resources :booking_reservable_options
-resources :businesses
-resources :guests
-resources :reservables
-resources :orders
-resources :reservable_options
-resources :reservable_options_availables
-resources :bowlings
-resources :laser_tags
-resources :lanes
-resources :rooms
+  authenticate :user, ->(u) { u.super_admin } do
+    namespace :admin do
+      resources :users
+      resources :activities
+      resources :bookings
+      resources :booking_reservable_options
+      resources :businesses
+      resources :guests
+      resources :reservables
+      resources :orders
+      resources :reservable_options
+      resources :reservable_options_availables
+      resources :bowlings
+      resources :laser_tags
+      resources :lanes
+      resources :rooms
 
-    root to: "users#index"
+      root to: "users#index"
+    end
   end
 
   root 'welcome#index'
