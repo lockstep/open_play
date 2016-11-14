@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :users
+    resources :guests
+    resources :businesses
+    resources :bowlings
+    resources :laser_tags
+    resources :lanes
+    resources :rooms
+    resources :orders
+    resources :bookings
+
+    root to: "users#index"
+  end
+
   root 'welcome#index'
   devise_for :users
 

@@ -1,10 +1,13 @@
 class Activity < ApplicationRecord
+  include TimeValidations
+
   belongs_to :business
   has_many :reservables, dependent: :destroy
   has_many :orders
   has_many :closed_schedules, dependent: :destroy
-  validates_presence_of :name
-  validate :end_time_is_after_start_time
+
+  validates :name, presence: true
+
   scope :active, -> { where(archived: false) }
   delegate :user, to: :business
 
@@ -32,12 +35,4 @@ class Activity < ApplicationRecord
   def out_of_service?(booking_date, booking_time, interval=nil)
     closed_schedules.any? { |schedule| schedule.match?(booking_date, booking_time, interval) }
   end
-
-  def end_time_is_after_start_time
-    if ( end_time.seconds_since_midnight.to_i <
-      start_time.seconds_since_midnight.to_i)
-      errors.add(:end_time, 'must be after the start time')
-    end
-  end
-
 end
