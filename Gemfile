@@ -32,6 +32,9 @@ gem 'devise', '~> 4.2.0'
 gem "pundit" # Authorization system
 gem 'stripe'
 
+gem "administrate", "~> 0.3.0"
+gem "bourbon" # required with administrate gem
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger
   # console
