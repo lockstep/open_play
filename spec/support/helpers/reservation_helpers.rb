@@ -8,4 +8,8 @@ module ReservationHelpers
     page.select overrides[:activity_type] || 'Bowling', from: :activity_type
     click_on 'Search'
   end
+
+  def select_a_booking_date(date)
+    page.execute_script("$('#reservations-booking-date').val('" + date + "').trigger('change')")
+  end
 end

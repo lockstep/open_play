@@ -317,8 +317,4 @@ feature 'View Business Owner Reservations', :js do
       end
     end
   end
-
-  def select_a_booking_date(date)
-    page.execute_script("$('#reservations-booking-date').val('" + date + "').trigger('change')")
-  end
 end

@@ -5,6 +5,6 @@ class BookingsController < ApplicationController
     booking = Booking.find(params[:id])
     authorize booking
     booking.update(checked_in: true)
-    redirect_to root_path, notice: 'Successfully checked in'
+    redirect_back fallback_location: root_path, notice: 'Successfully checked in'
   end
 end
