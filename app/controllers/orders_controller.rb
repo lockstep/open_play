@@ -49,19 +49,20 @@ class OrdersController < ApplicationController
   end
 
   def reservations_for_business_owner
-    @orders = Order.reservations_for_business_owner(@date, params[:activity_id])
+    @bookings = Order.reservations_for_business_owner(@date, params[:activity_id])
+
     respond_to do |format|
       format.html
       format.xls { headers['Content-Type'] = 'application/xls' }
       format.csv do
-        send_data @orders.to_csv
+        send_data ReservationCsvRenderer.new.generate_csv(@bookings)
         headers['Content-Type'] = 'text/csv'
       end
     end
   end
 
   def reservations_for_users
-    @orders = Order.reservations_for_users(@date, params[:user_id])
+    @bookings = Order.reservations_for_users(@date, params[:user_id])
   end
 
   def prepare_complete_order
