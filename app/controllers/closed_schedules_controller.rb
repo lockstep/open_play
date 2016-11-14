@@ -14,7 +14,8 @@ class ClosedSchedulesController < ApplicationController
     authorize @schedule
     activity = @schedule.activity
     if @schedule.save
-      redirect_to activity_closed_schedules_path(activity), notice: 'Successfully created schedule'
+      redirect_to activity_closed_schedules_path(activity),
+        notice: 'Closing time scheduled successfully.'
     else
       @schedules = activity.closed_schedules
       render :index
@@ -26,7 +27,8 @@ class ClosedSchedulesController < ApplicationController
     authorize @schedule
     if @schedule.destroy
       activity = Activity.find(@schedule.activity.id)
-      redirect_to activity_closed_schedules_path(activity), notice: 'Successfully deleted schedule'
+      redirect_to activity_closed_schedules_path(activity),
+        notice: 'Closing time deleted.'
     end
   end
 
