@@ -76,7 +76,7 @@ feature 'Search Closing Time Activities', js: true do
           create(:closed_schedule,
             closed_all_day: true,
             closed_specific_day: false,
-            closed_days: ['monday', 'tuesday'],
+            closed_days: ['Monday', 'Tuesday'],
             activity: @bowling
           )
         end
@@ -198,7 +198,7 @@ feature 'Search Closing Time Activities', js: true do
               closing_begins_at: '10:00am',
               closing_ends_at: '11:00am',
               closed_specific_day: false,
-              closed_days: ['monday', 'friday'],
+              closed_days: ['Monday', 'Friday'],
               activity: @bowling
             )
           end

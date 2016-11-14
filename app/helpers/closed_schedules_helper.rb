@@ -4,7 +4,7 @@ module ClosedSchedulesHelper
   end
 
   def display_closed_every_x_day(day_list)
-    "Every #{day_list.join(',')}"
+    "Every #{day_list.join(', ')}"
   end
 
   def display_closed_on_days(schedule)

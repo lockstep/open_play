@@ -48,7 +48,7 @@ feature 'Edit Closing Schedules', js: true do
             expect(page).to have_content 'Successfully created schedule'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to have_content 'Meeting in Korea'
-            expect(page).to have_content 'Every monday'
+            expect(page).to have_content 'Every Monday'
             expect(page).to have_content 'All day'
             expect(page).to have_selector '#destroy-schedule-1'
           end
@@ -85,7 +85,7 @@ feature 'Edit Closing Schedules', js: true do
             expect(page).to have_content 'Successfully created schedule'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to have_content 'Meeting in Korea'
-            expect(page).to have_content 'Every monday,sunday'
+            expect(page).to have_content 'Every Monday, Sunday'
             expect(page).to have_content 'All day'
             expect(page).to have_selector '#destroy-schedule-1'
           end
@@ -124,7 +124,7 @@ feature 'Edit Closing Schedules', js: true do
               fill_in 'closed_schedule[closing_ends_at]', with: '11:00am'
               click_button 'Submit'
             end
-            expect(page).to have_content 'Closing ends at must be after the closing_begins_at'
+            expect(page).to have_content 'Closing ends at must be after 12:00 PM'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to_not have_content 'Successfully created schedule'
             expect(page).to_not have_content 'Meeting in Korea'
@@ -147,7 +147,7 @@ feature 'Edit Closing Schedules', js: true do
           expect(page).to have_content 'Successfully created schedule'
           expect(current_path).to eq activity_closed_schedules_path(@activity)
           expect(page).to have_content 'Meeting in Korea'
-          expect(page).to have_content 'Every monday'
+          expect(page).to have_content 'Every Monday'
           expect(page).to have_content '10:00 AM - 11:00 AM'
           expect(page).to have_selector '#destroy-schedule-1'
         end
@@ -163,7 +163,7 @@ feature 'Edit Closing Schedules', js: true do
               fill_in 'closed_schedule[closing_ends_at]', with: '11:00am'
               click_button 'Submit'
             end
-            expect(page).to have_content 'Closing ends at must be after the closing_begins_at'
+            expect(page).to have_content 'Closing ends at must be after 12:00 PM'
             expect(current_path).to eq activity_closed_schedules_path(@activity)
             expect(page).to_not have_content 'Successfully created schedule'
             expect(page).to_not have_content 'Meeting in Korea'

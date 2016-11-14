@@ -12,7 +12,7 @@ class ClosedSchedule < ApplicationRecord
 
   def closing_ends_at_is_after_closing_begins_at
     return if closed_all_day || (closing_begins_at < closing_ends_at)
-    errors.add(:closing_ends_at, 'must be after the closing_begins_at')
+    errors.add(:closing_ends_at, "must be after #{display_time(closing_begins_at)}")
   end
 
   def days_need_to_be_checked
@@ -24,10 +24,10 @@ class ClosedSchedule < ApplicationRecord
     closed_days.include?(day)
   end
 
-  def checking_schedule_in_case_of_closed_all_day(booking_date)
-    date = Date.parse(booking_date)
-    return date == closed_on if closed_specific_day
-    day_is_in_range_of_schedule?(get_small_case_day_from_date(date))
+  def checking_schedule_in_case_of_closed_all_day(date)
+    booking_date = Date.parse(date)
+    return booking_date == closed_on if closed_specific_day
+    day_is_in_range_of_schedule?(display_day(booking_date))
   end
 
   def checking_schedule_in_case_of_closed_on_specific_day(booking_date, booking_time, interval_time)
@@ -36,7 +36,7 @@ class ClosedSchedule < ApplicationRecord
       check_overlap_time( booking_date, booking_time, interval_time, closing_begins_at, closing_ends_at)
     else
       date = Date.parse(booking_date)
-      return false unless day_is_in_range_of_schedule?(get_small_case_day_from_date(date))
+      return false unless day_is_in_range_of_schedule?(display_day(date))
       check_overlap_time( booking_date, booking_time, interval_time, closing_begins_at, closing_ends_at)
     end
   end

@@ -13,10 +13,6 @@ module DateTimeUtilities
     overlap?(start_date_x, end_date_x, start_date_y, end_date_y)
   end
 
-  def get_small_case_day_from_date(date)
-    date.strftime('%A').downcase
-  end
-
   def overlap?(start_date_x, end_date_x, start_date_y, end_date_y)
     if end_date_x.nil?
       start_date_x >= start_date_y and start_date_x < end_date_y
@@ -27,5 +23,13 @@ module DateTimeUtilities
       end
       start_date_x <= end_date_y and start_date_y < end_date_x
     end
+  end
+
+  def display_day(date)
+    date.strftime('%A')
+  end
+
+  def display_time(time)
+    time.strftime("%I:%M %p")
   end
 end
