@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
+  default from: 'OpenPlay Notifier <no-reply@openplay.io>'
   layout 'mailer'
 end
