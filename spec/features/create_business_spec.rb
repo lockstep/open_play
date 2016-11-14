@@ -8,8 +8,7 @@ feature 'Create Business' do
 
     context 'all params are submitted' do
       scenario 'user can create the bussiness' do
-        visit root_path
-        click_link 'Join us'
+        visit new_business_path
         business_name = 'Lazer center'
         complete_business_form(name: business_name)
         expect(page).to have_content 'Successfully created business'
@@ -21,8 +20,7 @@ feature 'Create Business' do
 
     context 'the business name is omitted' do
       scenario 'user sees the business name is required' do
-        visit root_path
-        click_link 'Join us'
+        visit new_business_path
         complete_business_form(name: '')
         expect(page).to have_content "can't be blank"
       end
@@ -30,8 +28,7 @@ feature 'Create Business' do
 
     context 'the business description is omitted' do
       scenario 'user still can create the bussiness' do
-        visit root_path
-        click_link 'Join us'
+        visit new_business_path
         business_name = 'Lazer center'
         complete_business_form(name: business_name, description: '')
         expect(page).to have_content 'Successfully created business'
@@ -39,14 +36,6 @@ feature 'Create Business' do
         expect(page.current_path).to eq(
           business_activities_path(@user.reload.business))
       end
-    end
-  end
-
-  context 'a business exist' do
-    before { create(:business, user: @user) }
-    scenario 'user cannot add more businesses' do
-      visit root_path
-      expect(page).not_to have_link 'Join us'
     end
   end
 
