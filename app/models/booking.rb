@@ -54,6 +54,6 @@ class Booking < ApplicationRecord
   private
 
   def weekend_booking?
-    booking_date.saturday? || booking_date.sunday?
+    booking_date.friday? || booking_date.saturday? || booking_date.sunday?
   end
 end

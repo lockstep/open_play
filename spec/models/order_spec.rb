@@ -4,7 +4,7 @@ describe Order do
       it 'sum bookings price correctly' do
         @order = create(:order)
         # weekday booking ($ 75)
-        create(:booking, order: @order, booking_date: '2016-10-21', number_of_players: 5)
+        create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
         # weekend booking ($ 100)
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
 
@@ -19,7 +19,7 @@ describe Order do
       it 'sum bookings price correctly' do
         @order = create(:order)
         # weekday booking ($ 75)
-        create(:booking, order: @order, booking_date: '2016-10-21', number_of_players: 5)
+        create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
         # weekend booking ($ 100)
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
 
