@@ -1,14 +1,14 @@
 <table class="table">
   <thead>
     <tr>
-      <th class='text-xs-center'>No.</th>
+      <th class='text-xs-center'>Time</th>
       <th class='text-xs-center'>Customer</th>
       <th class='text-xs-center'>Activity</th>
       <th class='text-xs-center'>Reservable</th>
-      <th class='text-xs-center'>Time</th>
       <th class='text-xs-center'>Date</th>
       <th class='text-xs-center'>Number of People</th>
       <th class='text-xs-center'>Total Price</th>
+      <th class='text-xs-center'>No.</th>
       <th></th>
     </tr>
   </thead>
@@ -16,7 +16,7 @@
     <% @bookings.each do |booking| %>
       <tr class="<%= 'table-success' if booking.checked_in %>" id="booking_<%= booking.id %>">
         <td class='text-xs-center'>
-          <%= booking.order_id %>
+          <%= present_range_of_time(booking.start_time, booking.end_time) %>
         </td>
         <td class='text-xs-center'>
           <%= booking.order_reserver_full_name %>
@@ -28,9 +28,6 @@
           <%= booking.reservable_name %>
         </td>
         <td class='text-xs-center'>
-          <%= present_range_of_time(booking.start_time, booking.end_time) %>
-        </td>
-        <td class='text-xs-center'>
           <%= present_date_in_day_month_format(booking.booking_date) %>
         </td>
         <td class='text-xs-center' id="number_of_people_from_booking_<%= booking.id %>">
@@ -38,6 +35,9 @@
         </td>
         <td class='text-xs-center'>
           <%= present_booking_price(booking.booking_price) %>
+        </td>
+        <td class='text-xs-center'>
+          <%= booking.order_id %>
         </td>
         <td class='text-xs-center'>
           <% if display_checked_in?(controller.action_name, booking.checked_in) %>
