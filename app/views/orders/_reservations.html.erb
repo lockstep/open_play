@@ -41,7 +41,7 @@
         </td>
         <td class='text-xs-center'>
           <% if display_checked_in?(controller.action_name, booking.checked_in) %>
-            <%= link_to 'Checked in', booking_check_in_path(booking),
+            <%= link_to 'Check in', booking_check_in_path(booking),
               class: 'btn btn-success', method: 'PATCH' %>
           <% end %>
         </td>

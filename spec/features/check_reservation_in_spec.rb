@@ -23,7 +23,7 @@ feature 'Check Reservation In', :js do
             click_link 'View reservations'
             select_a_booking_date('2016-10-13')
           end
-          expect(page).to have_link 'Checked in'
+          expect(page).to have_link 'Check in'
           expect(page).to_not have_css("#booking_#{@booking.id}.table-success")
         end
       end
@@ -34,10 +34,10 @@ feature 'Check Reservation In', :js do
             click_link 'Manage Business'
             click_link 'View reservations'
             select_a_booking_date('2016-10-13')
-            click_link 'Checked in'
+            click_link 'Check in'
           end
           expect(page).to have_content 'Successfully checked in'
-          expect(page).to_not have_link 'Checked in'
+          expect(page).to_not have_link 'Check in'
           expect(page).to have_css("#booking_#{@booking.id}.table-success")
         end
       end
