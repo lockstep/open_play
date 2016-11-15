@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
   get 'search', to: 'search#search'
-  get 'search/more_reservables', to: 'search#get_more_reservables'
+  get 'search/paginate_reservables', to: 'search#paginate_reservables'
   get 'activities/:activity_id/reservations',
     to: 'orders#reservations_for_business_owner', as: 'business_owner_reservations'
   get 'users/:user_id/reservations', to: 'orders#reservations_for_users',
