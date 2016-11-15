@@ -24,13 +24,15 @@ module DateTimeHelper
   end
 
   def round_up_time(time, minutes)
-    return time if (time.to_i % minutes) == 0
-    time - (time.to_i % minutes) + minutes
+    time_remainder = time.to_i % minutes
+    return time if time_remainder == 0
+    time - time_remainder + minutes
   end
 
   def round_down_time(time, minutes)
-    return time if (time.to_i % minutes) == 0
-    time - (time.to_i % minutes)
+    time_remainder = time.to_i % minutes
+    return time if time_remainder == 0
+    time - time_remainder
   end
 
 end
