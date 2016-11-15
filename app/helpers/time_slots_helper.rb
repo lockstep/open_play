@@ -1,19 +1,13 @@
 module TimeSlotsHelper
   include DateTimeHelper
 
-  def build_time_slots(reservable, requested_date, requested_time)
+  def build_time_slots(reservable, requested_date)
     time_slots = []
     requested_date = DateTime.parse(requested_date)
-    if requested_time.present?
-      requested_time = requested_date + Time.parse(requested_time)
-        .seconds_since_midnight.seconds
-    else
-      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
-    end
     closing_time = merge_date_and_time(requested_date, reservable.closing_time)
     subsequent_time = merge_date_and_time(
       requested_date,
-      start_time(requested_time, reservable.opening_time)
+      start_time_on_hour(reservable)
     )
     game_time_length = reservable.interval.minutes
     # add 1 more second for handling 24-hour activity
@@ -39,25 +33,23 @@ module TimeSlotsHelper
 
   def requested_time_slot_index(reservable, requested_date, requested_time)
     requested_date = DateTime.parse(requested_date)
+    start_time = merge_date_and_time(requested_date, start_time_on_hour(reservable))
     if requested_time.present?
-      requested_time = requested_date + Time.parse(requested_time)
-        .seconds_since_midnight.seconds
+      requested_time = requested_date + round_down_time(
+        Time.parse(requested_time), reservable.interval.minutes
+      ).seconds_since_midnight.seconds
     else
-      requested_time = merge_date_and_time(requested_date, reservable.opening_time)
+      requested_time = start_time
     end
-    opening_time = merge_date_and_time(requested_date, reservable.opening_time)
-    time_since_opening_in_mins = (requested_time - opening_time) * 24 * 60
+    time_since_opening_in_mins = (requested_time - start_time) * 24 * 60
+    return 0 if time_since_opening_in_mins <= 0
     (time_since_opening_in_mins / reservable.interval).to_i
   end
 
   private
 
-  def start_time(requested_time, opening_time)
-    if start_on_half_hour?(requested_time) == start_on_half_hour?(opening_time)
-      opening_time
-    else
-      opening_time + 30.minutes
-    end
+  def start_time_on_hour(reservable)
+    round_up_time(reservable.opening_time, reservable.interval.minutes)
   end
 
   def start_on_half_hour?(time)

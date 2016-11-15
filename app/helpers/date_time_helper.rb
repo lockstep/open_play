@@ -22,4 +22,15 @@ module DateTimeHelper
   def merge_date_and_time(date, time)
     date + time.seconds_since_midnight.seconds
   end
+
+  def round_up_time(time, minutes)
+    return time if (time.to_i % minutes) == 0
+    time - (time.to_i % minutes) + minutes
+  end
+
+  def round_down_time(time, minutes)
+    return time if (time.to_i % minutes) == 0
+    time - (time.to_i % minutes)
+  end
+
 end
