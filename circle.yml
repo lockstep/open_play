@@ -1,0 +1,15 @@
+deployment:
+  staging:
+    branch: development
+    commands:
+      - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\"  ]] || git fetch --unshallow"
+      - git push git@heroku.com:openplay-staging.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app openplay-staging
+      - heroku restart --app openplay-staging
+  production:
+    branch: master
+    commands:
+      - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\"  ]] || git fetch --unshallow"
+      - git push git@heroku.com:openplay-production.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app openplay-production
+      - heroku restart --app openplay-production
