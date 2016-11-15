@@ -123,46 +123,32 @@ feature 'Search Activities', js: true do
 
         context 'Bowling has many lanes' do
           before do
-            # TODO refactor this to use Factory Girl later
-            create(:lane, name: 'Lane 4', activity: @bowling)
-            create(:lane, name: 'Lane 5', activity: @bowling)
-            create(:lane, name: 'Lane 6', activity: @bowling)
-            create(:lane, name: 'Lane 7', activity: @bowling)
-            create(:lane, name: 'Lane 8', activity: @bowling)
-            create(:lane, name: 'Lane 9', activity: @bowling)
+            create_list(:lane, 15, activity: @bowling)
           end
-          scenario 'shows the view more link' do
+          scenario 'shows the next link' do
             visit root_path
             search_activities
-            expect(page).to have_content 'Lane 1'
-            expect(page).to have_content 'Lane 2'
-            expect(page).to_not have_content 'Lane 4'
-            expect(page).to_not have_content 'Lane 8'
-            expect(page).to have_content 'view more'
+            expect(page).to have_link 'Next'
+            expect(page).to_not have_link 'Previous'
+            expect(page).to have_content 'Page 1 of 4'
           end
-          context 'view more link exists' do
-            scenario 'shows 5 more lanes' do
+          context 'pagination exists' do
+            scenario 'can get the next page of lanes' do
               visit root_path
               search_activities
-              click_on 'view more'
-              expect(page).to have_content 'Lane 1'
-              expect(page).to have_content 'Lane 2'
-              expect(page).to have_content 'Lane 4'
-              expect(page).to have_content 'Lane 8'
-              expect(page).to_not have_content 'Lane 9'
-              expect(page).to have_content 'view more'
+              click_link 'Next'
+              expect(page).to have_link 'Previous'
+              expect(page).to have_content 'Page 2 of 4'
+              expect(page).to have_link 'Next'
             end
-            scenario 'shows the rest of the lanes' do
+            scenario 'can get the previous page of lanes' do
               visit root_path
               search_activities
-              click_on 'view more'
-              expect(page).to have_content 'Lane 1'
-              expect(page).to have_content 'Lane 2'
-              expect(page).to have_content 'Lane 4'
-              expect(page).to have_content 'Lane 8'
-              click_on 'view more'
-              expect(page).to have_content 'Lane 9'
-              expect(page).to_not have_content 'view more'
+              click_link 'Next'
+              click_link 'Previous'
+              expect(page).to_not have_link 'Previous'
+              expect(page).to have_content 'Page 1 of 4'
+              expect(page).to have_link 'Next'
             end
           end
         end

@@ -1,0 +1,19 @@
+.pagination {
+  display: block;
+  position: relative;
+  .page-of {
+    text-align: center;
+    color: #808080;
+    font-size: 0.96em;
+  }
+  .prev {
+    text-decoration: underline;
+    position: absolute;
+  }
+  .next {
+    text-decoration: underline;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

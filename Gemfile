@@ -31,6 +31,7 @@ gem 'sidekiq'
 gem 'devise', '~> 4.2.0'
 gem "pundit" # Authorization system
 gem 'stripe'
+gem 'kaminari'
 
 gem "administrate", "~> 0.3.0"
 gem "bourbon" # required with administrate gem

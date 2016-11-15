@@ -306,6 +306,7 @@ DEPENDENCIES
   factory_girl_rails
   font-awesome-rails
   jquery-rails
+  kaminari
   launchy
   listen (~> 3.0.5)
   momentjs-rails

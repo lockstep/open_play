@@ -13,16 +13,17 @@
       padding-top: 4px;
       .activity-name {
         color: #333;
+        font-weight: 600;
         &:hover {
           text-decoration: none;
         }
       }
       .reservable {
-        .reservable-name {
-
-        }
+        margin-top: 0.4em;
         .row-times {
           margin-top: 5px;
+          padding-left: 25px;
+          padding-right: 25px;
           .timeslot {
             font-size: .875rem;
             padding: 0.5em;

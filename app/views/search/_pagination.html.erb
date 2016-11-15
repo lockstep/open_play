@@ -1,0 +1,22 @@
+<% @reservables.each do |reservable| %>
+  <%= render 'search/reservable', reservable: reservable %>
+<% end %>
+<% if @reservables.total_pages > 1 %>
+  <div class='pagination'>
+    <%= link_to 'Previous', search_paginate_reservables_path(
+      activity_id: activity_id,
+      booking_date: @booking_date,
+      booking_time: @booking_time,
+      page: @reservables.current_page - 1
+    ), class: 'prev', remote: true unless @reservables.first_page? %>
+    <div class='page-of'>
+      <%= "Page #{@reservables.current_page} of #{@reservables.total_pages}" %>
+    </div>
+    <%= link_to 'Next', search_paginate_reservables_path(
+      activity_id: activity_id,
+      booking_date: @booking_date,
+      booking_time: @booking_time,
+      page: @reservables.current_page + 1
+    ), class: 'next', remote: true unless @reservables.last_page? %>
+  </div>
+<% end %>

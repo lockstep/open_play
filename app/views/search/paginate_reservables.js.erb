@@ -1,0 +1,3 @@
+$('.reservables-<%=@activity.id%>').html("<%= escape_javascript (render partial: 'search/pagination', locals: {activity_id: @activity.id}) %>");
+Utilities.preventBackToBackBooking();
+Utilities.slidingSlot();
