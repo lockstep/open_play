@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update]
   resources :closed_schedules, only: [:destroy]
   patch 'bookings/:id/check_in', to: 'bookings#check_in', as: 'booking_check_in'
+  patch 'bookings/:id/cancel', to: 'bookings#cancel', as: 'booking_cancel'
 
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
   get 'activities/search', to: 'activities#search'
