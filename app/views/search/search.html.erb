@@ -15,12 +15,16 @@
               <div class="col-xs-9">
                 <div class="activity-info">
                   <span class='activity-name'><%= activity.name %></span>
-                  <div class='reservables-<%= activity.id %>'>
+                  <div class='reservables'>
+                    <div class="spinner">
+                      <div class="spinner-icon">
+                      </div>
+                    </div>
                     <% @reservables = first_set_of_reservables(activity.reservables) %>
-                    <%= render 'search/pagination', activity_id: activity.id %>
+                    <div class="timeslots activity-<%= activity.id %>">
+                      <%= render 'search/pagination', activity_id: activity.id %>
+                    </div>
                   </div>
-
-
                 </div>
               </div>
 
