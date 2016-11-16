@@ -52,4 +52,8 @@ class Reservable < ApplicationRecord
     booking_time = date_time.to_time.to_s
     activity.out_of_service?(booking_date, booking_time, interval)
   end
+
+  def self.list_reservable_names_by_ids(reservable_ids)
+    Reservable.where(id: reservable_ids).order(:name).pluck(:name)
+  end
 end
