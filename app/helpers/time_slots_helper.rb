@@ -65,6 +65,7 @@ module TimeSlotsHelper
     bookings = reservable.bookings.where(booking_date: requested_date)
     return { available: true } unless bookings.present?
     bookings.each do |booking|
+      return { available: true } if booking.canceled
       start_booking_time = merge_date_and_time(requested_date, booking.start_time)
       end_booking_time = merge_date_and_time(requested_date, booking.end_time)
       time_was_booked = (requested_time >= start_booking_time) &&

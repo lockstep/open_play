@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20161122070701) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.boolean  "checked_in",        default: false
+    t.boolean  "canceled",          default: false
     t.float    "booking_price",     default: 0.0
     t.boolean  "paid_externally",   default: false
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
@@ -73,12 +74,14 @@ ActiveRecord::Schema.define(version: 20161122070701) do
   create_table "closed_schedules", force: :cascade do |t|
     t.string  "label"
     t.date    "closed_on"
-    t.string  "closed_days",         default: [], array: true
-    t.boolean "closed_all_day"
-    t.boolean "closed_specific_day"
+    t.string  "closed_days",            default: [],   array: true
+    t.boolean "closed_all_day",         default: true
+    t.boolean "closed_specific_day",    default: true
     t.time    "closing_begins_at"
     t.time    "closing_ends_at"
     t.integer "activity_id"
+    t.boolean "closed_all_reservables", default: true
+    t.integer "closed_reservables",     default: [],   array: true
     t.index ["activity_id"], name: "index_closed_schedules_on_activity_id", using: :btree
   end
 

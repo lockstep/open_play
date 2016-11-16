@@ -38,6 +38,7 @@ feature 'Check Reservation In', :js do
           end
           expect(page).to have_content 'Successfully checked in'
           expect(page).to_not have_link 'Check in'
+          expect(page).to_not have_link 'Cancel'
           expect(page).to have_css("#booking_#{@booking.id}.table-success")
         end
       end

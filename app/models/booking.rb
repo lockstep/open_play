@@ -29,7 +29,7 @@ class Booking < ApplicationRecord
     where(start_time: start_time, end_time: end_time, booking_date: date)
   }
   scope :find_by_order_ids, -> (order_ids, date) {
-    where(order_id: order_ids, booking_date: date).order(:start_time)
+    where(order_id: order_ids, booking_date: date).order(:start_time, :order_id)
   }
 
   def number_of_players_cannot_exceed_maximum

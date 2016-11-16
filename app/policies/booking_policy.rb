@@ -3,6 +3,10 @@ class BookingPolicy < ApplicationPolicy
     belongs_to_user?
   end
 
+  def cancel?
+    belongs_to_user?
+  end
+
   private
 
   def belongs_to_user?

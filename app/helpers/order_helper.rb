@@ -12,7 +12,14 @@ module OrderHelper
     booking_price.zero? ? '-' : "$ #{booking_price}"
   end
 
-  def display_checked_in?(action_name, checked_in)
-    action_name == 'reservations_for_business_owner' && checked_in == false
+  def able_to_change_status?(action_name, booking)
+    return false if booking.checked_in || booking.canceled
+    action_name == 'reservations_for_business_owner'
+  end
+
+  def status(booking)
+    return 'Checked in' if booking.checked_in
+    return 'Canceled' if booking.canceled
+    ''
   end
 end

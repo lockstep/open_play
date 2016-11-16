@@ -1,4 +1,5 @@
 class ReservationCsvRenderer
+  include OrderHelper
   def generate_csv(reservations)
     CSV.generate(headers: true) do |csv|
       render_header(csv)
@@ -11,7 +12,7 @@ class ReservationCsvRenderer
   def render_header(csv)
     csv << [
       "No.", "Customer", "Activity", "Reservable", "Time", "Date",
-      "Number of people","Total Price", 'Paid Externally'
+      "Number of people","Total Price", 'Paid Externally', 'Status'
     ]
   end
 
@@ -27,6 +28,7 @@ class ReservationCsvRenderer
       row << reservation.number_of_players
       row << "$ #{reservation.booking_price}"
       row << reservation.paid_externally
+      row << status(reservation)
       csv << row
     end
   end
