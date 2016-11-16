@@ -13,21 +13,39 @@ describe TimeSlotsHelper do
         )
       end
       context 'the lane has no bookings yet' do
-        scenario 'returns every possible time slots' do
-          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
-          expect(time_slots.size).to eq 11
-          expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
-          expect(time_slots.first[:booking_info][:available]).to eq true
-          expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:00'
-          expect(time_slots.last[:booking_info][:available]).to eq true
-        end
-        context 'start time on the half hour' do
+        context '60-minute interval' do
           scenario 'returns the correct time slots' do
-            time_slots = build_time_slots(@lane, '2016-10-10', '17:30')
-            expect(time_slots.size).to eq 10
-            expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:30'
+            time_slots = build_time_slots(@lane, '2016-10-10')
+            expect(time_slots.size).to eq 11
+            expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
             expect(time_slots.first[:booking_info][:available]).to eq true
-            expect(time_slots.last[:time].strftime("%H:%M")).to eq '18:30'
+            expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:00'
+            expect(time_slots.last[:booking_info][:available]).to eq true
+          end
+        end
+        context '30-minute interval' do
+          before do
+            @lane.update(interval: 30)
+          end
+          scenario 'returns the correct time slots' do
+            time_slots = build_time_slots(@lane, '2016-10-10')
+            expect(time_slots.size).to eq 22
+            expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
+            expect(time_slots.first[:booking_info][:available]).to eq true
+            expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:30'
+            expect(time_slots.last[:booking_info][:available]).to eq true
+          end
+        end
+        context '20-minute interval' do
+          before do
+            @lane.update(interval: 30)
+          end
+          scenario 'returns the correct time slots' do
+            time_slots = build_time_slots(@lane, '2016-10-10')
+            expect(time_slots.size).to eq 22
+            expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
+            expect(time_slots.first[:booking_info][:available]).to eq true
+            expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:30'
             expect(time_slots.last[:booking_info][:available]).to eq true
           end
         end
@@ -47,18 +65,18 @@ describe TimeSlotsHelper do
           )
         end
         scenario 'returns the time of each slot the same as no booking' do
-          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          time_slots = build_time_slots(@lane, '2016-10-10')
           expect(time_slots.size).to eq 11
           expect(time_slots.first[:time].strftime("%H:%M")).to eq '09:00'
           expect(time_slots.last[:time].strftime("%H:%M")).to eq '19:00'
         end
         scenario 'returns the available of each slot correctly' do
-          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          time_slots = build_time_slots(@lane, '2016-10-10')
           expect(time_slots.first[:booking_info][:available]).to eq true
           expect(time_slots.last[:booking_info][:available]).to eq false
         end
         scenario 'returns who booked the time slots' do
-          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          time_slots = build_time_slots(@lane, '2016-10-10')
           expect(time_slots.first[:booking_info][:available]).to eq true
           expect(time_slots.first[:booking_info][:booked_by]).to be_nil
           expect(time_slots.last[:booking_info][:available]).to eq false
@@ -71,7 +89,7 @@ describe TimeSlotsHelper do
           context 'has some spots left' do
             context 'any user wants to book' do
               scenario 'shows that the booked time slot is still available' do
-                time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+                time_slots = build_time_slots(@lane, '2016-10-10')
                 expect(time_slots.first[:booking_info][:available]).to eq true
                 expect(time_slots.first[:booking_info][:booked_by]).to be_nil
                 expect(time_slots.last[:booking_info][:available]).to eq true
@@ -92,7 +110,7 @@ describe TimeSlotsHelper do
               )
             end
             scenario 'shows that the time slot is unavailable' do
-              time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+              time_slots = build_time_slots(@lane, '2016-10-10')
               expect(time_slots.first[:booking_info][:available]).to eq true
               expect(time_slots.last[:booking_info][:available]).to eq false
             end
@@ -106,44 +124,70 @@ describe TimeSlotsHelper do
           @lane.update(start_time: '09:00', end_time: '09:00')
         end
         scenario 'shows the rest of time slots until midnight' do
-          time_slots = build_time_slots(@lane, '2016-10-10', '17:00')
+          time_slots = build_time_slots(@lane, '2016-10-10')
           expect(time_slots.size).to eq 24
           expect(time_slots.first[:time].strftime("%H:%M")).to eq '00:00'
           expect(time_slots.last[:time].strftime("%H:%M")).to eq '23:00'
         end
       end
+    end
+  end
 
-      context '#requested_time_slot_index' do
-        context '#requested time' do
-          context 'blank' do
-            scenario 'returns 0' do
-              slot_index = requested_time_slot_index(@lane, '2016-10-10', '')
-              expect(slot_index).to eq 0
+  describe '#requested_time_slot_index' do
+    before do
+      @lane = create(
+        :lane,
+        interval: 60,
+        start_time: '09:00',
+        end_time: '20:00'
+      )
+    end
+    context '#requested time' do
+      context 'blank' do
+        scenario 'returns 0' do
+          slot_index = requested_time_slot_index(@lane, '2016-10-10', '')
+          expect(slot_index).to eq 0
+        end
+      end
+      context 'valid' do
+        context '60-minute interval' do
+          context 'books on the half hour' do
+            scenario 'returns the correct index' do
+              slot_index = requested_time_slot_index(@lane, '2016-10-10', '10:30')
+              expect(slot_index).to eq 1
             end
           end
-          context 'valid' do
-            context 'starts on the half hour' do
-              scenario 'returns the correct index' do
-                slot_index = requested_time_slot_index(@lane, '2016-10-10', '10:30')
-                expect(slot_index).to eq 1
-              end
-            end
-            context 'starts on the hour' do
-              scenario 'returns the correct index' do
-                slot_index = requested_time_slot_index(@lane, '2016-10-10', '10:00')
-                expect(slot_index).to eq 1
-              end
+          context 'books on the hour' do
+            scenario 'returns the correct index' do
+              slot_index = requested_time_slot_index(@lane, '2016-10-10', '10:00')
+              expect(slot_index).to eq 1
             end
           end
-          context 'out of service' do
-            scenario 'still returns the index' do
-              slot_index = requested_time_slot_index(@lane, '2016-10-10', '7:00')
-              expect(slot_index).to eq -2
+        end
+        context '20-minute interval' do
+          before do
+            @lane.update(interval: 20)
+          end
+          context 'books on the half hour' do
+            scenario 'returns the correct index' do
+              slot_index = requested_time_slot_index(@lane, '2016-10-10', '09:30')
+              expect(slot_index).to eq 1
+            end
+          end
+          context 'books on the hour' do
+            scenario 'returns the correct index' do
+              slot_index = requested_time_slot_index(@lane, '2016-10-10', '10:00')
+              expect(slot_index).to eq 3
             end
           end
         end
       end
-
+      context 'out of service' do
+        scenario 'returns 0 as the index' do
+          slot_index = requested_time_slot_index(@lane, '2016-10-10', '7:00')
+          expect(slot_index).to eq 0
+        end
+      end
     end
   end
 end

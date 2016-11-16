@@ -22,4 +22,12 @@ module DateTimeHelper
   def merge_date_and_time(date, time)
     date + time.seconds_since_midnight.seconds
   end
+
+  def round_time(time, minutes, round_up=true)
+    time_remainder = time.to_i % minutes
+    return time if time_remainder == 0
+    return time - time_remainder unless round_up
+    time - time_remainder + minutes
+  end
+
 end
