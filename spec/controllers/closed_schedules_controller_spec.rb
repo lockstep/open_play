@@ -48,6 +48,7 @@ describe ClosedSchedulesController do
               expect(ClosedSchedule.first.closed_specific_day).to eq true
               expect(ClosedSchedule.first.closing_begins_at).to eq nil
               expect(ClosedSchedule.first.closing_ends_at).to eq nil
+              expect(ClosedSchedule.first.closed_all_reservables).to eq true
               expect(ClosedSchedule.first.activity).to eq @activity
               expect(response).to redirect_to activity_closed_schedules_path(@activity)
             end
@@ -81,6 +82,7 @@ describe ClosedSchedulesController do
           closed_specific_day: true,
           closing_begins_at: '',
           closing_ends_at: '',
+          closed_all_reservables: true,
           activity_id: overrides[:activity_id]
         }
       }

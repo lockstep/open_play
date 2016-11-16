@@ -25,6 +25,10 @@ $(function() {
     $('#closing-time-range').toggleClass('closing-time-inactive');
   });
 
+  $("#all-reservable-checkbox, #specific-reservable-checkbox").change(function() {
+    $('#list-of-reservables').toggleClass('closing-time-inactive');
+  });
+
   $('#create-schedule-btn').click(function(e) {
     e.preventDefault();
     if ($("#specific-day-checkbox").is(":checked")) {
@@ -34,6 +38,10 @@ $(function() {
     if ($("#all-day-checkbox").is(":checked")) {
       $('#closing_begins_at, #closing_ends_at').val('');
     }
+
+    if ($("#all-reservable-checkbox").is(":checked")) {
+      $('#list-of-reservables input[type=checkbox]').attr('checked', false); }
+
     $('#new-closing-time-form').submit();
   });
 

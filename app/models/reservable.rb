@@ -21,10 +21,10 @@ class Reservable < ApplicationRecord
   delegate :name, to: :activity, prefix: true
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
+
   scope :active, -> { where(archived: false) }
-  scope :filtered_by_activity_ids, -> (ids) {
-    where(activity_id: ids)
-  }
+  scope :filtered_by_activity_ids, -> (ids) { where(activity_id: ids) }
+  scope :find_by_ids, -> (ids) { where(id: ids) }
 
   def number_of_booked_players(start_time, end_time, date)
     bookings
@@ -50,9 +50,17 @@ class Reservable < ApplicationRecord
     Time.parse('23:59:59')
   end
 
+  def closed_schedules
+    ClosedSchedule.find_by_activity_or_reservable(self)
+  end
+
   def out_of_service?(date_time)
-    booking_date = date_time.to_date.to_s
-    booking_time = date_time.to_time.to_s
-    activity.out_of_service?(booking_date, booking_time, interval)
+    closed_schedules.any? do |schedule|
+      schedule.match?(date_time.to_date.to_s, date_time.to_time.to_s, interval)
+    end
+  end
+
+  def self.list_reservable_names_by_ids(reservable_ids)
+    find_by_ids(reservable_ids).order(:name).pluck(:name)
   end
 end
