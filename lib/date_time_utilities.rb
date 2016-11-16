@@ -32,4 +32,8 @@ module DateTimeUtilities
   def display_time(time)
     time.strftime("%I:%M %p")
   end
+
+  def present_date_in_day_month_year_format(date)
+    date.strftime("%e %b %Y")
+  end
 end

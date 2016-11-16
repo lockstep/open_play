@@ -22,7 +22,7 @@ class Booking < ApplicationRecord
   delegate :per_person_weekday_price, to: :reservable
   delegate :per_person_weekend_price, to: :reservable
   delegate :activity, to: :reservable, prefix: true
-  delegate :id, to: :order, prefix: true
+  delegate :id, to: :order, prefix: true, allow_nil: true
   delegate :reserver_full_name, to: :order, prefix: true
 
   scope :during, -> (start_time, end_time, date) {
