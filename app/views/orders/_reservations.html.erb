@@ -1,12 +1,11 @@
-<table class="table">
+<table class="table reservations">
   <thead>
     <tr>
       <th class='text-xs-center'>Time</th>
       <th class='text-xs-center'>Customer</th>
       <th class='text-xs-center'>Activity</th>
       <th class='text-xs-center'>Reservable</th>
-      <th class='text-xs-center'>Date</th>
-      <th class='text-xs-center'>Number of People</th>
+      <th class='text-xs-center'># People</th>
       <th class='text-xs-center'>Total Price</th>
       <th class='text-xs-center'>No.</th>
       <th></th>
@@ -14,7 +13,12 @@
   </thead>
   <tbody>
     <% @bookings.each do |booking| %>
-      <tr class="<%= 'table-success' if booking.checked_in %>" id="booking_<%= booking.id %>">
+      <tr class=<% if booking.checked_in %>
+                  <%= 'table-success' %>
+                <% elsif booking.canceled %>
+                  <%= 'table-danger' %>
+                <% end %>
+        id="booking_<%= booking.id %>">
         <td class='text-xs-center'>
           <%= present_range_of_time(booking.start_time, booking.end_time) %>
         </td>
@@ -27,9 +31,6 @@
         <td class='text-xs-center'>
           <%= booking.reservable_name %>
         </td>
-        <td class='text-xs-center'>
-          <%= present_date_in_day_month_format(booking.booking_date) %>
-        </td>
         <td class='text-xs-center' id="number_of_people_from_booking_<%= booking.id %>">
           <%= booking.number_of_players %>
         </td>
@@ -40,9 +41,11 @@
           <%= booking.order_id %>
         </td>
         <td class='text-xs-center'>
-          <% if display_checked_in?(controller.action_name, booking.checked_in) %>
+          <% if able_to_change_status?(controller.action_name, booking) %>
             <%= link_to 'Check in', booking_check_in_path(booking),
-              class: 'btn btn-success', method: 'PATCH' %>
+              class: 'btn btn-success btn-sm', method: 'PATCH' %>
+            <%= link_to 'Cancel', booking_cancel_path(booking),
+              class: 'btn btn-danger btn-sm', method: 'PATCH' %>
           <% end %>
         </td>
       </tr>
