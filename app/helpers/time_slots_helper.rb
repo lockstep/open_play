@@ -35,8 +35,10 @@ module TimeSlotsHelper
     requested_date = DateTime.parse(requested_date)
     start_time = merge_date_and_time(requested_date, start_time_on_hour(reservable))
     if requested_time.present?
-      requested_time = requested_date + round_down_time(
-        Time.parse(requested_time), reservable.interval.minutes
+      requested_time = requested_date + round_time(
+        Time.parse(requested_time),
+        reservable.interval.minutes,
+        false
       ).seconds_since_midnight.seconds
     else
       requested_time = start_time
@@ -49,7 +51,7 @@ module TimeSlotsHelper
   private
 
   def start_time_on_hour(reservable)
-    round_up_time(reservable.opening_time, reservable.interval.minutes)
+    round_time(reservable.opening_time, reservable.interval.minutes)
   end
 
   def start_on_half_hour?(time)
