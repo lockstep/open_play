@@ -37,6 +37,6 @@ class ClosedSchedulesController < ApplicationController
   def schedule_params
     params.require(:closed_schedule).permit(:label, :closed_on, :closed_all_day,
     :closed_specific_day, :closing_begins_at, :closing_ends_at, :activity_id,
-    closed_days: [])
+    :closed_all_reservables, closed_days: [], closed_reservables: [])
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114080954) do
+ActiveRecord::Schema.define(version: 20161116073418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,12 +71,14 @@ ActiveRecord::Schema.define(version: 20161114080954) do
   create_table "closed_schedules", force: :cascade do |t|
     t.string  "label"
     t.date    "closed_on"
-    t.string  "closed_days",         default: [], array: true
-    t.boolean "closed_all_day"
-    t.boolean "closed_specific_day"
+    t.string  "closed_days",            default: [],   array: true
+    t.boolean "closed_all_day",         default: true
+    t.boolean "closed_specific_day",    default: true
     t.time    "closing_begins_at"
     t.time    "closing_ends_at"
     t.integer "activity_id"
+    t.boolean "closed_all_reservables", default: true
+    t.integer "closed_reservables",     default: [],   array: true
     t.index ["activity_id"], name: "index_closed_schedules_on_activity_id", using: :btree
   end
 

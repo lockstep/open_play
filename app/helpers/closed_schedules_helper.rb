@@ -1,6 +1,6 @@
 module ClosedSchedulesHelper
-  def shouldCheckDay(day_list, day)
-    day_list.include?(day) ? true : false
+  def shouldCheck(list_of_things, thing)
+    list_of_things.include?(thing) ? true : false
   end
 
   def display_closed_every_x_day(day_list)
@@ -18,5 +18,10 @@ module ClosedSchedulesHelper
   def display_closed_time(schedule)
     return 'All day' if schedule.closed_all_day
     present_range_of_time(schedule.closing_begins_at, schedule.closing_ends_at)
+  end
+
+  def display_closed_lane(schedule)
+    return 'All reservables' if schedule.closed_all_reservables
+    Reservable.list_reservable_names_by_ids(schedule.closed_reservables).join(', ')
   end
 end
