@@ -13,9 +13,7 @@
           <%= link_to('Your Business Info', businesses_show_path, class: 'nav-link dropdown-item') %>
         <%end%>
         <%= link_to('Your Bookings', user_reservations_path(current_user), class: 'nav-link dropdown-item') %>
-        <button class="dropdown-item" type="button">
-          <%= link_to('Your Profile', edit_user_path(current_user), class: 'nav-link') %>
-        </button>
+        <%= link_to('Your Profile', edit_user_path(current_user), class: 'nav-link dropdown-item') %>
         <%= link_to('Log Out', destroy_user_session_path, method: :delete, class: 'nav-link dropdown-item') %>
       </div>
     </div>
