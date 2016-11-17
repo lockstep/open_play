@@ -24,3 +24,4 @@
 //= require orders_reservations
 //= require slick.min
 //= require activities
+//= require reservables

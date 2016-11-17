@@ -62,6 +62,7 @@ describe ReservablesController do
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
+              expect(reservable.class).to eq Room
               expect(reservable.name).to eq 'kitty'
               expect(reservable.interval).to eq 60
               expect(reservable.start_time.to_s).to match '08:00'
@@ -98,7 +99,7 @@ describe ReservablesController do
         def room_params(overrides={})
           {
             activity_id: overrides[:activity_id],
-            room: {
+            reservable: {
               name: 'kitty',
               interval: 60,
               start_time: overrides[:start_time] || '08:00:00.000',
@@ -124,6 +125,7 @@ describe ReservablesController do
 
               expect(Reservable.count).to eq 1
               reservable = Reservable.first
+              expect(reservable.class).to eq Lane
               expect(reservable.name).to eq 'kitty'
               expect(reservable.interval).to eq 60
               expect(reservable.start_time.to_s).to match '08:00'
@@ -149,7 +151,7 @@ describe ReservablesController do
       def lane_params(overrides={})
         {
           activity_id: overrides[:activity_id],
-          lane: {
+          reservable: {
             name: 'kitty',
             interval: 60,
             start_time: '08:00:00.000',
@@ -254,7 +256,7 @@ describe ReservablesController do
         def room_params(overrides={})
           {
             id: overrides[:reservable_id],
-            room: { name: 'Death Room 123'}
+            reservable: { name: 'Death Room 123'}
           }
         end
       end
@@ -291,7 +293,7 @@ describe ReservablesController do
         def lane_params(overrides={})
           {
             id: overrides[:reservable_id],
-            lane: { name: 'Death Room 123'}
+            reservable: { name: 'Death Room 123'}
           }
         end
       end
