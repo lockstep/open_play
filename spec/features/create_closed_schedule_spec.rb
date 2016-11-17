@@ -1,4 +1,4 @@
-feature 'Edit Closed Schedule', js: true do
+feature 'Create Closed Schedule', js: true do
   background do
     @user = create(:user)
     @business = create(:business, user: @user)
