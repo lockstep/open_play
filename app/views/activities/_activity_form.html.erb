@@ -1,9 +1,13 @@
 <%= form_for @activity, as: :activity, url: {action: 'update'} do |f| %>
   <div class="form-group row">
     <div class="col-xs-2">
-      <%= f.label :name %>
+      <%= f.label :type, 'Activity Type:',style:'padding-top:.4rem'%>
     </div>
-    <div class="<%= ('has-danger' if @activity.errors[:name].any?) %> col-xs-10">
+    <div class="col-xs-3">
+      <%= f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]},
+        {}, {class:'form-control'} %>
+    </div>
+    <div class="<%= ('has-danger' if @activity.errors[:name].any?) %> col-xs-7">
       <%= f.text_field :name, placeholder: 'Activity name', class: 'form-control' %>
       <% @activity.errors[:name].each do |error| %>
         <div class="form-control-feedback">
