@@ -51,4 +51,12 @@ class ClosedSchedule < ApplicationRecord
     return checking_schedule_in_case_of_closed_all_day(booking_date) if closed_all_day
     checking_schedule_in_case_of_closed_on_specific_day(booking_date, booking_time, interval_time)
   end
+
+  def self.do_matching(reservable, booking_date, booking_time)
+    closed_schedules =
+      where("closed_all_reservables = true OR closed_reservables @> ?", "{#{reservable.id}}")
+    closed_schedules.any? do |schedule|
+      schedule.match?(booking_date, booking_time, reservable.interval)
+    end
+  end
 end

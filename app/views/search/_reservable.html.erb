@@ -1,4 +1,4 @@
-<div class="reservable">
+<div class="reservable" id='<%= "reservable_#{reservable.id}" %>'>
   <span class="reservable-name"><%= reservable.name %></span>
   <div class="row-times" data-slick='{"initialSlide":
     <%= requested_time_slot_index(reservable, @booking_date, @booking_time) %>}'>
