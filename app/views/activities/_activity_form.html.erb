@@ -17,13 +17,15 @@
       <%= f.label :start_time, class: 'col-form-label' %>
     </div>
     <div class="col-xs-4">
-      <%= f.time_field :start_time, class:'form-control' %>
+      <%= f.text_field :start_time, value: "#{present_time(f.object.start_time)}",
+        class: 'form-control'%>
     </div>
     <div class="col-xs-2">
       <%= f.label :end_time, class: 'col-form-label' %>
     </div>
     <div class="col-xs-4">
-      <%= f.time_field :end_time, class:'form-control' %>
+      <%= f.text_field :end_time, value: "#{present_time(f.object.end_time)}",
+        class: 'form-control'%>
     </div>
 
     <% if @activity.errors[:end_time].any? %>

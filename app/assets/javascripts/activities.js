@@ -37,4 +37,19 @@ $(function() {
     $('#new-closing-time-form').submit();
   });
 
+  if ($('#new_activity').length > 0) {
+    var activityStartTime = $('#activity_start_time');
+    activityStartTime.timepicker({ 'scrollDefault': 'now' });
+    activityStartTime.timepicker('setTime', '08:00');
+
+    var activityEndTime = $('#activity_end_time');
+    activityEndTime.timepicker({ 'scrollDefault': 'now' });
+    activityEndTime.timepicker('setTime', '16:00');
+  }
+
+  if ($('#edit_activity').length > 0) {
+    $('#activity_start_time').timepicker({ 'scrollDefault': 'now' });
+    $('#activity_end_time').timepicker({ 'scrollDefault': 'now' });
+  }
+
 });

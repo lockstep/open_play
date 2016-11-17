@@ -50,7 +50,7 @@ feature 'edit activity' do
         expect(page).to have_content @reservable.name
         click_link 'Edit'
         expect(page).to have_content 'Edit a Lane'
-        fill_in :lane_name, with: 'Amazing Lane 1'
+        fill_in :reservable_name, with: 'Amazing Lane 1'
         click_on 'Submit'
         expect(page).to have_content 'Successfully updated reservable'
         expect(page).to have_content 'Amazing Lane 1'
@@ -62,8 +62,8 @@ feature 'edit activity' do
         expect(page).to have_content @reservable.name
         click_link 'Edit'
         expect(page).to have_content 'Edit a Lane'
-        fill_in :lane_interval, with: ''
-        fill_in :lane_name, with: ''
+        fill_in :reservable_interval, with: ''
+        fill_in :reservable_name, with: ''
         click_on 'Submit'
         expect(page).to have_content "can't be blank"
         expect(page).to have_content "is not a number"
@@ -75,7 +75,7 @@ feature 'edit activity' do
           click_link 'Manage Business'
           click_link 'Edit'
           click_link 'Edit'
-          fill_in :lane_per_person_weekday_price, with: '15.8'
+          fill_in :reservable_per_person_weekday_price, with: '15.8'
           click_on 'Submit'
 
           expect(page).to have_content '$15.8'
@@ -86,7 +86,7 @@ feature 'edit activity' do
           click_link 'Manage Business'
           click_link 'Edit'
           click_link 'Edit'
-          fill_in :lane_per_person_weekday_price, with: 'abc'
+          fill_in :reservable_per_person_weekday_price, with: 'abc'
           click_on 'Submit'
 
           expect(page).to have_content 'is not a number'
@@ -99,7 +99,7 @@ feature 'edit activity' do
           click_link 'Manage Business'
           click_link 'Edit'
           click_link 'Edit'
-          fill_in :lane_per_person_weekend_price, with: '20'
+          fill_in :reservable_per_person_weekend_price, with: '20'
           click_on 'Submit'
 
           expect(page).to have_content '$20.0'
@@ -110,7 +110,7 @@ feature 'edit activity' do
           click_link 'Manage Business'
           click_link 'Edit'
           click_link 'Edit'
-          fill_in :lane_per_person_weekend_price, with: 'abc'
+          fill_in :reservable_per_person_weekend_price, with: 'abc'
           click_on 'Submit'
 
           expect(page).to have_content 'is not a number'

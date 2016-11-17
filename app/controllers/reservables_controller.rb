@@ -11,7 +11,7 @@ class ReservablesController < ApplicationController
   def create
     @reservable = current_activity.build_reservable
     authorize @reservable
-    if @reservable.update_attributes(reservable_params(@reservable))
+    if @reservable.update_attributes(reservable_params)
       options = params[:options]
       unless options.nil?
         options.each do |option|
@@ -30,7 +30,7 @@ class ReservablesController < ApplicationController
   def edit; end
 
   def update
-    if @reservable.update_attributes(reservable_params(@reservable))
+    if @reservable.update_attributes(reservable_params)
       options = params[:options]
       @reservable.options_available.destroy_all unless @reservable.options_available.nil?
 
@@ -71,14 +71,8 @@ class ReservablesController < ApplicationController
     @current_activity ||= Activity.find_by_id(params[:activity_id])
   end
 
-  def reservable_params(reservable)
-    case reservable
-    when Lane
-      reservable_type = :lane
-    when Room
-      reservable_type = :room
-    end
-    params.require(reservable_type)
+  def reservable_params
+    params.require(:reservable)
       .permit([
         :name,
         :interval,
