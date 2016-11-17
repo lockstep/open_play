@@ -4,6 +4,7 @@ $(function() {
 
   Utilities.preventBackToBackBooking();
   Utilities.slidingSlot();
+  Utilities.showSpinner();
 
   var showHideCheckIcon = function(icon) {
     icon.hasClass('fa-check') ? icon.removeClass('fa-check') : icon.addClass('fa-check')
@@ -97,5 +98,13 @@ var Utilities = {
 
       ]
     });
+  },
+  showSpinner: function(){
+    $('.activity-info').on('click', '.next, .prev', function() {
+      $(this).parents('.reservables').addClass('loading');
+    });
+  },
+  hideSpinner: function(){
+    $('.reservables').removeClass('loading');
   }
 }
