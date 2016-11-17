@@ -267,7 +267,7 @@ feature 'Complete Reservation', :js do
     context 'does not book any time slots' do
       scenario 'books unsuccessfully' do
         visit root_path
-        click_on 'Search'
+        search_activities
         click_on 'Book'
         expect(page).to have_content 'Please select at least one time slot.'
       end
