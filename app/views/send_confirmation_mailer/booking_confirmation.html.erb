@@ -17,7 +17,7 @@
             <ul>
               <li><strong>Date:</strong> <%= present_date_in_weekday_month_day_format(@order.booking_date) %></li>
               <li><strong>Place:</strong> <%= @order.booking_place %></li>
-              <li><strong>Price:</strong> <%= present_booking_price(@order.calculate_total_price) %></li>
+              <li><strong>Price:</strong> <%= present_booking_price(@order.total_price) %></li>
             </ul>
 
             <h3 style="color:#557da1;display:block;font-family:&quot;Helvetica Neue&quot;,Helvetica,Roboto,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:130%;margin:16px 0 8px;text-align:left">Booking Details</h3>
@@ -69,4 +69,3 @@
     </table>
   </body>
 </html>
-

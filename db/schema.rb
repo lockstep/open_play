@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114080954) do
+ActiveRecord::Schema.define(version: 20161118044224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20161114080954) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.boolean  "checked_in",        default: false
+    t.float    "booking_price",     default: 0.0
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
     t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
   end

@@ -47,8 +47,12 @@ class Booking < ApplicationRecord
     weekend_booking? ? per_person_weekend_price : per_person_weekday_price
   end
 
-  def booking_price
+  def calculate_booking_price
     base_booking_price + (number_of_players * per_person_price)
+  end
+
+  def update_total_price
+    update(booking_price: calculate_booking_price)
   end
 
   private

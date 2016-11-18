@@ -6,7 +6,7 @@ Your booking details are shown below for your reference:
 Booking Number: <%= @order.id %>
 Date: <%= present_date_in_weekday_month_day_format(@order.booking_date) %>
 Place: <%= @order.booking_place %>
-Price: <%= present_booking_price(@order.calculate_total_price) %>
+Price: <%= present_booking_price(@order.total_price) %>
 
 Booking Details:
 <% @order.bookings.each do |booking| %>
@@ -22,4 +22,3 @@ Booking Details:
 
 Thank you,
 The OpenPlay Team
-

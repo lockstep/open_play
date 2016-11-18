@@ -85,6 +85,7 @@ describe OrdersController do
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
             expect(bookings.first.reservable_options.size).to eq 2
+            expect(bookings.first.booking_price).to eq 20.0
             expect(response).to redirect_to success_order_path(Order.last)
           end
         end
