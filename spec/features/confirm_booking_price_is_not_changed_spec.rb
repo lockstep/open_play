@@ -14,7 +14,8 @@ feature 'Confirm booking price is not changed', :js do
       @booking = create(:booking, order: @order, reservable: @lane,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 2)
-      @booking.update_total_price
+      @booking.set_total_price
+      @booking.save
     end
     context 'business owner changes his booking price' do
       before { @lane.update(weekday_price: 30) }

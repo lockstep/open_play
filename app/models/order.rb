@@ -39,19 +39,12 @@ class Order < ApplicationRecord
     booking.reservable_activity_name
   end
 
-  # this method is being used to calculate order total prices for sending to stripe
-  def calculate_total_price
-    bookings.map { |booking| booking.calculate_booking_price }.reduce(0, :+)
-  end
-
-  def calculate_total_price_in_cents
-    dollars_to_cents(calculate_total_price)
-  end
-
-  # this method is being used to calculate order total prices for general use cases
-  # like showing reservations history and etc.
   def total_price
-    bookings.map { |booking| booking.booking_price }.reduce(0, :+)
+    bookings.map(&:booking_price).reduce(0, :+)
+  end
+
+  def total_price_in_cents
+    dollars_to_cents(total_price)
   end
 
   def self.reservations_for_business_owner(date, activity_id)
@@ -64,7 +57,7 @@ class Order < ApplicationRecord
     Booking.find_by_order_ids(order_ids, date)
   end
 
-  def update_bookings_total_price
-    bookings.each { |booking| booking.update_total_price }
+  def set_bookings_total_price
+    bookings.each { |booking| booking.set_total_price }
   end
 end

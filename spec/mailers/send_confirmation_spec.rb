@@ -13,7 +13,8 @@ describe SendConfirmationMailer do
         booking_date: '2020-01-20',
         number_of_players: 2
       )
-      @booking.update_total_price
+      @booking.set_total_price
+      @booking.save
     end
     it 'shows booking information' do
       SendConfirmationMailer.booking_confirmation(@order.id).deliver_now

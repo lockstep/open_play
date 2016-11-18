@@ -51,8 +51,8 @@ class Booking < ApplicationRecord
     base_booking_price + (number_of_players * per_person_price)
   end
 
-  def update_total_price
-    update(booking_price: calculate_booking_price)
+  def set_total_price
+    self.booking_price = calculate_booking_price
   end
 
   private

@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    @order.update_bookings_total_price
+    @order.set_bookings_total_price
     if user_signed_in?
       @order.user = current_user
     else
@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
     end
     if @order.save
       Stripe::Charge.create(
-        amount: @order.calculate_total_price_in_cents.to_i,
+        amount: @order.total_price_in_cents.to_i,
         currency: 'usd',
         source: params[:token_id]
       )
@@ -93,7 +93,7 @@ class OrdersController < ApplicationController
     render json: {
       meta: {
         number_of_bookings: @order.bookings.length,
-        total_price: @order.calculate_total_price_in_cents,
+        total_price: @order.total_price_in_cents,
         email: user_signed_in? ? current_user.email : params[:guest][:email]
       }
     }

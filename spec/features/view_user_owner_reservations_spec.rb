@@ -21,25 +21,29 @@ feature 'View User Reservations', :js do
       @booking_1 = create(:booking, order: @order_1, reservable: @lane_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
-      @booking_1.update_total_price
+      @booking_1.set_total_price
+      @booking_1.save
 
       @booking_2 = create(:booking, order: @order_1, reservable: @lane_one,
         start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-13',
         number_of_players: 2)
-      @booking_2.update_total_price
+      @booking_2.set_total_price
+      @booking_2.save
 
       @user_2 = create(:user)
       @order_2 = create(:order, user: @user_2, activity: @laser_tag)
       @booking_3 = create(:booking, order: @order_2, reservable: @room_one,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-22',
         number_of_players: 5)
-      @booking_3.update_total_price
+      @booking_3.set_total_price
+      @booking_3.save
 
       @order_3 = create(:order, user: @user, activity: @bowling)
       @booking_4 = create(:booking, order: @order_3, reservable: @lane_two,
         start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
-      @booking_4.update_total_price
+      @booking_4.set_total_price
+      @booking_4.save
     end
 
     context 'booking_date and system date are the same' do
