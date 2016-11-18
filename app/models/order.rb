@@ -40,7 +40,7 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    bookings.map { |booking| booking.booking_price }.reduce(0, :+)
+    bookings.map(&:booking_price).reduce(0, :+)
   end
 
   def total_price_in_cents
@@ -55,5 +55,9 @@ class Order < ApplicationRecord
   def self.reservations_for_users(date, user_id)
     order_ids = filtered_by_user(user_id).pluck(:id)
     Booking.find_by_order_ids(order_ids, date)
+  end
+
+  def set_price_of_bookings
+    bookings.each(&:set_booking_price)
   end
 end

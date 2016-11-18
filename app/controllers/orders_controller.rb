@@ -20,6 +20,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
+    @order.set_price_of_bookings
     if user_signed_in?
       @order.user = current_user
     else
