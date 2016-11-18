@@ -1,8 +1,8 @@
 feature 'Complete Reservation', :js do
 
   background do
+    @business = create(:business)
     @user = create(:user)
-    @business = create(:business, user: @user)
   end
   include_context 'logged in user'
 

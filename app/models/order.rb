@@ -40,6 +40,7 @@ class Order < ApplicationRecord
   end
 
   def total_price
+    return 0 if made_by_business_owner?
     bookings.map(&:booking_price).reduce(0, :+)
   end
 
@@ -58,6 +59,14 @@ class Order < ApplicationRecord
   end
 
   def set_price_of_bookings
-    bookings.each(&:set_booking_price)
+    if made_by_business_owner?
+      bookings.each(&:set_paid_externally)
+    else
+      bookings.each(&:set_booking_price)
+    end
+  end
+
+  def made_by_business_owner?
+    !guest_order? &&  user == activity.user
   end
 end

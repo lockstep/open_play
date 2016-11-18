@@ -19,7 +19,8 @@ feature 'View Business Owner Reservations', :js do
 
   context 'bookings exist' do
     background do
-      @order_1 = create(:order, user: @user, activity: @bowling)
+      @user_1 = create(:user)
+      @order_1 = create(:order, user: @user_1, activity: @bowling)
       @booking_1 = create(:booking, order: @order_1, reservable: @lane_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
@@ -43,7 +44,7 @@ feature 'View Business Owner Reservations', :js do
       @order_2.set_price_of_bookings
       @order_2.save
 
-      @order_3 = create(:order, user: @user, activity: @bowling)
+      @order_3 = create(:order, user: @user_1, activity: @bowling)
       @booking_5 = create(:booking, order: @order_3, reservable: @lane_two,
         start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
         number_of_players: 3)

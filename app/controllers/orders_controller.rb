@@ -20,18 +20,16 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
+    set_user_or_guest
     @order.set_price_of_bookings
-    if user_signed_in?
-      @order.user = current_user
-    else
-      @order.guest = Guest.create(guest_params[:guest])
-    end
     if @order.save
-      Stripe::Charge.create(
-        amount: @order.total_price_in_cents.to_i,
-        currency: 'usd',
-        source: params[:token_id]
-      )
+      unless @order.made_by_business_owner?
+        Stripe::Charge.create(
+          amount: @order.total_price_in_cents.to_i,
+          currency: 'usd',
+          source: params[:token_id]
+        )
+      end
       SendConfirmationMailer.booking_confirmation(@order.id).deliver_later
       redirect_to success_order_path(@order),
         notice: <<-EOS
@@ -128,5 +126,13 @@ class OrdersController < ApplicationController
 
   def guest_params
     params.permit(guest: [:first_name, :last_name, :email])
+  end
+
+  def set_user_or_guest
+    if user_signed_in?
+      @order.user = current_user
+    else
+      @order.guest = Guest.create(guest_params[:guest])
+    end
   end
 end

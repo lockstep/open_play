@@ -9,7 +9,7 @@ module OrderHelper
   end
 
   def present_booking_price(booking_price)
-    booking_price.zero? ? '-' : "$ #{booking_price}"
+    booking_price.zero? ? 'Paid externally' : "$ #{booking_price}"
   end
 
   def display_checked_in?(action_name, checked_in)
