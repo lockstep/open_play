@@ -39,12 +39,12 @@ class Order < ApplicationRecord
     booking.reservable_activity_name
   end
 
-  def total_price
+  def calculate_total_price
     bookings.map { |booking| booking.booking_price }.reduce(0, :+)
   end
 
   def total_price_in_cents
-    dollars_to_cents(total_price)
+    dollars_to_cents(calculate_total_price)
   end
 
   def self.reservations_for_business_owner(date, activity_id)
