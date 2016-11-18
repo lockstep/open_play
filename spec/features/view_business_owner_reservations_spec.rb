@@ -23,35 +23,32 @@ feature 'View Business Owner Reservations', :js do
       @booking_1 = create(:booking, order: @order_1, reservable: @lane_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
-      @booking_1.set_total_price
-      @booking_1.save
 
       @booking_2 = create(:booking, order: @order_1, reservable: @lane_one,
         start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-13',
         number_of_players: 2)
-      @booking_2.set_total_price
-      @booking_2.save
+
+      @order_1.set_bookings_total_price
+      @order_1.save
 
       @user_2 = create(:user)
       @order_2 = create(:order, user: @user_2, activity: @laser_tag)
       @booking_3 = create(:booking, order: @order_2, reservable: @room_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-22',
         number_of_players: 5)
-      @booking_3.set_total_price
-      @booking_3.save
 
       @booking_4 = create(:booking, order: @order_2, reservable: @room_one,
         start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-22',
         number_of_players: 4)
-      @booking_4.set_total_price
-      @booking_4.save
+      @order_2.set_bookings_total_price
+      @order_2.save
 
       @order_3 = create(:order, user: @user, activity: @bowling)
       @booking_5 = create(:booking, order: @order_3, reservable: @lane_two,
         start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
-      @booking_5.set_total_price
-      @booking_5.save
+      @order_3.set_bookings_total_price
+      @order_3.save
     end
 
     context 'checking bowling activity' do
