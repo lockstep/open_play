@@ -11,7 +11,7 @@ namespace :order do
   desc "update_booking_price"
   task update_booking_price: :environment do
     Order.all.each do |order|
-      order.set_bookings_total_price
+      order.set_price_of_bookings
       order.save
     end
   end

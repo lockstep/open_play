@@ -28,7 +28,7 @@ feature 'View Business Owner Reservations', :js do
         start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-13',
         number_of_players: 2)
 
-      @order_1.set_bookings_total_price
+      @order_1.set_price_of_bookings
       @order_1.save
 
       @user_2 = create(:user)
@@ -40,14 +40,14 @@ feature 'View Business Owner Reservations', :js do
       @booking_4 = create(:booking, order: @order_2, reservable: @room_one,
         start_time: '10:00:00', end_time: '11:00:00', booking_date: '2016-10-22',
         number_of_players: 4)
-      @order_2.set_bookings_total_price
+      @order_2.set_price_of_bookings
       @order_2.save
 
       @order_3 = create(:order, user: @user, activity: @bowling)
       @booking_5 = create(:booking, order: @order_3, reservable: @lane_two,
         start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
-      @order_3.set_bookings_total_price
+      @order_3.set_price_of_bookings
       @order_3.save
     end
 

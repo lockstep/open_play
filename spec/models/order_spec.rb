@@ -7,7 +7,7 @@ describe Order do
         create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
         # weekend booking ($ 100)
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
-        @order.set_bookings_total_price
+        @order.set_price_of_bookings
         @order.save
 
         total_price = @order.reload.total_price
@@ -24,7 +24,7 @@ describe Order do
         create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
         # weekend booking ($ 100)
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
-        @order.set_bookings_total_price
+        @order.set_price_of_bookings
         @order.save
 
         total_price_in_cents = @order.reload.total_price_in_cents

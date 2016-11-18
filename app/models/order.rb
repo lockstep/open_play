@@ -57,7 +57,7 @@ class Order < ApplicationRecord
     Booking.find_by_order_ids(order_ids, date)
   end
 
-  def set_bookings_total_price
-    bookings.each(&:set_total_price)
+  def set_price_of_bookings
+    bookings.each(&:set_booking_price)
   end
 end
