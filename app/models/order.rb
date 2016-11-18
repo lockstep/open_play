@@ -58,6 +58,6 @@ class Order < ApplicationRecord
   end
 
   def set_bookings_total_price
-    bookings.each { |booking| booking.set_total_price }
+    bookings.each(&:set_total_price)
   end
 end
