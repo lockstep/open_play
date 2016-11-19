@@ -19,7 +19,8 @@ feature 'View Business Owner Reservations', :js do
 
   context 'bookings exist' do
     background do
-      @order_1 = create(:order, user: @user, activity: @bowling)
+      @user_1 = create(:user)
+      @order_1 = create(:order, user: @user_1, activity: @bowling)
       @booking_1 = create(:booking, order: @order_1, reservable: @lane_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
@@ -31,8 +32,7 @@ feature 'View Business Owner Reservations', :js do
       @order_1.set_price_of_bookings
       @order_1.save
 
-      @user_2 = create(:user)
-      @order_2 = create(:order, user: @user_2, activity: @laser_tag)
+      @order_2 = create(:order, user: @user, activity: @laser_tag)
       @booking_3 = create(:booking, order: @order_2, reservable: @room_two,
         start_time: '14:00:00', end_time: '15:00:00', booking_date: '2016-10-22',
         number_of_players: 5)
@@ -43,7 +43,7 @@ feature 'View Business Owner Reservations', :js do
       @order_2.set_price_of_bookings
       @order_2.save
 
-      @order_3 = create(:order, user: @user, activity: @bowling)
+      @order_3 = create(:order, user: @user_1, activity: @bowling)
       @booking_5 = create(:booking, order: @order_3, reservable: @lane_two,
         start_time: '09:00:00', end_time: '10:00:00', booking_date: '2016-10-13',
         number_of_players: 3)
@@ -72,6 +72,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_5.id}"))
               .to have_content @booking_5.number_of_players
             expect(page).to have_content '$ 55.0'
+            expect(page).to have_content 'false'
             expect(page).to have_link 'Check in'
           end
           within(:xpath, "//table/tbody/tr[2]") do
@@ -84,6 +85,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
               .to have_content @booking_2.number_of_players
             expect(page).to have_content '$ 25.0'
+            expect(page).to have_content 'false'
             expect(page).to have_link 'Check in'
           end
           within(:xpath, "//table/tbody/tr[3]") do
@@ -96,6 +98,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_1.id}"))
               .to have_content @booking_1.number_of_players
             expect(page).to have_content '$ 55.0'
+            expect(page).to have_content 'false'
             expect(page).to have_link 'Check in'
           end
           expect(page).to_not have_content @laser_tag.name
@@ -180,6 +183,7 @@ feature 'View Business Owner Reservations', :js do
               expect(find("#number_of_people_from_booking_#{@booking_5.id}"))
                 .to have_content @booking_5.number_of_players
               expect(page).to have_content '$ 55.0'
+              expect(page).to have_content 'false'
               expect(page).to have_link 'Check in'
             end
             within(:xpath, "//table/tbody/tr[2]") do
@@ -192,6 +196,7 @@ feature 'View Business Owner Reservations', :js do
               expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
                 .to have_content @booking_2.number_of_players
               expect(page).to have_content '$ 25.0'
+              expect(page).to have_content 'false'
               expect(page).to have_link 'Check in'
             end
             within(:xpath, "//table/tbody/tr[3]") do
@@ -237,6 +242,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
               .to have_content @booking_4.number_of_players
             expect(page).to have_content '$ 45.0'
+            expect(page).to have_content 'true'
             expect(page).to have_link 'Check in'
           end
 
@@ -252,6 +258,7 @@ feature 'View Business Owner Reservations', :js do
             expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
               .to have_content @booking_3.number_of_players
             expect(page).to have_content '$ 110.0'
+            expect(page).to have_content 'true'
             expect(page).to have_link 'Check in'
           end
 
@@ -300,6 +307,7 @@ feature 'View Business Owner Reservations', :js do
               expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
                 .to have_content @booking_4.number_of_players
               expect(page).to have_content '$ 45.0'
+              expect(page).to have_content 'true'
               expect(page).to have_link 'Check in'
             end
 
@@ -315,6 +323,7 @@ feature 'View Business Owner Reservations', :js do
               expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
                 .to have_content @booking_3.number_of_players
               expect(page).to have_content '$ 110.0'
+              expect(page).to have_content 'true'
               expect(page).to have_link 'Check in'
             end
 

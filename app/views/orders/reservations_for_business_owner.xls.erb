@@ -15,6 +15,7 @@
         <Cell><Data ss:Type="String">Date</Data></Cell>
         <Cell><Data ss:Type="String">Number of People</Data></Cell>
         <Cell><Data ss:Type="String">Total Price</Data></Cell>
+        <Cell><Data ss:Type="String">Paid externally</Data></Cell>
       </Row>
       <% @bookings.each do |booking| %>
         <Row>
@@ -26,6 +27,7 @@
           <Cell><Data ss:Type="String"><%= present_date_in_day_month_format(booking.booking_date) %></Data></Cell>
           <Cell><Data ss:Type="Number"><%= booking.number_of_players %></Data></Cell>
           <Cell><Data ss:Type="String"><%= present_booking_price(booking.booking_price)  %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.paid_externally %></Data></Cell>
         </Row>
       <% end %>
     </Table>

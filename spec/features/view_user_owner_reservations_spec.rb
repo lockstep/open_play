@@ -1,7 +1,6 @@
 feature 'View User Reservations', :js do
   background do
-    @user = create(:user)
-    business = create(:business, user: @user)
+    business = create(:business)
 
     @bowling = create(:bowling, business: business)
     @lane_one = create(:lane, name: 'lane_one', activity: @bowling,
@@ -12,6 +11,7 @@ feature 'View User Reservations', :js do
     @laser_tag = create(:laser_tag, business: business)
     @room_one = create(:room, name: 'room_one', activity: @laser_tag,
       weekend_price: 5, per_person_weekend_price: 10)
+    @user = create(:user)
   end
   include_context 'logged in user'
 

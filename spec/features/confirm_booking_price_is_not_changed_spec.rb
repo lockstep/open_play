@@ -1,10 +1,9 @@
 feature 'Confirm booking price is not changed', :js do
   background do
-    @user = create(:user)
-    business = create(:business, user: @user)
-    @bowling = create(:bowling, business: business)
+    @bowling = create(:bowling)
     @lane = create(:lane, name: 'lane_one', activity: @bowling,
       weekday_price: 5, per_person_weekday_price: 10)
+    @user = create(:user)
   end
   include_context 'logged in user'
 
@@ -22,8 +21,10 @@ feature 'Confirm booking price is not changed', :js do
       scenario 'shows old booking price' do
         travel_to Time.new(2016, 10, 13) do
           visit root_path
-          click_link 'Manage Business'
-          click_link 'View reservations'
+          within("nav") do
+            click_button @user.email
+          end
+          click_link 'Your Bookings'
           expect(page).to have_content '$ 25'
         end
       end

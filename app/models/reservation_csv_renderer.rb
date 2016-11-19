@@ -11,7 +11,7 @@ class ReservationCsvRenderer
   def render_header(csv)
     csv << [
       "No.", "Customer", "Activity", "Reservable", "Time", "Date",
-      "Number of people","Total Price"
+      "Number of people","Total Price", 'Paid Externally'
     ]
   end
 
@@ -26,6 +26,7 @@ class ReservationCsvRenderer
       row << reservation_date(reservation.booking_date)
       row << reservation.number_of_players
       row << "$ #{reservation.booking_price}"
+      row << reservation.paid_externally
       csv << row
     end
   end

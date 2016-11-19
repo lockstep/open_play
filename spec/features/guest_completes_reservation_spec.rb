@@ -13,8 +13,8 @@ feature 'Guest Complete Reservation', :js do
       click_on '11:00'
       click_on 'Book'
 
-      stub_stripe_charge_create
       stub_stripe_checkout_handler
+      stub_processing_order
       fill_in_guest_form
       click_on 'Complete Reservation'
 

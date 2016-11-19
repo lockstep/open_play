@@ -10,6 +10,9 @@
       <th class='text-xs-center'>Number of People</th>
       <th class='text-xs-center'>Total Price</th>
       <th class='text-xs-center'>No.</th>
+      <% if business_owner %>
+        <th class='text-xs-center'>Paid externally</th>
+      <% end %>
       <th></th>
     </tr>
   </thead>
@@ -40,6 +43,11 @@
         <td class='text-xs-center'>
           <%= booking.order_id %>
         </td>
+        <% if business_owner %>
+          <td class='text-xs-center'>
+            <%= booking.paid_externally %>
+          </td>
+        <% end %>
         <td class='text-xs-center'>
           <% if display_checked_in?(controller.action_name, booking.checked_in) %>
             <%= link_to 'Check in', booking_check_in_path(booking),

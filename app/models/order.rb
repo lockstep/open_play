@@ -1,6 +1,4 @@
 class Order < ApplicationRecord
-  include MoneyUtilities
-
   has_many :bookings, inverse_of: :order
   belongs_to :user, optional: true
   belongs_to :guest, optional: true
@@ -43,10 +41,6 @@ class Order < ApplicationRecord
     bookings.map(&:booking_price).reduce(0, :+)
   end
 
-  def total_price_in_cents
-    dollars_to_cents(total_price)
-  end
-
   def self.reservations_for_business_owner(date, activity_id)
     order_ids = filtered_by_activity(activity_id).pluck(:id)
     Booking.find_by_order_ids(order_ids, date)
@@ -57,7 +51,27 @@ class Order < ApplicationRecord
     Booking.find_by_order_ids(order_ids, date)
   end
 
+  def made_by_business_owner?
+    !guest_order? &&  user == activity.user
+  end
+
   def set_price_of_bookings
-    bookings.each(&:set_booking_price)
+    bookings.each do |booking|
+      booking.set_booking_price
+      booking.set_paid_externally if made_by_business_owner?
+    end
+  end
+
+  def process_order(token_id)
+    unless made_by_business_owner?
+      StripeCharger.new(total_price, token_id).charge
+    end
+    SendConfirmationMailer.booking_confirmation(id).deliver_later
+  end
+
+  def calculate_cost(current_user)
+    return 0 if current_user && current_user ==  activity.user
+    set_price_of_bookings
+    total_price * 100
   end
 end

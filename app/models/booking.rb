@@ -55,6 +55,10 @@ class Booking < ApplicationRecord
     self.booking_price = calculate_booking_price
   end
 
+  def set_paid_externally
+    self.paid_externally = true
+  end
+
   private
 
   def weekend_booking?
