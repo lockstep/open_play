@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   before_action :ensure_time_slot_selection_is_present, only: [:new]
   before_action :set_booking_date, only: [:reservations_for_business_owner,
     :reservations_for_users]
+  before_action :set_order, only: [:create, :prepare_complete_order]
 
   def new
     @order = Order.new(activity_id: params[:activity_id])
@@ -19,23 +20,10 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
-    set_user_or_guest
-    @order.set_price_of_bookings
+    fulfill_order
     if @order.save
-      unless @order.made_by_business_owner?
-        Stripe::Charge.create(
-          amount: @order.total_price_in_cents.to_i,
-          currency: 'usd',
-          source: params[:token_id]
-        )
-      end
-      SendConfirmationMailer.booking_confirmation(@order.id).deliver_later
-      redirect_to success_order_path(@order),
-        notice: <<-EOS
-                  Thank you for your reservation!
-                  You will receive an email confirmation shortly.
-                EOS
+      @order.process_order(params[:token_id])
+      redirect_to success_order_path(@order), notice: thank_you_message
     else
       render :new
     end
@@ -65,7 +53,6 @@ class OrdersController < ApplicationController
   end
 
   def prepare_complete_order
-    @order = Order.new(order_params)
     if @order.valid?
       if user_signed_in?
         order_is_ready_to_book!
@@ -91,7 +78,7 @@ class OrdersController < ApplicationController
     render json: {
       meta: {
         number_of_bookings: @order.bookings.length,
-        total_price: @order.total_price_in_cents,
+        total_price: @order.calculate_cost(current_user),
         email: user_signed_in? ? current_user.email : params[:guest][:email]
       }
     }
@@ -118,7 +105,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:user_id, :activity_id, bookings_attributes: [
+    params.require(:order).permit(:activity_id, bookings_attributes: [
       :start_time, :end_time, :booking_date, :number_of_players, :reservable_id,
       reservable_options_attributes: [:reservable_option_id]
     ])
@@ -128,11 +115,27 @@ class OrdersController < ApplicationController
     params.permit(guest: [:first_name, :last_name, :email])
   end
 
+  def set_order
+    @order = Order.new(order_params)
+  end
+
   def set_user_or_guest
     if user_signed_in?
       @order.user = current_user
     else
       @order.guest = Guest.create(guest_params[:guest])
     end
+  end
+
+  def fulfill_order
+    set_user_or_guest
+    @order.set_price_of_bookings
+  end
+
+  def thank_you_message
+    <<-EOS
+      Thank you for your reservation!
+      You will receive an email confirmation shortly.
+    EOS
   end
 end

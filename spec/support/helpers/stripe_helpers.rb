@@ -1,7 +1,7 @@
 module StripeHelpers
 
-  def stub_stripe_charge_create
-    expect(Stripe::Charge).to receive(:create)
+  def stub_processing_order
+    expect_any_instance_of(Order).to receive(:process_order)
   end
 
   def stub_stripe_checkout_handler

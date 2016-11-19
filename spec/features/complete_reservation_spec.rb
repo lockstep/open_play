@@ -58,7 +58,7 @@ feature 'Complete Reservation', :js do
             check 'Bumper'
             check 'Handicap accessible'
 
-            stub_stripe_charge_create
+            stub_processing_order
             stub_stripe_checkout_handler
 
             click_on 'Complete Reservation'
@@ -118,7 +118,7 @@ feature 'Complete Reservation', :js do
           check 'Bumper'
           check 'Handicap accessible'
 
-          stub_stripe_charge_create
+          stub_processing_order
           stub_stripe_checkout_handler
 
           click_on 'Complete Reservation'
@@ -136,7 +136,7 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_stripe_charge_create
+            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -254,7 +254,7 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_stripe_charge_create
+            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -324,7 +324,7 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_stripe_charge_create
+            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -430,7 +430,7 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_stripe_charge_create
+            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
