@@ -112,7 +112,7 @@ class OrdersController < ApplicationController
   end
 
   def guest_params
-    params.permit(guest: [:first_name, :last_name, :email])
+    params.permit(guest: [:first_name, :last_name, :email, :phone_number])
   end
 
   def set_order

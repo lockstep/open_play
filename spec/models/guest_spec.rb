@@ -2,7 +2,8 @@ describe Guest do
   subject { described_class.new(
     first_name: 'mark',
     last_name: 'zuckerberg',
-    email: 'mark@locksteplap.com'
+    email: 'mark@locksteplap.com',
+    phone_number: '+1 650-253-0000'
   )}
 
   describe 'Validations' do
@@ -25,8 +26,18 @@ describe Guest do
       expect(subject).to_not be_valid
     end
 
-    it 'is not valid if an invalid email format' do
+    it 'is not valid if an invalid email' do
       subject.email = 'abc'
+      expect(subject).to_not be_valid
+    end
+
+    it 'is not valid without a phone number' do
+      subject.phone_number = ''
+      expect(subject).to_not be_valid
+    end
+
+    it 'is not valid if an invalid phone number' do
+      subject.phone_number = '001800_4412904'
       expect(subject).to_not be_valid
     end
   end

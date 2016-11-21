@@ -261,7 +261,8 @@ describe OrdersController do
       guest: {
         first_name: 'mark',
         last_name: 'zuckerberg',
-        email: overrides[:email]
+        email: overrides[:email],
+        phone_number: '+1 650-253-0000'
       },
       token_id: overrides[:token_id] || ''
     }
