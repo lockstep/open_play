@@ -35,42 +35,6 @@ feature 'Guest Complete Reservation', :js do
           expect(page).to have_content "First name can't be blank"
         end
       end
-      context 'last name is omitted' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(last_name: '')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content "Last name can't be blank"
-        end
-      end
-      context 'email is omitted' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(email: '')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content "Email can't be blank"
-        end
-      end
-      context 'email is invalid format' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(email: 'abc')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content 'Email is invalid'
-        end
-      end
     end
   end
 
