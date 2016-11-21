@@ -65,8 +65,8 @@ class Order < ApplicationRecord
   def process_order(token_id)
     unless made_by_business_owner?
       StripeCharger.new(total_price, token_id).charge
+      SendConfirmationMailer.booking_confirmation(id).deliver_later
     end
-    SendConfirmationMailer.booking_confirmation(id).deliver_later
   end
 
   def calculate_cost(current_user)

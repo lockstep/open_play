@@ -179,15 +179,15 @@ describe OrdersController do
           before { @business.update(user: @user) }
           it 'creates a booking' do
             expect_any_instance_of(StripeCharger).to_not receive(:charge)
-            expect { post :create, params: user_order_params(
+            post :create, params: user_order_params(
               activity_id: @activity.id,
               reservable_id: @reservable.id,
               option_1_id: @option_1.id,
               option_2_id: @option_2.id,
               token_id: 'tokenId12345'
-            )}.to change { enqueued_jobs.size }.by(1)
+            )
 
-            expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
+            expect(enqueued_jobs.size).to eq 0
             expect(Order.count).to eq 1
             bookings = Order.first.bookings
             expect(bookings.length).to eq 1
