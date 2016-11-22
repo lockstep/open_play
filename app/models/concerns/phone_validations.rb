@@ -2,7 +2,7 @@ module PhoneValidations
   extend ActiveSupport::Concern
 
   included do
-    validates :phone_number, presence: true
+    validates_presence_of :phone_number
     validate :phone_number_must_be_in_correct_format
 
     def phone_number_must_be_in_correct_format

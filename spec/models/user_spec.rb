@@ -1,8 +1,9 @@
-describe Guest do
+describe User do
   subject { described_class.new(
-    first_name: 'mark',
-    last_name: 'zuckerberg',
-    email: 'mark@locksteplap.com',
+    first_name: 'Henry',
+    last_name: 'force',
+    email: 'henry@gmail.com',
+    password: '123456',
     phone_number: '+1 650-253-0000'
   )}
 
@@ -18,16 +19,6 @@ describe Guest do
 
     it 'is not valid without a last name' do
       subject.last_name = ''
-      expect(subject).to_not be_valid
-    end
-
-    it 'is not valid without an email' do
-      subject.email = ''
-      expect(subject).to_not be_valid
-    end
-
-    it 'is not valid if an invalid email' do
-      subject.email = 'abc'
       expect(subject).to_not be_valid
     end
 
