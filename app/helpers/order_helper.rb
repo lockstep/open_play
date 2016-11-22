@@ -16,4 +16,10 @@ module OrderHelper
     return false if booking.checked_in || booking.canceled
     action_name == 'reservations_for_business_owner'
   end
+
+  def status(booking)
+    return 'Checked in' if booking.checked_in
+    return 'Canceled' if booking.canceled
+    ''
+  end
 end

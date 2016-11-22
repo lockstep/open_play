@@ -116,6 +116,15 @@ describe TimeSlotsHelper do
             end
           end
         end
+        context 'the booking has been canceled' do
+          before do
+            @booking.update(canceled: true)
+          end
+          scenario 'should free up that booked time' do
+            time_slots = build_time_slots(@lane, '2016-10-10')
+            expect(time_slots.last[:booking_info][:available]).to eq true
+          end
+        end
       end
 
       context '24-hour reservable' do
