@@ -36,7 +36,10 @@ describe UsersController do
       login_user
       it 'updates user profile successfully' do
         patch :update, params: user_params(id: @user.id)
-        expect(User.first.email).to eq('hello@gmail.com')
+        user = User.first
+        expect(user.first_name).to eq('jame')
+        expect(user.last_name).to eq('gosling')
+        expect(user.phone_number).to eq('+1 650-253-0000')
       end
     end
 
@@ -53,7 +56,9 @@ describe UsersController do
     {
       id: overrides[:id],
       user: {
-        email: 'hello@gmail.com'
+        first_name: 'jame',
+        last_name: 'gosling',
+        phone_number: '+1 650-253-0000'
       }
     }
   end

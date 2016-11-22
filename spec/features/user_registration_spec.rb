@@ -24,5 +24,6 @@ feature 'User registers', :js do
     fill_in 'user[email]', with: overrides[:email] || 'peter@gmail.com'
     fill_in 'user[password]', with: overrides[:password] || '123456'
     fill_in 'user[password_confirmation]', with: overrides[:password_confirmation] || '123456'
+    fill_in 'user[phone_number]', with: overrides[:phone_number] || '+1 650-253-0000'
   end
 end

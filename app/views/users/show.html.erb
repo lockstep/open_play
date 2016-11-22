@@ -1,15 +1,33 @@
 <%= render partial: 'title', locals: { title: 'Your Profile' } %>
 
-<div id='user-information'>
-  <div class='row'>
-    <div class='col-xs-2 field-name'>Email</div>
-    <div class="col-xs-10"><%= @user.email %></div>
+<div class='row'>
+  <div class='col-xs-12'>
+    <table class='table table-bordered table-hover'>
+      <tbody class='text-xs-center'>
+        <tr>
+          <td>First name</td>
+          <td><%= @user.first_name %></td>
+        </tr>
+        <tr>
+          <td>Last name</td>
+          <td><%= @user.last_name %></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><%= @user.email %></td>
+        </tr>
+        <tr>
+          <td>Phone number</td>
+          <td><%= @user.phone_number %></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <div class='spacer-30'></div>
-  <div class='row'>
-    <div class='col-xs-12 text-xs-center'>
-      <%= link_to 'Edit Profile', edit_user_path, class: 'btn btn-primary' %>
-    </div>
+<div class='spacer-30'></div>
+<div class='row'>
+  <div class='col-xs-12 text-xs-center'>
+    <%= link_to 'Edit Profile', edit_user_path, class: 'btn btn-primary' %>
   </div>
 </div>

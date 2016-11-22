@@ -3,14 +3,21 @@
 <%= form_for @user, html: {id: 'edit_user_form'} do |f| %>
 
   <div class='form-group row'>
+    <%= f.label :email, class: 'col-xs-2 col-form-label' %>
+    <div class='col-xs-10'>
+      <p><%= @user.email %></p>
+    </div>
+  </div>
+
+  <div class='form-group row'>
   <%= f.label :first_name, class: 'col-xs-2 col-form-label' %>
-  <div class='<%= ('has-danger' if @user.errors[:first_name].any?) %> col-xs-10'>
-    <%= f.text_field :first_name, class: 'form-control' %>
-    <% @user.errors[:first_name].each do |error| %>
-      <div class="form-control-feedback">
-      <%= error %>
-      </div>
-    <% end %>
+    <div class='<%= ('has-danger' if @user.errors[:first_name].any?) %> col-xs-10'>
+      <%= f.text_field :first_name, class: 'form-control' %>
+      <% @user.errors[:first_name].each do |error| %>
+        <div class="form-control-feedback">
+        <%= error %>
+        </div>
+      <% end %>
     </div>
   </div>
 
@@ -27,14 +34,14 @@
   </div>
 
   <div class='form-group row'>
-    <%= f.label :email, class: 'col-xs-2 col-form-label' %>
-    <div class='<%= ('has-danger' if @user.errors[:email].any?) %> col-xs-10'>
-      <%= f.text_field :email, class: 'form-control' %>
-      <% @user.errors[:email].each do |error| %>
+    <%= f.label :phone_number, class: 'col-xs-2 col-form-label' %>
+    <div class='<%= ('has-danger' if @user.errors[:phone_number].any?) %> col-xs-10'>
+      <%= f.text_field :phone_number, class: 'form-control' %>
+      <% @user.errors[:phone_number].each do |error| %>
         <div class="form-control-feedback">
-          <%= error %>
-        </div>
-      <% end %>
+        <%= error %>
+      </div>
+    <% end %>
     </div>
   </div>
 

@@ -7,6 +7,21 @@ feature 'Guest Complete Reservation', :js do
       bowling = create(:bowling, business: business)
       create(:lane, activity: bowling)
     end
+
+    scenario 'sees guest form' do
+      visit root_path
+      search_activities
+      click_on '11:00'
+      click_on 'Book'
+
+      within '#new-order-form' do
+        expect(page).to have_content 'First name'
+        expect(page).to have_content 'Last name'
+        expect(page).to have_content 'Email'
+        expect(page).to have_content 'Phone number'
+      end
+    end
+
     scenario 'booking successful' do
       visit root_path
       search_activities
@@ -35,42 +50,6 @@ feature 'Guest Complete Reservation', :js do
           expect(page).to have_content "First name can't be blank"
         end
       end
-      context 'last name is omitted' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(last_name: '')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content "Last name can't be blank"
-        end
-      end
-      context 'email is omitted' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(email: '')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content "Email can't be blank"
-        end
-      end
-      context 'email is invalid format' do
-        scenario 'booking unsuccessful' do
-          visit root_path
-          search_activities
-          click_on '11:00'
-          click_on 'Book'
-          fill_in_guest_form(email: 'abc')
-          click_on 'Complete Reservation'
-
-          expect(page).to have_content 'Email is invalid'
-        end
-      end
     end
   end
 
@@ -78,5 +57,6 @@ feature 'Guest Complete Reservation', :js do
     fill_in :guest_first_name, with: overrides[:first_name] || "peter"
     fill_in :guest_last_name, with: overrides[:last_name] || 'pan'
     fill_in :guest_email, with: overrides[:email] || 'peter-pan@gmail.com'
+    fill_in :guest_phone_number, with: overrides[:phone_number] || '+1 650-253-0000'
   end
 end

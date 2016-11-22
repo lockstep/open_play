@@ -10,6 +10,10 @@ feature 'View User Profile' do
       click_button @user.email
     end
     click_link 'Your Profile'
-    expect(page).to have_content 'Edit Profile'
+    expect(page).to have_content @user.first_name
+    expect(page).to have_content @user.last_name
+    expect(page).to have_content @user.email
+    expect(page).to have_content @user.phone_number
+    expect(page).to have_link 'Edit Profile'
   end
 end

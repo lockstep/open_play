@@ -98,19 +98,6 @@ describe OrdersController do
               expect(response_data['email']).to eq 'mark@facebook.com'
             end
           end
-          context 'guest param is missing' do
-            it 'is handled gracefully' do
-              params = guest_order_params(
-                activity_id: @bowling.id,
-                reservable_id: @lane.id,
-                option_1_id: @option_1.id,
-                option_2_id: @option_2.id
-              )
-              get :prepare_complete_order, params: params
-              error = JSON.parse(response.body)['meta']['errors'].first
-              expect(error).to match "Email can't be blank"
-            end
-          end
         end
       end
       context 'an invalid order' do
@@ -274,7 +261,8 @@ describe OrdersController do
       guest: {
         first_name: 'mark',
         last_name: 'zuckerberg',
-        email: overrides[:email]
+        email: overrides[:email],
+        phone_number: '+1 650-253-0000'
       },
       token_id: overrides[:token_id] || ''
     }
