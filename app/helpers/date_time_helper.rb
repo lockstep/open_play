@@ -19,6 +19,10 @@ module DateTimeHelper
     date.strftime("%e %b %Y")
   end
 
+  def report_date_format(date)
+    date.strftime("%e %B %Y")
+  end
+
   def merge_date_and_time(date, time)
     date + time.seconds_since_midnight.seconds
   end

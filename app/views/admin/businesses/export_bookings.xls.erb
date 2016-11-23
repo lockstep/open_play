@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Date</Data></Cell>
+        <Cell><Data ss:Type="String">Time</Data></Cell>
+        <Cell><Data ss:Type="String">Order No.</Data></Cell>
+        <Cell><Data ss:Type="String">Customer</Data></Cell>
+        <Cell><Data ss:Type="String">Activity</Data></Cell>
+        <Cell><Data ss:Type="String">Reservable</Data></Cell>
+        <Cell><Data ss:Type="String">Number of People</Data></Cell>
+        <Cell><Data ss:Type="String">Total Price</Data></Cell>
+        <Cell><Data ss:Type="String">Paid externally</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+      </Row>
+      <% @bookings.each do |booking| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= report_date_format(booking.booking_date) %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= present_range_of_time(booking.start_time, booking.end_time) %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.order_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.order_reserver_full_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.reservable_activity_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.reservable_name %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= booking.number_of_players %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= present_booking_price(booking.booking_price)  %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= booking.paid_externally ? 'Yes' : 'No' %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= status(booking) %></Data></Cell>
+        </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

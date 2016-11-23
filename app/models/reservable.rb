@@ -22,6 +22,9 @@ class Reservable < ApplicationRecord
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
   scope :active, -> { where(archived: false) }
+  scope :filtered_by_activity_ids, -> (ids) {
+    where(activity_id: ids)
+  }
 
   def number_of_booked_players(start_time, end_time, date)
     bookings
