@@ -1,6 +1,6 @@
 module ClosedSchedulesHelper
-  def shouldCheck(list_of_things, thing)
-    list_of_things.include?(thing) ? true : false
+  def include?(list_of_elements, element)
+    list_of_elements.include?(element) ? true : false
   end
 
   def display_closed_every_x_day(day_list)

@@ -25,10 +25,6 @@ class Reservable < ApplicationRecord
   scope :active, -> { where(archived: false) }
   scope :find_by_ids, -> (ids) { Reservable.where(id: ids) }
 
-  def self.sorted_by_name
-    order(:name)
-  end
-
   def number_of_booked_players(start_time, end_time, date)
     bookings
       .during(start_time, end_time, date)
@@ -64,6 +60,6 @@ class Reservable < ApplicationRecord
   end
 
   def self.list_reservable_names_by_ids(reservable_ids)
-    find_by_ids(reservable_ids).sorted_by_name.pluck(:name)
+    find_by_ids(reservable_ids).order(:name).pluck(:name)
   end
 end

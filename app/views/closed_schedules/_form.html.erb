@@ -60,49 +60,49 @@
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Monday',
-            shouldCheck(@schedule.closed_days, 'Monday'),
+            include?(@schedule.closed_days, 'Monday'),
             id: 'closed_schedule_closed_days_monday' %> Monday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Tuesday',
-            shouldCheck(@schedule.closed_days, 'Tuesday'),
+            include?(@schedule.closed_days, 'Tuesday'),
              id: 'closed_schedule_closed_days_tuesday' %> Tuesday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Wednesday',
-            shouldCheck(@schedule.closed_days, 'Wednesday'),
+            include?(@schedule.closed_days, 'Wednesday'),
             id: 'closed_schedule_closed_days_wednesday' %> Wednesday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Thursday',
-            shouldCheck(@schedule.closed_days, 'Thursday'),
+            include?(@schedule.closed_days, 'Thursday'),
             id: 'closed_schedule_closed_days_thursday' %> Thursday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Friday',
-            shouldCheck(@schedule.closed_days, 'Friday'),
+            include?(@schedule.closed_days, 'Friday'),
             id: 'closed_schedule_closed_days_friday' %> Friday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Saturday',
-            shouldCheck(@schedule.closed_days, 'Saturday'),
+            include?(@schedule.closed_days, 'Saturday'),
             id: 'closed_schedule_closed_days_saturday' %> Saturday
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_days][]", 'Sunday',
-            shouldCheck(@schedule.closed_days, 'Sunday'),
+            include?(@schedule.closed_days, 'Sunday'),
             id: 'closed_schedule_closed_days_sunday' %> Sunday
           </label>
         </div>
@@ -171,7 +171,7 @@
         <div class="form-check">
           <label class="form-check-label">
             <%= check_box_tag "closed_schedule[closed_reservables][]", reservable.id,
-            shouldCheck(@schedule.closed_reservables, reservable.id),
+            include?(@schedule.closed_reservables, reservable.id),
             id: "closed_schedule_closed_reservables_#{reservable.id}" %>
             <%= reservable.name %>
           </label>

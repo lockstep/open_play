@@ -69,7 +69,7 @@ feature 'Create Closed Schedule', js: true do
                 choose 'all-reservable-checkbox'
                 click_button 'Submit'
               end
-              expect(page).to have_content 'Closed days must be checked'
+              expect(page).to have_content 'Closed days must be selected'
               expect(current_path).to eq activity_closed_schedules_path(@activity)
               expect(page).to_not have_content 'Closing time scheduled successfully.'
               expect(page).to_not have_content 'Meeting in Korea'
@@ -197,7 +197,7 @@ feature 'Create Closed Schedule', js: true do
                 choose 'all-reservable-checkbox'
                 click_button 'Submit'
               end
-              expect(page).to have_content 'Closed days must be checked'
+              expect(page).to have_content 'Closed days must be selected'
               expect(current_path).to eq activity_closed_schedules_path(@activity)
               expect(page).to_not have_content 'Closing time scheduled successfully.'
               expect(page).to_not have_content 'Meeting in Korea'
@@ -243,7 +243,7 @@ feature 'Create Closed Schedule', js: true do
                 click_button 'Submit'
               end
 
-              expect(page).to have_content 'Closed reservables must be checked'
+              expect(page).to have_content 'Closed reservables must be selected'
               expect(current_path).to eq activity_closed_schedules_path(@activity)
               expect(page).to_not have_content 'Closing time scheduled successfully.'
               expect(page).to_not have_content 'Meeting in Korea'
