@@ -44,11 +44,15 @@ class Order < ApplicationRecord
   def self.reservations_for_business_owner(date, activity_id)
     order_ids = filtered_by_activity(activity_id).pluck(:id)
     Booking.find_by_order_ids(order_ids, date)
+      .sorted_by_booking_time
+        .order(:order_id)
   end
 
   def self.reservations_for_users(date, user_id)
     order_ids = filtered_by_user(user_id).pluck(:id)
     Booking.find_by_order_ids(order_ids, date)
+      .sorted_by_booking_time
+        .order(:order_id)
   end
 
   def made_by_business_owner?

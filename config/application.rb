@@ -28,5 +28,9 @@ module OpenPlay
 
     config.active_job.queue_adapter = :sidekiq
     config.autoload_paths += %W(#{config.root}/lib)
+
+    config.to_prepare do
+      Admin::ApplicationController.helper OpenPlay::Application.helpers
+    end
   end
 end

@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :guests
-    resources :businesses
+    resources :businesses do
+      get :export_bookings, on: :member
+    end
     resources :bowlings
     resources :laser_tags
     resources :lanes

@@ -13,14 +13,14 @@ class Booking < ApplicationRecord
 
   delegate :activity_name, to: :reservable, prefix: true
   delegate :name, to: :reservable, prefix: true
-  delegate :maximum_players, to: :reservable
   delegate :number_of_booked_players, to: :reservable, prefix: true
   delegate :options_available, to: :reservable, prefix: true
-  delegate :weekday_price, to: :reservable
-  delegate :weekend_price, to: :reservable
+  delegate :weekday_price,
+    :weekend_price,
+    :maximum_players,
+    :per_person_weekday_price,
+    :per_person_weekend_price, to: :reservable
   delegate :id, to: :user, prefix: true, allow_nil: true
-  delegate :per_person_weekday_price, to: :reservable
-  delegate :per_person_weekend_price, to: :reservable
   delegate :activity, to: :reservable, prefix: true
   delegate :id, to: :order, prefix: true, allow_nil: true
   delegate :reserver_full_name, to: :order, prefix: true
@@ -29,8 +29,24 @@ class Booking < ApplicationRecord
     where(start_time: start_time, end_time: end_time, booking_date: date)
   }
   scope :find_by_order_ids, -> (order_ids, date) {
-    where(order_id: order_ids, booking_date: date).order(:start_time, :order_id)
+    where(order_id: order_ids, booking_date: date)
   }
+  scope :filtered_by_reservable_ids, -> (ids) {
+    where(reservable_id: ids)
+  }
+  scope :past_60_days, -> { where('created_at >= ?', 60.days.ago) }
+
+  def self.belongs_to_business(business_id)
+    activity_ids = Business.find(business_id).activities.pluck(:id)
+    reservable_ids = Reservable.filtered_by_activity_ids(activity_ids).pluck(:id)
+    filtered_by_reservable_ids(reservable_ids)
+      .sorted_by_booking_time
+        .order(:order_id)
+  end
+
+  def self.sorted_by_booking_time
+    order(:booking_date, :start_time, :end_time)
+  end
 
   def number_of_players_cannot_exceed_maximum
     if errors.empty? && number_of_players >
