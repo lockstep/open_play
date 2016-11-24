@@ -8,16 +8,27 @@ class ClosedSchedule < ApplicationRecord
 
   validates_presence_of :label
   validate :closing_ends_at_is_after_closing_begins_at
-  validate :days_need_to_be_checked
+  validate :at_least_one_day_is_selected
+  validate :at_least_one_reservable_is_selected
+
+  scope :find_by_activity_or_reservable, -> (reservable) {
+    where("(closed_all_reservables = true AND activity_id = ?)
+      OR closed_reservables @> ?", reservable.activity_id, "{#{reservable.id}}")
+  }
 
   def closing_ends_at_is_after_closing_begins_at
     return if closed_all_day || (closing_begins_at < closing_ends_at)
     errors.add(:closing_ends_at, "must be after #{display_time(closing_begins_at)}")
   end
 
-  def days_need_to_be_checked
+  def at_least_one_day_is_selected
     return if closed_specific_day
-    errors.add(:closed_days, 'must be checked') if closed_days.blank?
+    errors.add(:closed_days, 'must be selected') if closed_days.blank?
+  end
+
+  def at_least_one_reservable_is_selected
+    return if closed_all_reservables
+    errors.add(:closed_reservables, 'must be selected') if closed_reservables.blank?
   end
 
   def day_is_in_range_of_schedule?(day)

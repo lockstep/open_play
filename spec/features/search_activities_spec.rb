@@ -37,6 +37,13 @@ feature 'Search Activities', js: true do
           end_time: '20:00',
           archived: true
         )
+        @lane_4 = create(
+          :lane,
+          name: 'Lane 4',
+          start_time: '09:00',
+          end_time: '15:00',
+          activity: @bowling_2
+        )
       end
       context 'results found' do
         scenario 'shows list of active activities' do
@@ -120,7 +127,6 @@ feature 'Search Activities', js: true do
             expect(page).to have_content '14:00 15:00 16:00 17:00 18:00 19:00'
           end
         end
-
         context 'Bowling has many lanes' do
           before do
             create_list(:lane, 15, activity: @bowling)
@@ -152,7 +158,51 @@ feature 'Search Activities', js: true do
             end
           end
         end
+        context 'has a closed schedule' do
+          background do
+            create(:closed_schedule,
+              closed_all_day: true,
+              closed_specific_day: true,
+              closed_on: '10 Nov 2016',
+              closed_all_reservables: true,
+              activity: @bowling
+            )
+          end
+          context 'user search on closed day' do
+            scenario 'shows correct time slots' do
+              travel_to Time.new(2016, 11, 5) do
+                visit root_path
+                search_activities(booking_date: '10 Nov 2016', booking_time: '10:00am')
 
+                expect(page).to have_content @bowling.name
+                within("#reservable_#{@lane.id}") do
+                  expect(page).to have_content @lane.name
+                  expect(page).to have_content '08:00'
+                  expect(page).to have_content '16:00'
+                  all('button.timeslot').each do |button|
+                    expect(button.disabled?).to be true
+                  end
+                end
+                within("#reservable_#{@lane_2.id}") do
+                  expect(page).to have_content @lane_2.name
+                  expect(page).to have_content '10:00'
+                  expect(page).to have_content '19:00'
+                  all('button.timeslot').each do |button|
+                    expect(button.disabled?).to be true
+                  end
+                end
+                within("#reservable_#{@lane_4.id}") do
+                  expect(page).to have_content @lane_4.name
+                  expect(page).to have_content '09:00'
+                  expect(page).to have_content '14:00'
+                  all('button.timeslot').each do |button|
+                    expect(button.disabled?).to be false
+                  end
+                end
+              end
+            end
+          end
+        end
       end
 
       context 'user is not logged in' do
