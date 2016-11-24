@@ -24,4 +24,10 @@ module ClosedSchedulesHelper
     return 'All reservables' if schedule.closed_all_reservables
     Reservable.list_reservable_names_by_ids(schedule.closed_reservables).join(', ')
   end
+
+  def plural_form_of_reservable_type(activity)
+    return "Reservables" if activity.reservables.size < 1
+    reservable = activity.reservables.first
+    reservable.type.pluralize
+  end
 end

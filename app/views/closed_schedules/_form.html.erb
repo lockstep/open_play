@@ -151,14 +151,14 @@
       <label class="form-check-label">
         <%= radio_button_tag 'closed_schedule[closed_all_reservables]', 'true',
           @schedule.closed_all_reservables, id: 'all-reservable-checkbox',
-          class: 'form-check-input' %> All Reservables
+          class: 'form-check-input' %> All <%= plural_form_of_reservable_type(@schedule.activity) %>
       </label>
     </div>
     <div class="form-check">
       <label class="form-check-label">
         <%= radio_button_tag  'closed_schedule[closed_all_reservables]', 'false',
         !@schedule.closed_all_reservables, id: 'specific-reservable-checkbox',
-        class: 'form-check-input' %> Reservables
+        class: 'form-check-input' %> Specific <%= plural_form_of_reservable_type(@schedule.activity) %>
       </label>
     </div>
 

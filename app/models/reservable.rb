@@ -24,7 +24,10 @@ class Reservable < ApplicationRecord
 
   scope :active, -> { where(archived: false) }
   scope :find_by_ids, -> (ids) { Reservable.where(id: ids) }
-  scope :order_by_name, -> { order(:name) }
+
+  def self.order_by_name
+    order(:name)
+  end
 
   def number_of_booked_players(start_time, end_time, date)
     bookings
@@ -51,7 +54,7 @@ class Reservable < ApplicationRecord
   end
 
   def closed_schedules
-    ClosedSchedule.find_by_activity_or_reservable(activity.id, id)
+    ClosedSchedule.find_by_activity_or_reservable(self)
   end
 
   def out_of_service?(date_time)

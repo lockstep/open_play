@@ -6,19 +6,19 @@ module DateTimeUtilities
   end
 
   def check_overlap_time(date, time, interval_time, begins_at, ends_at)
-    start_date_x = convert_date_to_date_time_in_seconds(date, time)
-    start_date_y = convert_date_to_date_time_in_seconds(date, begins_at)
-    end_date_x = start_date_x + interval_time.minutes
-    end_date_y = convert_date_to_date_time_in_seconds(date, ends_at)
-    overlap?(start_date_x, end_date_x, start_date_y, end_date_y)
+    first_start_date = convert_date_to_date_time_in_seconds(date, time)
+    second_start_date = convert_date_to_date_time_in_seconds(date, begins_at)
+    first_end_date = first_start_date + interval_time.minutes
+    second_end_date = convert_date_to_date_time_in_seconds(date, ends_at)
+    overlap?(first_start_date, first_end_date, second_start_date, second_end_date)
   end
 
-  def overlap?(start_date_x, end_date_x, start_date_y, end_date_y)
-    if start_date_x > start_date_y
-      start_date_x, start_date_y = start_date_y, start_date_x
-      end_date_x, end_date_y = end_date_y, end_date_x
+  def overlap?(first_start_date, first_end_date, second_start_date, second_end_date)
+    if first_start_date > second_start_date
+      first_start_date, second_start_date = second_start_date, first_start_date
+      first_end_date, second_end_date = second_end_date, first_end_date
     end
-    start_date_x <= end_date_y and start_date_y < end_date_x
+    first_start_date <= second_end_date and second_start_date < first_end_date
   end
 
   def display_day(date)

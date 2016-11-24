@@ -53,7 +53,7 @@ describe Reservable do
             context 'users search on closed day' do
               before do
                 @begin_date_time = "10/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "10/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "10/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -66,7 +66,7 @@ describe Reservable do
             context 'users search on other day' do
               before do
                 @begin_date_time = "12/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "12/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "12/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -90,7 +90,7 @@ describe Reservable do
             context 'users search on closed day' do
               before do
                 @begin_date_time = "10/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "10/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "10/Nov/2016 10:00:00".to_datetime
               end
 
               it 'returns correct results' do
@@ -104,7 +104,7 @@ describe Reservable do
             context 'user search on other day' do
               before do
                 @begin_date_time = "12/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "12/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "12/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -131,7 +131,7 @@ describe Reservable do
             context 'users search on monday' do
               before do
                 @begin_date_time = "14/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "14/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "14/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -144,7 +144,7 @@ describe Reservable do
             context 'users search on tuesday' do
               before do
                 @begin_date_time = "15/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "15/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "15/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -157,7 +157,7 @@ describe Reservable do
             context 'users search on other day' do
               before do
                 @begin_date_time = "17/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "17/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "17/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -181,7 +181,7 @@ describe Reservable do
             context 'users search on monday' do
               before do
                 @begin_date_time = "14/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "14/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "14/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do
@@ -194,7 +194,7 @@ describe Reservable do
             context 'users search on other day' do
               before do
                 @begin_date_time = "17/Nov/2016 07:00:00".to_datetime
-                @closing_date_time = "17/Nov/2016 17:00:00".to_datetime
+                @closing_date_time = "17/Nov/2016 10:00:00".to_datetime
               end
               it 'returns correct results' do
                 until @begin_date_time == @closing_date_time do

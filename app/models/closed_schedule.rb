@@ -11,9 +11,9 @@ class ClosedSchedule < ApplicationRecord
   validate :days_need_to_be_checked
   validate :reservables_need_to_be_check
 
-  scope :find_by_activity_or_reservable, -> (activity_id, reservable_id) {
-    where("(closed_all_reservables = true AND activity_id = ?) OR closed_reservables @> ?",
-      activity_id, "{#{reservable_id}}")
+  scope :find_by_activity_or_reservable, -> (reservable) {
+    where("(closed_all_reservables = true AND activity_id = ?)
+      OR closed_reservables @> ?", reservable.activity_id, "{#{reservable.id}}")
   }
 
   def closing_ends_at_is_after_closing_begins_at
