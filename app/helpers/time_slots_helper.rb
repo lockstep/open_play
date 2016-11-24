@@ -59,8 +59,8 @@ module TimeSlotsHelper
   end
 
   def booking_info(reservable, requested_time)
-    return { available: false } if reservable.out_of_service?(requested_time)
     return { available: false } unless reservable_is_open?(reservable,requested_time)
+    return { available: false } if reservable.out_of_service?(requested_time)
     requested_date = requested_time.beginning_of_day
     bookings = reservable.bookings.where(booking_date: requested_date)
     return { available: true } unless bookings.present?
