@@ -18,6 +18,7 @@ module Admin
 
     def export_bookings
       @bookings = Booking.belongs_to_business(params[:id]).past_60_days
+        .includes(:order, :user, :reservable)
 
       respond_to do |format|
         format.xls {
