@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   resources :businesses, only: [:new, :create, :edit, :update], shallow: true do
     resources :activities, only: [:index, :new, :create, :edit, :update, :destroy] do
+      get :view_analytics, on: :member
       resources :reservables, only: [:new, :create,  :edit, :update, :destroy]
       resources :closed_schedules, only: [:index, :create]
     end

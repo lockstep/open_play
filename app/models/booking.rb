@@ -44,8 +44,18 @@ class Booking < ApplicationRecord
         .order(:order_id)
   end
 
+  def self.belongs_to_activity(activity)
+    reservable_ids = activity.reservables.ids
+    filtered_by_reservable_ids(reservable_ids)
+  end
+
   def self.sorted_by_booking_time
     order(:booking_date, :start_time, :end_time)
+  end
+
+  def self.revenues_by_date_in_60_days
+    group(:booking_date).past_60_days.order(:booking_date)
+      .sum(:booking_price)
   end
 
   def number_of_players_cannot_exceed_maximum

@@ -193,6 +193,33 @@ describe ActivitiesController do
     end
   end
 
+  describe 'GET view_analytics' do
+    context 'a business exists' do
+      before { @business = create(:business) }
+      context 'an activity already exists' do
+        before { @activity = create(:bowling, business: @business) }
+        context 'user is logged in' do
+          login_user
+          context 'user is a business owner' do
+            before { @business.update(user: @user) }
+            it 'returns the booking revenues' do
+              get :view_analytics, params: { id: @activity }
+            end
+            it_behaves_like 'a successful request'
+          end
+          context 'user is not a business owner' do
+            before { delete :destroy, params: { id: @activity } }
+            it_behaves_like 'an unauthorized request'
+          end
+        end
+        context 'user is not logged in' do
+          before { delete :destroy, params: { id: @activity } }
+          it_behaves_like 'it requires authentication'
+        end
+      end
+    end
+  end
+
   def activity_params(overrides={})
     {
       activity: {

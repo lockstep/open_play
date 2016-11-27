@@ -35,11 +35,18 @@
                 </td>
                 <td class='text-xs-center'>
                   <%= link_to 'View reservations',
-                    business_owner_reservations_path(activity), class: 'btn btn-primary' %>
-                  <%= link_to 'Edit', edit_activity_path(activity), class: 'btn btn-primary'%>
-                  <%= link_to 'Delete', activity_path(activity), class: 'btn btn-danger', method: :delete %>
+                    business_owner_reservations_path(activity),
+                    class: 'btn btn-primary btn-sm' %>
+                  <%= link_to 'View analytics',
+                    view_analytics_activity_path(activity),
+                    class: 'btn btn-primary btn-sm' %>
+                  <%= link_to 'Edit', edit_activity_path(activity),
+                    class: 'btn btn-primary btn-sm'%>
+                  <%= link_to 'Delete', activity_path(activity),
+                    class: 'btn btn-danger btn-sm', method: :delete %>
                   <%= link_to "Add a #{activity.reservable_type}",
-                    new_activity_reservable_path(activity),class: 'btn btn-primary' %>
+                    new_activity_reservable_path(activity),
+                    class: 'btn btn-primary btn-sm' %>
                 </td>
               </tr>
             <% end %>
