@@ -1,0 +1,20 @@
+<div class='row'>
+  <%= render 'edit_activity_sidebar_menu', activity: @rate_schedule.activity  %>
+
+  <div class='col-xs-9'>
+    <div class="row">
+      <div class="col-xs-12">
+        <div>
+          <center>
+            <h1><%= @rate_schedule.activity_name %> Rate Override Schedule</h1>
+          </center>
+        </div>
+        <div class="spacer-40"></div>
+      </div>
+    </div>
+    <%= render 'rate_override_schedules/list' %>
+    <div class="spacer-40"></div>
+    <%= render 'rate_override_schedules/form' %>
+    <div class="spacer-40"></div>
+  </div>
+</div>

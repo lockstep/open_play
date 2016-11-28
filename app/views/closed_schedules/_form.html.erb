@@ -145,41 +145,41 @@
     </div>
   </div>
 
-<div class='row card card-block'>
-  <div class='col-xs-6'>
-    <div class="form-check">
-      <label class="form-check-label">
-        <%= radio_button_tag 'closed_schedule[closed_all_reservables]', 'true',
-          @schedule.closed_all_reservables, id: 'all-reservable-checkbox',
-          class: 'form-check-input' %> All <%= plural_form_of_reservable_type(@schedule.activity) %>
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <%= radio_button_tag  'closed_schedule[closed_all_reservables]', 'false',
-        !@schedule.closed_all_reservables, id: 'specific-reservable-checkbox',
-        class: 'form-check-input' %> Specific <%= plural_form_of_reservable_type(@schedule.activity) %>
-      </label>
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'closed_schedule[closed_all_reservables]', 'true',
+            @schedule.closed_all_reservables, id: 'all-reservable-checkbox',
+            class: 'form-check-input' %> All <%= plural_form_of_reservable_type(@schedule.activity) %>
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag  'closed_schedule[closed_all_reservables]', 'false',
+          !@schedule.closed_all_reservables, id: 'specific-reservable-checkbox',
+          class: 'form-check-input' %> Specific <%= plural_form_of_reservable_type(@schedule.activity) %>
+        </label>
+      </div>
+
+      <div class="spacer-20"></div>
     </div>
 
-    <div class="spacer-20"></div>
-  </div>
-
-  <div class='col-xs-6'>
-    <div class="row <%= 'closing-time-inactive' if @schedule.closed_all_reservables %>" id='list-of-reservables'>
-      <% @schedule.activity.reservables.each do |reservable| %>
-        <div class="form-check">
-          <label class="form-check-label">
-            <%= check_box_tag "closed_schedule[closed_reservables][]", reservable.id,
-            include?(@schedule.closed_reservables, reservable.id),
-            id: "closed_schedule_closed_reservables_#{reservable.id}" %>
-            <%= reservable.name %>
-          </label>
-        </div>
-      <% end %>
+    <div class='col-xs-6'>
+      <div class="row <%= 'closing-time-inactive' if @schedule.closed_all_reservables %>" id='list-of-reservables'>
+        <% @schedule.activity.reservables.each do |reservable| %>
+          <div class="form-check">
+            <label class="form-check-label">
+              <%= check_box_tag "closed_schedule[closed_reservables][]", reservable.id,
+              include?(@schedule.closed_reservables, reservable.id),
+              id: "closed_schedule_closed_reservables_#{reservable.id}" %>
+              <%= reservable.name %>
+            </label>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="spacer-20"></div>
 

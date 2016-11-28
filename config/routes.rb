@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :activities, only: [:index, :new, :create, :edit, :update, :destroy] do
       resources :reservables, only: [:new, :create,  :edit, :update, :destroy]
       resources :closed_schedules, only: [:index, :create]
+      resources :rate_override_schedules, only: [:index, :create]
     end
   end
 
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
   get 'businesses/show', to: 'businesses#show'
   resources :users, only: [:show, :edit, :update]
   resources :closed_schedules, only: [:destroy]
+  resources :rate_override_schedules, only: [:destroy]
   patch 'bookings/:id/check_in', to: 'bookings#check_in', as: 'booking_check_in'
   patch 'bookings/:id/cancel', to: 'bookings#cancel', as: 'booking_cancel'
 
