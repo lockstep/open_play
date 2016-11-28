@@ -63,4 +63,9 @@ class Reservable < ApplicationRecord
   def self.list_reservable_names_by_ids(reservable_ids)
     find_by_ids(reservable_ids).order(:name).pluck(:name)
   end
+
+  def rate_override_schedule(date, time)
+    schedules = RateOverrideSchedule.find_by_activity_or_reservable(activity.id, id)
+    schedules.find { |schedule| schedule.match?(date, time, interval) }
+  end
 end

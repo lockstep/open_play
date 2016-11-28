@@ -1,5 +1,5 @@
 class RateOverrideSchedule < ApplicationRecord
-  include DateTimeUtilities
+  include Schedulable
 
   belongs_to :activity
 
@@ -12,6 +12,11 @@ class RateOverrideSchedule < ApplicationRecord
 
   delegate :name, to: :activity, prefix: true
   delegate :user, to: :activity
+
+  scope :find_by_activity_or_reservable, -> (activity_id, reservable_id) {
+    where("(overridden_all_reservables = true AND activity_id = ?)
+      OR overridden_reservables @> ?", activity_id, "{#{reservable_id}}")
+  }
 
   def at_least_one_day_is_selected
     return if overridden_specific_day
@@ -26,5 +31,16 @@ class RateOverrideSchedule < ApplicationRecord
   def at_least_one_reservable_is_selected
     return if overridden_all_reservables
     errors.add(:overridden_reservables, 'must be selected') if overridden_reservables.blank?
+  end
+
+  def match?(booking_date, booking_time, interval_time)
+    return checking_all_day_schedule(
+      booking_date, overridden_on, overridden_specific_day, overridden_days
+    ) if overridden_all_day
+    checking_specific_day_schedule(
+      booking_date, booking_time, interval_time,
+      overridden_on, overridden_specific_day, overriding_begins_at,
+      overriding_ends_at, overridden_days
+    )
   end
 end
