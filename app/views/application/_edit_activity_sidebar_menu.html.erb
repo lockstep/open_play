@@ -1,8 +1,11 @@
 <ul class='nav nav-pills nav-stacked col-xs-3' id='edit_activity_sidebar'>
   <li class='nav-item'>
-    <a class="nav-link <%= activate_edit_activity_sidebar_menu_if_action_is_matched(controller.controller_name, controller.action_name) %>" href='<%= edit_activity_path(activity) %>'>Activity</a>
+    <a class="nav-link <%= should_activate_edit_activity?(controller.controller_name, controller.action_name) %>" href='<%= edit_activity_path(activity) %>'>Activity</a>
   </li>
   <li class='nav-item'>
-    <a class="nav-link <%= activate_closing_time_sidebar_menu_if_action_is_matched(controller.controller_name, controller.action_name) %>" href='<%= activity_closed_schedules_path(activity) %>'>Closing Time</a>
+    <a class="nav-link <%= should_activate_closing_time_schedules?(controller.controller_name, controller.action_name) %>" href='<%= activity_closed_schedules_path(activity) %>'>Closing Time</a>
+  </li>
+  <li class='nav-item'>
+    <a class="nav-link <%= should_activate_rate_override_schedules?(controller.controller_name, controller.action_name) %>" href='<%= activity_rate_override_schedules_path(activity) %>'>Rate Override Schedule</a>
   </li>
 </ul>

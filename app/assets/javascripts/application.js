@@ -27,3 +27,4 @@
 //= require activities
 //= require reservables
 //= require analytics
+//= require rate_override_schedules

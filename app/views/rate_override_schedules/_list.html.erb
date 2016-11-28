@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div>
+      <center>
+        <h2>List Rate Override Schedules</h2>
+      </center>
+    </div>
+    <div class="spacer-30"></div>
+  </div>
+</div>
+
+<% if @rate_schedules.any? %>
+  <table class="table" id='list-closing-time'>
+    <thead>
+      <tr>
+        <th class='text-xs-center'>Label</th>
+        <th class='text-xs-center'>Schedule on day</th>
+        <th class='text-xs-center'>Schedule on time</th>
+        <th class='text-xs-center'>Schedule lane</th>
+        <th class='text-xs-center'>Price</th>
+        <th class='text-xs-center'>Price Per Person</th>
+        <th class='text-xs-center'></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @rate_schedules.each_with_index do |schedule, index| %>
+        <tr>
+          <td class='text-xs-center'><%= schedule.label %></td>
+          <td class='text-xs-center'><%= display_rate_overridden_on_days(schedule) %></td>
+          <td class='text-xs-center'><%= display_rate_overridden_time(schedule) %></td>
+          <td class='text-xs-center'><%= display_rate_overridden_on_lane(schedule) %></td>
+          <td class='text-xs-center'><%= present_booking_price(schedule.price) %></td>
+          <td class='text-xs-center'><%= present_booking_price(schedule.per_person_price) %></td>
+          <td class='text-xs-center'>
+            <%= link_to rate_override_schedule_path(schedule) , class: 'btn btn-danger',
+            id: "destroy-rate-override-schedule-#{index+1}", method: :delete,
+            data: { confirm: "Are you sure?" } do %>
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="font-weight-bold text-xs-center">There is no rate override schedule.</p>
+<% end %>
