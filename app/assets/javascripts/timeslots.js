@@ -71,22 +71,28 @@ var Utilities = {
   },
   slidingSlot: function(){
     $('.row-times').not('.slick-initialized').slick({
-      slidesToShow: 7,
+      slidesToShow: 8,
       slidesToScroll: 1,
       arrows: true,
       infinite: false,
       speed: 200,
       responsive    : [
         {
-          breakpoint: 1100,
+          breakpoint: 1600,
+          settings  : {
+              slidesToShow  : 7
+          }
+        },
+        {
+          breakpoint: 1200,
           settings  : {
               slidesToShow  : 6
           }
         },
         {
-          breakpoint: 990,
+          breakpoint: 1000,
           settings  : {
-              slidesToShow  : 5
+              slidesToShow  : 4
           }
         },
         {
@@ -95,7 +101,6 @@ var Utilities = {
               slidesToShow  : 3
           }
         }
-
       ]
     });
   },
