@@ -8,6 +8,7 @@ FactoryGirl.define do
     overriding_begins_at ''
     overriding_ends_at ''
     overridden_all_reservables true
+    overridden_reservables []
     price '10.0'
     per_person_price '15.0'
     activity { create(:bowling) }
