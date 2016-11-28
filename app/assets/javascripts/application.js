@@ -25,3 +25,4 @@
 //= require slick.min
 //= require activities
 //= require reservables
+//= require rate_override_schedules

@@ -1,0 +1,206 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div>
+      <center>
+        <h2>New Override Schedule</h2>
+      </center>
+    </div>
+    <div class="spacer-30"></div>
+  </div>
+</div>
+
+<% if @rate_schedule.errors.any? %>
+  <div class='row'>
+    <div class='alert alert-danger' role='alert'>
+      <ul>
+        <% @rate_schedule.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<% activity_id = @rate_schedule.activity.id %>
+<%= form_tag("/activities/#{activity_id}/rate_override_schedules", method: :POST, id: 'new-rate-override-form') do %>
+  <div class='row card card-block'>
+    <div>
+      <div class="form-group row">
+        <%= label_tag :label, nil, class: 'col-xs-3 col-form-label title' %>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'rate_override_schedule[label]', @rate_schedule.label , class: 'form-control',
+           placeholder: 'Label name ex. holiday' %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <%= label_tag :price, nil, class: 'col-xs-3 col-form-label title' %>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'rate_override_schedule[price]', @rate_schedule.price , class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <%= label_tag :per_person_price, nil, class: 'col-xs-3 col-form-label title' %>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'rate_override_schedule[per_person_price]', @rate_schedule.per_person_price , class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'rate_override_schedule[overridden_specific_day]', 'true',
+            @rate_schedule.overridden_specific_day, id: 'rate-specific-day-checkbox',
+            class: 'form-check-input' %> On specific day
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'rate_override_schedule[overridden_specific_day]', 'false',
+            !@rate_schedule.overridden_specific_day, id: 'rate-every-x-checkbox',
+            class: 'form-check-input' %> Every
+        </label>
+      </div>
+      <div class="spacer-20"> </div>
+    </div>
+    <div class='col-xs-6'>
+      <div class="row <%= 'rate-override-inactive' unless @rate_schedule.overridden_specific_day %>" id='overridden-on'>
+        <div class='col-xs-6'>
+          <%= text_field_tag 'rate_override_schedule[overridden_on]', @rate_schedule.overridden_on, class: 'form-control', id: 'rate-date-picker' %>
+        </div>
+      </div>
+      <div class="row <%= 'rate-override-inactive' if @rate_schedule.overridden_specific_day %>" id='rate-list-of-days'>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Monday',
+            include?(@rate_schedule.overridden_days, 'Monday'),
+            id: 'rate_override_schedule_monday' %> Monday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Tuesday',
+            include?(@rate_schedule.overridden_days, 'Tuesday'),
+            id: 'rate_override_schedule_tuesday' %> Tuesday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Wednesday',
+            include?(@rate_schedule.overridden_days, 'Wednesday'),
+            id: 'rate_override_schedule_wednesday' %> Wednesday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Thursday',
+            include?(@rate_schedule.overridden_days, 'Thursday'),
+            id: 'rate_override_schedule_thursday' %> Thursday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Friday',
+            include?(@rate_schedule.overridden_days, 'Friday'),
+            id: 'rate_override_schedule_friday' %> Friday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Saturday',
+            include?(@rate_schedule.overridden_days, 'Saturday'),
+            id: 'rate_override_schedule_saturday' %> Saturday
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "rate_override_schedule[overridden_days][]", 'Sunday',
+            include?(@rate_schedule.overridden_days, 'Sunday'),
+            id: 'rate_override_schedule_sunday' %> Sunday
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'rate_override_schedule[overridden_all_day]', 'true',
+            @rate_schedule.overridden_all_day, id: 'rate-all-day-checkbox',
+            class: 'form-check-input' %> All day
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag  'rate_override_schedule[overridden_all_day]', 'false',
+          !@rate_schedule.overridden_all_day, id: 'rate-specific-time-range-checkbox',
+          class: 'form-check-input' %> Time range
+        </label>
+      </div>
+
+      <div class="spacer-20"></div>
+    </div>
+
+    <div class='col-xs-6'>
+      <div class="row <%= 'rate-override-inactive' if @rate_schedule.overridden_all_day %>" id='rate-range'>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'rate_override_schedule[overriding_begins_at]', '',
+          class: 'form-control', id: 'overriding_begins_at' %>
+        </div>
+        <span class='col-xs-2 text-xs-center'>-</span>
+        <div class='col-xs-5'>
+          <%= text_field_tag 'rate_override_schedule[overriding_ends_at]', '',
+          class: 'form-control', id: 'overriding_ends_at' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='row card card-block'>
+    <div class='col-xs-6'>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag 'rate_override_schedule[overridden_all_reservables]', 'true',
+            @rate_schedule.overridden_all_reservables, id: 'rate-all-reservable-checkbox',
+            class: 'form-check-input' %> All <%= plural_form_of_reservable_type(@rate_schedule.activity) %>
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= radio_button_tag  'rate_override_schedule[overridden_all_reservables]', 'false',
+          !@rate_schedule.overridden_all_reservables, id: 'rate-specific-reservable-checkbox',
+          class: 'form-check-input' %> Specific <%= plural_form_of_reservable_type(@rate_schedule.activity) %> </label>
+      </div>
+
+      <div class="spacer-20"></div>
+    </div>
+
+    <div class='col-xs-6'>
+      <div class="row <%= 'rate-override-inactive' if @rate_schedule.overridden_all_reservables %>" id='rate-list-of-reservables'>
+        <% @rate_schedule.activity.reservables.each do |reservable| %>
+          <div class="form-check">
+            <label class="form-check-label">
+              <%= check_box_tag "rate_override_schedule[overridden_reservables][]", reservable.id,
+              include?(@rate_schedule.overridden_reservables, reservable.id),
+              id: "rate-override-schedule-overridden-reservables-#{reservable.id}" %>
+              <%= reservable.name %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer-20"></div>
+
+  <%= hidden_field_tag 'rate_override_schedule[activity_id]', activity_id %>
+  <div class='row text-xs-center'>
+    <button type='submit' class='btn btn-primary' id='create-rate-override-schedule-btn'>Submit</button>
+  </div>
+<% end %>
