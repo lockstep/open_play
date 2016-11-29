@@ -48,3 +48,18 @@
     position: absolute;
   }
 }
+
+.btn-3d {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #da4f49;
+  background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
+  background-repeat: repeat-x;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+.btn-3d:hover {
+  color: #ffffff;
+  background-color: #bd362f;
+  background-position: 0 -15px;
+  transition: background-position 0.1s linear;
+}
