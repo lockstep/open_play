@@ -62,7 +62,7 @@ feature 'View User Reservations', :js do
           expect(page).to have_content('09:00 AM - 10:00 AM')
           expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
             .to have_content @booking_4.number_of_players
-          expect(page).to have_content '$ 55.0'
+          expect(page).to have_content '$ 55'
           expect(page).to_not have_link 'Check in'
           expect(page).to_not have_link 'Cancel'
         end
@@ -74,7 +74,7 @@ feature 'View User Reservations', :js do
           expect(page).to have_content('10:00 AM - 11:00 AM')
           expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
             .to have_content @booking_2.number_of_players
-          expect(page).to have_content '$ 25.0'
+          expect(page).to have_content '$ 25'
           expect(page).to_not have_link 'Check in'
           expect(page).to_not have_link 'Cancel'
         end
@@ -86,7 +86,7 @@ feature 'View User Reservations', :js do
           expect(page).to have_content('02:00 PM - 03:00 PM')
           expect(find("#number_of_people_from_booking_#{@booking_1.id}"))
             .to have_content @booking_1.number_of_players
-          expect(page).to have_content '$ 55.0'
+          expect(page).to have_content '$ 55'
           expect(page).to_not have_link 'Check in'
           expect(page).to_not have_link 'Cancel'
         end
@@ -129,7 +129,7 @@ feature 'View User Reservations', :js do
             expect(page).to have_content('09:00 AM - 10:00 AM')
             expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
               .to have_content @booking_4.number_of_players
-            expect(page).to have_content '$ 55.0'
+            expect(page).to have_content '$ 55'
             expect(page).to_not have_link 'Check in'
             expect(page).to_not have_link 'Cancel'
           end
@@ -141,7 +141,7 @@ feature 'View User Reservations', :js do
             expect(page).to have_content('10:00 AM - 11:00 AM')
             expect(find("#number_of_people_from_booking_#{@booking_2.id}"))
               .to have_content @booking_2.number_of_players
-            expect(page).to have_content '$ 25.0'
+            expect(page).to have_content '$ 25'
             expect(page).to_not have_link 'Check in'
             expect(page).to_not have_link 'Cancel'
           end
@@ -153,7 +153,7 @@ feature 'View User Reservations', :js do
             expect(page).to have_content('02:00 PM - 03:00 PM')
             expect(find("#number_of_people_from_booking_#{@booking_1.id}"))
               .to have_content @booking_1.number_of_players
-            expect(page).to have_content '$ 55.0'
+            expect(page).to have_content '$ 55'
             expect(page).to_not have_link 'Check in'
             expect(page).to_not have_link 'Cancel'
           end

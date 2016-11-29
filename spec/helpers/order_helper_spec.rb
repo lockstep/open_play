@@ -6,8 +6,23 @@ describe OrderHelper do
       end
     end
     context 'booking_price is not zero' do
-      it 'displays booking_price correctly' do
-        expect(present_booking_price(15.5)).to eq '$ 15.5'
+      context 'one decimal place' do
+        it 'displays booking_price correctly' do
+          expect(present_booking_price(15.5)).to eq '$ 15.50'
+        end
+        it 'displays booking_price correctly' do
+          expect(present_booking_price(15.0)).to eq '$ 15'
+        end
+      end
+      context 'four decimal places' do
+        it 'displays booking_price correctly' do
+          expect(present_booking_price(15.1234)).to eq '$ 15.12'
+        end
+      end
+      context 'an integer number' do
+        it 'displays booking_price correctly' do
+          expect(present_booking_price(15)).to eq '$ 15'
+        end
       end
     end
   end
