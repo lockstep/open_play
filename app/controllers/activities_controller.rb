@@ -1,7 +1,8 @@
 class ActivitiesController < ApplicationController
+  include DateTimeHelper
   before_action :authenticate_user!
   before_action :set_business, only: [:index, :new, :create]
-  before_action :set_activity, only: [:destroy, :edit, :update]
+  before_action :set_activity, only: [:destroy, :edit, :update, :view_analytics]
   after_action :verify_authorized
 
   def index
@@ -42,6 +43,15 @@ class ActivitiesController < ApplicationController
       flash[:error] = 'Unable to delete activity'
       redirect_back fallback_location: root_path
     end
+  end
+
+  def view_analytics
+    bookings = Booking.belongs_to_activity(@activity)
+    booking_data = bookings.revenues_by_date_in_60_days
+    @booking_dates = booking_data.collect { |key,value|
+      present_date_in_day_month_year_format(key)
+    }
+    @booking_revenues = booking_data.values
   end
 
   private

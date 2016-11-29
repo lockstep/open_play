@@ -15,6 +15,7 @@
 //= require tether
 //= require bootstrap
 //= require moment
+//= require Chart.min
 //= require pikaday/js/pikaday
 //= require jquery-timepicker/js/jquery.timepicker.min.js
 //= require checkout
@@ -25,3 +26,4 @@
 //= require slick.min
 //= require activities
 //= require reservables
+//= require analytics

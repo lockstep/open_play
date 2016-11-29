@@ -19,6 +19,10 @@ class ActivityPolicy < ApplicationPolicy
     belongs_to_user?
   end
 
+  def view_analytics?
+    belongs_to_user?
+  end
+
   private
 
   def belongs_to_user?

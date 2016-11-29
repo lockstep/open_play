@@ -68,6 +68,12 @@ feature 'View Activities' do
           click_link 'Manage Business'
           expect(page).to have_link 'View reservations'
         end
+
+        scenario 'shows link to view analytics' do
+          visit root_path
+          click_link 'Manage Business'
+          expect(page).to have_link 'View analytics'
+        end
       end
     end
   end

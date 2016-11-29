@@ -1,0 +1,19 @@
+<div>
+  <h4 class='text-xs-center'>
+    Bookings Revenue <small>(past 60 days)</small>
+  </h4>
+
+  <% if @booking_revenues.present? %>
+    <%= content_tag :canvas, '', id: 'revenueChart', data:
+    {
+      label: @activity.name,
+      bookings: {
+        dates: @booking_dates,
+        revenues: @booking_revenues
+      }
+    } %>
+  <% else  %>
+    <div class='spacer-40'></div>
+    <div class='alert alert-danger'>No bookings found.</div>
+  <% end %>
+</div>
