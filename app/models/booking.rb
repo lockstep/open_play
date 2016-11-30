@@ -35,6 +35,7 @@ class Booking < ApplicationRecord
     where(reservable_id: ids)
   }
   scope :past_60_days, -> { where('created_at >= ?', 60.days.ago) }
+  scope :active, -> { where(canceled: false) }
 
   def self.belongs_to_business(business_id)
     activity_ids = Business.find(business_id).activities.pluck(:id)
@@ -54,7 +55,7 @@ class Booking < ApplicationRecord
   end
 
   def self.revenues_by_date_in_60_days
-    group(:booking_date).past_60_days.order(:booking_date)
+    group(:booking_date).past_60_days.active.order(:booking_date)
       .sum(:booking_price)
   end
 
