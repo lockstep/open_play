@@ -5,7 +5,7 @@
     <% i = 0 %>
     <% build_time_slots(reservable, @booking_date).each do |slot| %>
       <div>
-        <%= button_tag(type: 'button', class: 'btn btn-danger timeslot ' +
+        <%= button_tag(type: 'button', class: 'btn btn-danger btn-3d timeslot ' +
           booked_by_current_user(slot),
           data: {
             activity_id: reservable.activity_id,
