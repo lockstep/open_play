@@ -78,7 +78,7 @@ feature 'edit activity' do
           fill_in :reservable_per_person_weekday_price, with: '15.8'
           click_on 'Submit'
 
-          expect(page).to have_content '$15.8'
+          expect(page).to have_content '$ 15.80'
         end
 
         scenario 'unsuccessfully edited reservable' do
@@ -102,7 +102,7 @@ feature 'edit activity' do
           fill_in :reservable_per_person_weekend_price, with: '20'
           click_on 'Submit'
 
-          expect(page).to have_content '$20.0'
+          expect(page).to have_content '$ 20'
         end
 
         scenario 'unsuccessfully edited reservable' do

@@ -23,10 +23,10 @@
             <td><%= present_time(reservable.start_time)%></td>
             <td><%= present_time(reservable.end_time)%></td>
             <td><%= reservable.maximum_players %></td>
-            <td>$<%= reservable.weekday_price %></td>
-            <td>$<%= reservable.weekend_price %></td>
-            <td>$<%= reservable.per_person_weekday_price %></td>
-            <td>$<%= reservable.per_person_weekend_price %></td>
+            <td><%= present_booking_price(reservable.weekday_price) %></td>
+            <td><%= present_booking_price(reservable.weekend_price) %></td>
+            <td><%= present_booking_price(reservable.per_person_weekday_price) %></td>
+            <td><%= present_booking_price(reservable.per_person_weekend_price) %></td>
             <td>
               <%= link_to 'Edit', edit_reservable_path(reservable), class: 'btn btn-primary'%>
               <%= link_to 'Delete', reservable_path(reservable), class: 'btn btn-danger', method: :delete %>
