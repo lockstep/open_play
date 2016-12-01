@@ -35,6 +35,20 @@ describe Booking do
         expect(results.keys[1]).to eq @booking_3.booking_date
         expect(results.values[1]).to eq @booking_3.reload.booking_price
       end
+
+      context 'some of bookings have been canceled' do
+        before do
+          @booking.update(canceled: true)
+          @booking_3.update(canceled: true)
+        end
+        scenario 'excludes canceled bookings' do
+          results = Booking.revenues_by_date_in_60_days
+          expect(results.count).to eq 1
+          expect(results.keys[0]).to eq @booking.booking_date
+          expect(results.values[0])
+            .to eq @booking_2.reload.booking_price
+        end
+      end
     end
 
     context 'no bookings exist' do
