@@ -9,7 +9,7 @@ class Booking < ApplicationRecord
   validates_presence_of :order, :number_of_players
   validates_numericality_of :number_of_players, only_integer: true,
     greater_than: 0, if: Proc.new{ |object| object.errors.empty? }
-  validate :number_of_players_cannot_exceed_maximum
+  validate :number_of_players_cannot_exceed_maximum, on: :create
 
   delegate :activity_name, to: :reservable, prefix: true
   delegate :name, to: :reservable, prefix: true
