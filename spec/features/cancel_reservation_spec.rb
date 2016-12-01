@@ -10,8 +10,13 @@ feature 'Cancel Reservation', :js do
   context 'reservation exists' do
     background do
       order = create(:order, activity: @bowling)
-      @booking = create(:booking, order: order, reservable: @lane,
-        booking_date: '2016-10-13')
+      @booking = create(
+        :booking,
+        order: order,
+        reservable: @lane,
+        number_of_players: 5,
+        booking_date: '2016-10-13'
+      )
     end
     context 'business owner views reservations' do
       scenario 'displays the normal reservation correctly' do
@@ -33,6 +38,20 @@ feature 'Cancel Reservation', :js do
           expect(page).to_not have_link 'Cancel'
           expect(page).to_not have_link 'Check in'
           expect(page).to have_css("#booking_#{@booking.id}.table-danger")
+        end
+      end
+      context "Number of players in the reservation is more than current reservable's available players" do
+        before do
+          reservable = @booking.reservable
+          reservable.update(maximum_players: 5)
+        end
+        scenario 'skips the validation and successfully canceled' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'View reservations'
+          select_a_booking_date('2016-10-13')
+          click_link 'Cancel'
+          expect(@booking.reload.canceled).to eq true
         end
       end
     end
