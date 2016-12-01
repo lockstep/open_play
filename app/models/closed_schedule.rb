@@ -32,9 +32,11 @@ class ClosedSchedule < ApplicationRecord
   end
 
   def match?(booking_date, booking_time, interval_time)
-    return checking_all_day_schedule(
-      booking_date, closed_on, closed_specific_day, closed_days
-    ) if closed_all_day
+    if closed_all_day
+      return checking_all_day_schedule(
+        booking_date, closed_on, closed_specific_day, closed_days
+      )
+    end
     checking_specific_day_schedule(
       booking_date, booking_time, interval_time,
       closed_on, closed_specific_day, closing_begins_at,

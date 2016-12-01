@@ -4,9 +4,9 @@ class RateOverrideSchedule < ApplicationRecord
   belongs_to :activity
 
   validates_presence_of :label
-  validate :at_least_one_day_is_selected
-  validate :at_least_one_reservable_is_selected
-  validate :overriding_ends_at_is_after_overriding_begins_at
+  validate :at_least_one_day_is_selected,
+           :at_least_one_reservable_is_selected,
+           :overriding_ends_at_is_after_overriding_begins_at
   validates :price, numericality: { greater_than_or_equal_to: 0 }
   validates :per_person_price, numericality: { greater_than_or_equal_to: 0 }
 
