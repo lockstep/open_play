@@ -67,10 +67,12 @@ class Booking < ApplicationRecord
   end
 
   def base_booking_price
+    return overridden_price.price if overridden_price?
     weekend_booking? ? weekend_price : weekday_price
   end
 
   def per_person_price
+    return overridden_price.per_person_price if overridden_price?
     weekend_booking? ? per_person_weekend_price : per_person_weekday_price
   end
 
@@ -90,5 +92,14 @@ class Booking < ApplicationRecord
 
   def weekend_booking?
     booking_date.friday? || booking_date.saturday? || booking_date.sunday?
+  end
+
+  def overridden_price
+    @rate_override_schedule ||= reservable.rate_override_schedule(
+      booking_date.to_s, start_time.to_s)
+  end
+
+  def overridden_price?
+    overridden_price.present?
   end
 end

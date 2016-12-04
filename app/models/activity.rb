@@ -5,6 +5,7 @@ class Activity < ApplicationRecord
   has_many :reservables, dependent: :destroy
   has_many :orders
   has_many :closed_schedules, dependent: :destroy
+  has_many :rate_override_schedules, dependent: :destroy
 
   validates :name, presence: true
 

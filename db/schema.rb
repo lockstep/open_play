@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122070701) do
+ActiveRecord::Schema.define(version: 20161125022347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,9 +49,9 @@ ActiveRecord::Schema.define(version: 20161122070701) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.boolean  "checked_in",        default: false
-    t.boolean  "canceled",          default: false
     t.float    "booking_price",     default: 0.0
     t.boolean  "paid_externally",   default: false
+    t.boolean  "canceled",          default: false
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
     t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
   end
@@ -103,6 +103,22 @@ ActiveRecord::Schema.define(version: 20161122070701) do
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["guest_id"], name: "index_orders_on_guest_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
+  end
+
+  create_table "rate_override_schedules", force: :cascade do |t|
+    t.string  "label"
+    t.date    "overridden_on"
+    t.string  "overridden_days",            default: [],   array: true
+    t.boolean "overridden_all_day"
+    t.boolean "overridden_specific_day"
+    t.time    "overriding_begins_at"
+    t.time    "overriding_ends_at"
+    t.boolean "overridden_all_reservables", default: true
+    t.integer "overridden_reservables",     default: [],   array: true
+    t.float   "price",                      default: 0.0
+    t.float   "per_person_price",           default: 0.0
+    t.integer "activity_id"
+    t.index ["activity_id"], name: "index_rate_override_schedules_on_activity_id", using: :btree
   end
 
   create_table "reservable_options", force: :cascade do |t|
@@ -170,6 +186,7 @@ ActiveRecord::Schema.define(version: 20161122070701) do
   add_foreign_key "orders", "activities"
   add_foreign_key "orders", "guests"
   add_foreign_key "orders", "users"
+  add_foreign_key "rate_override_schedules", "activities"
   add_foreign_key "reservable_options_availables", "reservable_options"
   add_foreign_key "reservable_options_availables", "reservables"
   add_foreign_key "reservables", "activities"
