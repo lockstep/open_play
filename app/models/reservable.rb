@@ -19,6 +19,7 @@ class Reservable < ApplicationRecord
   validates :per_person_weekend_price, numericality: { greater_than_or_equal_to: 0 }
 
   delegate :name, to: :activity, prefix: true
+  delegate :type, to: :activity, prefix: true
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
 

@@ -36,19 +36,114 @@ $(function() {
     }
   };
 
+  $('.activity-list').on('click', '.add-more-popup-link', function() {
+    var activityId = $(this).data('activity-id');
+    var reservableId = $(this).data('reservable-id');
+    var rightSlot = $(this).data('next-slot');
+    $('#timeslot-' + activityId + '-' + reservableId + '-' + rightSlot).click();
+  });
+
+  function isSlotDisabled(slot) {
+    return slot.is(':disabled');
+  }
+
+  function findRightMostBookedSlot(reservleId){
+    var buttons = $('#reservable_' + reservleId + ' .timeslot');
+    var rightMostSlot = null;
+    for(var i=0; i < buttons.length; i++) {
+      if (isBooked($(buttons[i]))) {
+        rightMostSlot = $(buttons[i]);
+      }
+    }
+    return rightMostSlot;
+  }
+
+  function getPopupLink(activityId, reservableId, rightSlot) {
+    var link = "<a href='#' class='alert-link add-more-popup-link' data-activity-id='" +
+      activityId + "' data-reservable-id='" + reservableId + "' data-next-slot='" +
+      rightSlot + "'>here</a>";
+    return link;
+  }
+
+  function getPopupMessage(activityId, reservableId, rightSlotNumber, totalTime, selectedReservable, interval, icon) {
+    var message = "You've selected " + totalTime + " minutes for " + selectedReservable;
+    var rightSlotId = 'timeslot-' + activityId + '-' + reservableId + '-' + rightSlotNumber;
+
+    if (!icon.hasClass('fa-check')) {
+      var rightMostBookedSlot = findRightMostBookedSlot(reservableId);
+      var rightMostBookedSlotNumber = rightMostBookedSlot.data('slot');
+      var nextRightMostBookedSlotNumber = rightMostBookedSlotNumber + 1;
+      var nextRightMostBooked = $('#timeslot-' + activityId + '-' + reservableId + '-' + nextRightMostBookedSlotNumber);
+      if (isTheLastSlot(reservableId, rightMostBookedSlotNumber) ||
+          isSlotDisabled(nextRightMostBooked)) { return message; }
+      else {
+        var popupLink = getPopupLink(activityId, reservableId, nextRightMostBookedSlotNumber);
+        return message +  ", click " + popupLink + " to add " + interval + " more minutes";
+      }
+    }
+    else if (isTheLastSlot(reservableId, rightSlotNumber - 1)) {
+      return message;
+    }
+    else if (isSlotDisabled($('#' + rightSlotId))) {
+      return message + ', The next time slot is currently unavailable';
+    }
+    else if (isBooked($('#' + rightSlotId))) {
+      return message + ', The next time slot is currently booked';
+    }
+    else {
+      var popupLink = getPopupLink(activityId, reservableId, rightSlotNumber);
+      return message +  ", click " + popupLink + " to add " + interval + " more minutes";
+    }
+  }
+
+  var calculateTotalTime = function(reservableId, interval) {
+    var $selectedCheckboxs = $('#reservable_' + reservableId + ' button i.fa-check');
+    return $selectedCheckboxs.length * interval;
+  };
+
   var isBooked = function(slot) {
     return slot.find('i').hasClass('fa-check')
   };
 
+  function isTheLastSlot(reservableId, slotNumber) {
+    var buttons = $('#reservable_' + reservableId + ' .timeslot');
+    return slotNumber === buttons.length;
+  }
+
+  function showHidePopup(activityId, reservableId, totalTime, selectedReservable, interval, rightSlotNumber, icon) {
+    var $popup = $('#popup-' + activityId + '-' + reservableId);
+    if (!icon.hasClass('fa-check') && findRightMostBookedSlot(reservableId) === null) {
+      // hide popup in case of any timeslots in lane are not selected
+      hidePopup(activityId, reservableId);
+    }
+    else {
+      var message = getPopupMessage(activityId, reservableId, rightSlotNumber,
+        totalTime, selectedReservable, interval, icon)
+      $popup.html(message).show();
+    }
+  };
+
+  function hidePopup(activityId, reservableId) {
+    var $popup = $('#popup-' + activityId + '-' + reservableId);
+    $popup.hide();
+  }
+
   $('.activity-info').on('click', '.timeslot', function() {
     var activityId = $(this).data('activity-id');
     var reservableId = $(this).data('reservable-id');
+    var interval = $(this).data('interval');
     var slot = $(this).data('slot');
+    var rightSlotNumber = slot + 1;
     var icon = $(this).find('i');
+    var selectedReservable = $(this).data('selected-reservable');
 
     showHideCheckIcon(icon);
     toggleCheckBox(activityId, reservableId, slot);
     preventBackToBackBooking(activityId, reservableId, slot);
+    showHidePopup(
+      activityId, reservableId, calculateTotalTime(reservableId, interval),
+      selectedReservable, interval, rightSlotNumber, icon
+    );
   });
 
 });

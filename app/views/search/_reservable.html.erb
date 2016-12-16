@@ -10,6 +10,8 @@
           data: {
             activity_id: reservable.activity_id,
             reservable_id: reservable.id,
+            interval: reservable.interval,
+            selected_reservable: reservable.name,
             slot: i+=1
           },
           id: "timeslot-#{reservable.activity_id}-#{reservable.id}-#{i}",
