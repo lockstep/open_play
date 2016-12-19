@@ -1,4 +1,8 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!, only: [:reservations_for_business_owner,
+    :reservations_for_users]
+  before_action :verify_user_on_reservations_page, only: [:reservations_for_business_owner,
+    :reservations_for_users]
   before_action :ensure_time_slot_selection_is_present, only: [:new]
   before_action :set_booking_date, only: [:reservations_for_business_owner,
     :reservations_for_users]
@@ -137,5 +141,18 @@ class OrdersController < ApplicationController
       Thank you for your reservation!
       You will receive an email confirmation shortly.
     EOS
+  end
+
+  def verify_user_on_reservations_page
+    if params[:user_id] && params[:user_id] != current_user.id.to_s
+      unauthorized_access_an_action
+    elsif params[:activity_id] && Activity.find(params[:activity_id]).user != current_user
+      unauthorized_access_an_action
+    end
+  end
+
+  def unauthorized_access_an_action
+    flash[:alert] =  "You are not authorized to perform this action."
+    redirect_to root_path and return
   end
 end
