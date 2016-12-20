@@ -1,6 +1,8 @@
 <div id="hero-container">
   <div id="hero-background-image"></div>
   <div id="hero-content">
+    <h1 class="text-xs-center shadow">Making Family Fun Easy!</h1>
+    <h1 class="text-xs-center">Making Family Fun Easy!</h1>
     <div class="text-xs-center" id="searchbar-container">
       <div class="row">
         <%= form_tag(search_path, method: 'get') do %>
@@ -27,20 +29,23 @@
 </div>
 
 <div class="container">
-  <div id= 'leading-landing-page' class='text-xs-center'>
-    <div class='row'>
-      <div class="col-xs-12">
-        <h2>Making Family Fun Easy</h2>
-      </div>
-    </div>
-  </div>
   <div id='discovery-tiles'>
     <div class="row">
-      <div class='col-lg-8'>
-        <div id='laser-tag-bg' class='discovery-activity'></div>
+      <div class='col-sm-4'>
+        <%= image_tag "bowling_feature", class: 'img-fluid' %>
+        <a class="btn btn-default btn-block" data-activity="Bowling" href="#">
+          See Bowling Times
+        </a>
       </div>
-      <div class='col-lg-4'>
-        <div id='bowling-tag-bg' class='discovery-activity'></div>
+      <div class='col-sm-4'>
+        <%= image_tag "lasertag_feature", class: 'img-fluid' %>
+        <a class="btn btn-default btn-block" data-activity="LaserTag" href="#">
+          See Laser Tag Times
+        </a>
+      </div>
+      <div class='col-sm-4'>
+        <%= image_tag "minigolf_feature", class: 'img-fluid' %>
+        <a class="btn btn-default btn-block" href="#">Mini Golf Coming Soon!</a>
       </div>
     </div>
   </div>
@@ -56,6 +61,5 @@
       </div>
     </div>
   <% end %> -->
-  <div class="spacer-100">
-  </div>
+  <p class="text-xs-center copyright">Copyright <%= Time.now.year %> Open Play Enterprises, Inc.</p>
 </div>

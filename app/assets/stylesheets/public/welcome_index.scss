@@ -1,27 +1,57 @@
+$hero-height: 416px;
+$hero-text-top: 100px;
+$hero-text-size: 70px;
 
 #hero-container {
   position: relative;
   height: 416px;
   #hero-background-image {
     position: absolute;
-    background-image: image-url('search_bg.png');
+    background-image: image-url('search_bg_dark.jpeg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 416px;
+    height: $hero-height;
     width: 100%;
     overflow: hidden;
   }
   #hero-content {
     position: relative;
+
+    h1 {
+      position: absolute;
+      width: 100%;
+      font-weight: 700;
+      top: $hero-text-top;
+      color: white;
+      font-size: $hero-text-size;
+      padding: 0px;
+      margin: 0px;
+
+      &.shadow {
+        color: black;
+        top: $hero-text-top + 2;
+        left: 2px;
+        opacity: 0.4;
+      }
+
+      @media (max-width: 544px) {
+        font-size: 30px;
+      }
+    }
+
     #searchbar-container {
       position: absolute;
-      bottom: -415px;
+      bottom: $hero-height * -1;
       width: 100%;
       padding: 20px 0 10px 0;
       background-color: rgba(0,0,0,0.4);
       color: #FFF;
       font-size: 20px;
+
+      .btn-default {
+        border: solid 1px white;
+      }
 
       .col-sm-3 {
         margin-bottom: 10px;
@@ -33,32 +63,25 @@
 .btn-default {
   background-color: white;
   color: #266fa8;
-}
-
-#leading-landing-page {
-  padding-top: 80px;
-  padding-bottom: 30px;
+  border: solid 1px gray;
+  transition: all 0.2s;
+  &:hover {
+    position: relative;
+    border: solid 1px white;
+    background-color: #266fa8;
+    color: white;
+  }
 }
 
 #discovery-tiles {
-  .discovery-activity {
+  margin-top: 30px;
+  .btn {
+    margin: 10px 0 20px 0;
   }
-  #laser-tag-bg {
-    background-image: image-url('laser_tag.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 260px;
-    width: 100%;
-    overflow: hidden;
-  }
-  #bowling-tag-bg {
-    background-image: image-url('bowling.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 260px;
-    width: 100%;
-    overflow: hidden;
-  }
+}
+
+.copyright {
+  margin: 20px;
+  margin-top: 80px;
+  color: #266fa8;
 }

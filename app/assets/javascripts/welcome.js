@@ -16,3 +16,12 @@ $(function() {
   timePicker.timepicker({ 'scrollDefault': 'now' });
   timePicker.timepicker('setTime', '17:00');
 });
+
+$(document).on("click", "#discovery-tiles a", function(e) {
+  e.preventDefault();
+  var activity = $(this).data("activity");
+  if(activity) {
+    $("#activity_type").val(activity);
+    $("#searchbar-container").find("form").submit();
+  }
+});
