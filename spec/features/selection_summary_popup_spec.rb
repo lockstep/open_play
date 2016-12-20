@@ -25,7 +25,7 @@ feature 'Selection Summary Popup', :js do
           search_activities(booking_time: '8:00am')
           click_button '08:00'
           click_button '08:00'
-          expect(page).to_not have_content "You've just selected"
+          expect(page).to_not have_content "You've selected"
         end
         context 'right most booked timeslot is the last time slot in lane' do
           scenario 'shows correct message' do
@@ -34,7 +34,7 @@ feature 'Selection Summary Popup', :js do
             click_button '16:00'
             click_button '08:00'
             click_button '08:00'
-            expect(page).to have_content "You've just selected 60 minutes for Lane 1"
+            expect(page).to have_content "You've selected 60 minutes for Lane 1"
           end
         end
         context 'the next right most booked was disabled' do
@@ -66,7 +66,7 @@ feature 'Selection Summary Popup', :js do
             click_button '13:00'
             click_button '09:00'
             expect(page).to have_content
-              "You've just selected 180 minutes for Lane 1, click here to add 60 more minutes"
+              "You've selected 180 minutes for Lane 1, click here to add 60 more minutes"
           end
           context 'selecting the last time slot in lane' do
             scenario 'selects the right most available timeslot' do
@@ -89,7 +89,7 @@ feature 'Selection Summary Popup', :js do
               expect(slot_4[:class].include?("fa-check")).to be true
               expect(slot_5[:class].include?("fa-check")).to be true
               expect(page).to have_content
-                "You've just selected 240 minutes for Lane 1, click here to add 60 more minutes"
+                "You've selected 240 minutes for Lane 1, click here to add 60 more minutes"
             end
           end
         end
@@ -100,14 +100,14 @@ feature 'Selection Summary Popup', :js do
           search_activities(booking_time: '8:00am')
           click_button '08:00'
           expect(page).to have_content
-            "You've just selected 60 minutes for Lane 1, click here to add 60 more minutes"
+            "You've selected 60 minutes for Lane 1, click here to add 60 more minutes"
         end
         context 'selecting the last time slot in lane' do
           scenario 'shows correct message' do
             visit root_path
             search_activities(booking_time: '8:00am')
             click_button '16:00'
-            expect(page).to have_content "You've just selected 60 minutes for Lane 1"
+            expect(page).to have_content "You've selected 60 minutes for Lane 1"
           end
         end
         context 'the next time slot was disabled' do
@@ -124,7 +124,7 @@ feature 'Selection Summary Popup', :js do
               click_button '15:00'
             end
             expect(page).to have_content
-              "You've just selected 60 minutes for Lane 1, The next time slot is currently unavailable"
+              "You've selected 60 minutes for Lane 1, The next time slot is currently unavailable"
           end
         end
         context 'the next time slot was booked' do
@@ -134,7 +134,7 @@ feature 'Selection Summary Popup', :js do
             click_button '14:00'
             click_button '13:00'
             expect(page).to have_content
-              "You've just selected 120 minutes for Lane 1, The next time slot is currently booked"
+              "You've selected 120 minutes for Lane 1, The next time slot is currently booked"
           end
         end
         context 'selecting one more timeslot in lane' do
@@ -148,7 +148,7 @@ feature 'Selection Summary Popup', :js do
             expect(first_slot[:class].include?("fa-check")).to be true
             expect(second_slot[:class].include?("fa-check")).to be true
             expect(page).to have_content
-              "You've just selected 120 minutes for Lane 1, click here to add 60 more minutes"
+              "You've selected 120 minutes for Lane 1, click here to add 60 more minutes"
           end
         end
       end
