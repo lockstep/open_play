@@ -53,7 +53,7 @@ feature 'Selection Summary Popup', :js do
               click_button '14:00'
             end
             expect(page).to have_content
-              "You've selected 60 minutes for Lane 1, The next time slot is currently unavailable"
+              "You've selected 60 minutes for Lane 1, The next time slot is unavailable"
           end
         end
         context 'there are some timeslots left in lane after unselecting a timeslot' do
@@ -124,7 +124,7 @@ feature 'Selection Summary Popup', :js do
               click_button '15:00'
             end
             expect(page).to have_content
-              "You've selected 60 minutes for Lane 1, The next time slot is currently unavailable"
+              "You've selected 60 minutes for Lane 1, The next time slot is unavailable"
           end
         end
         context 'the next time slot was booked' do

@@ -85,7 +85,7 @@ $(function() {
       return message;
     }
     else if (isSlotDisabled($('#' + rightSlotId))) {
-      return message + ', The next time slot is currently unavailable';
+      return message + ', The next time slot is unavailable';
     }
     else if (isBooked($('#' + rightSlotId))) {
       return message + ', The next time slot is currently booked';
