@@ -218,6 +218,75 @@ describe OrdersController do
     end
   end
 
+  describe 'GET reservations_for_business_owner' do
+    context 'an activity exists' do
+      before do
+        @business = create(:business)
+        @activity = create(:bowling, business: @business)
+      end
+      context 'user is logged in' do
+        login_user
+        context 'user is a business owner' do
+          before do
+            @business.update(user: @user)
+            get :reservations_for_business_owner, params: {
+              activity_id: @activity.id, booking_date: '4/10/2016'
+            }
+          end
+          it_behaves_like 'a successful request'
+        end
+        context 'user is not a business owner' do
+          before do
+            get :reservations_for_business_owner, params: {
+              activity_id: @activity.id, booking_date: '4/10/2016'
+            }
+          end
+          it_behaves_like 'an unauthorized request'
+        end
+      end
+      context 'user is not logged in' do
+        before do
+          get :reservations_for_business_owner, params: {
+            activity_id: @activity.id, booking_date: '4/10/2016'
+          }
+        end
+        it_behaves_like 'it requires authentication'
+      end
+    end
+  end
+
+  describe 'GET reservations_for_users' do
+    context 'user is logged in' do
+      login_user
+      context 'reservations of user' do
+        before do
+          get :reservations_for_users, params: {
+            user_id: @user.id, booking_date: '4/10/2016'
+          }
+        end
+        it_behaves_like 'a successful request'
+      end
+      context 'reservations of others user' do
+        before do
+          user = create(:user)
+          get :reservations_for_users, params: {
+            user_id: user, booking_date: '4/10/2016'
+          }
+        end
+        it_behaves_like 'an unauthorized request'
+      end
+    end
+    context 'user is not logged in' do
+      before do
+        user = create(:user)
+        get :reservations_for_users, params: {
+          user_id: user, booking_date: '4/10/2016'
+        }
+      end
+      it_behaves_like 'it requires authentication'
+    end
+  end
+
   def user_order_params(overrides={})
     {
       order: {
