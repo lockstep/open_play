@@ -66,4 +66,12 @@
 
 .reservable-popup {
   display: none;
+  color: white;
+  background-color: #5cb85c;
+  border-color: green;
+  border-style: dashed;
+
+  a.alert-link {
+    color: white;
+  }
 }

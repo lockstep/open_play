@@ -16,7 +16,7 @@
           },
           id: "timeslot-#{reservable.activity_id}-#{reservable.id}-#{i}",
           disabled: !slot[:booking_info][:available]) do %>
-          <i class="fa"></i> <%= slot[:time].strftime("%H:%M") %>
+            <%= slot[:time].strftime("%H:%M") %>
         <% end %>
         <%= check_box_tag 'time_slots[' + reservable.id.to_s + '][]',
           "#{slot[:time].strftime("%H:%M")},#{(slot[:time] +
