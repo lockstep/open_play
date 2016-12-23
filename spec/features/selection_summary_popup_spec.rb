@@ -53,7 +53,7 @@ feature 'Selection Summary Popup', :js do
               click_button '14:00'
             end
             expect(page).to have_content
-              "You've selected 60 minutes for Lane 1, The next time slot is unavailable"
+              "You've selected 60 minutes for Lane 1. The next time slot is unavailable"
           end
         end
         context 'there are some timeslots left in lane after unselecting a timeslot' do
@@ -78,16 +78,16 @@ feature 'Selection Summary Popup', :js do
               click_button '13:00'
               click_button '09:00'
               click_link 'here'
-              slot_1 = page.find("#timeslot-1-1-2 i")
-              slot_2 = page.find("#timeslot-1-1-3 i")
-              slot_3 = page.find("#timeslot-1-1-5 i")
-              slot_4 = page.find("#timeslot-1-1-6 i")
-              slot_5 = page.find("#timeslot-1-1-7 i")
-              expect(slot_1[:class].include?("fa-check")).to be false
-              expect(slot_2[:class].include?("fa-check")).to be true
-              expect(slot_3[:class].include?("fa-check")).to be true
-              expect(slot_4[:class].include?("fa-check")).to be true
-              expect(slot_5[:class].include?("fa-check")).to be true
+              slot_1 = page.find("#timeslot-1-1-2")
+              slot_2 = page.find("#timeslot-1-1-3")
+              slot_3 = page.find("#timeslot-1-1-5")
+              slot_4 = page.find("#timeslot-1-1-6")
+              slot_5 = page.find("#timeslot-1-1-7")
+              expect(slot_1[:class].include?("selected")).to be false
+              expect(slot_2[:class].include?("selected")).to be true
+              expect(slot_3[:class].include?("selected")).to be true
+              expect(slot_4[:class].include?("selected")).to be true
+              expect(slot_5[:class].include?("selected")).to be true
               expect(page).to have_content
                 "You've selected 240 minutes for Lane 1, click here to add 60 more minutes"
             end
@@ -124,7 +124,7 @@ feature 'Selection Summary Popup', :js do
               click_button '15:00'
             end
             expect(page).to have_content
-              "You've selected 60 minutes for Lane 1, The next time slot is unavailable"
+              "You've selected 60 minutes for Lane 1. The next time slot is unavailable"
           end
         end
         context 'the next time slot was booked' do
@@ -134,7 +134,7 @@ feature 'Selection Summary Popup', :js do
             click_button '14:00'
             click_button '13:00'
             expect(page).to have_content
-              "You've selected 120 minutes for Lane 1, The next time slot is currently booked"
+              "You've selected 120 minutes for Lane 1. The next time slot is currently booked"
           end
         end
         context 'selecting one more timeslot in lane' do
@@ -143,10 +143,10 @@ feature 'Selection Summary Popup', :js do
             search_activities(booking_time: '8:00am')
             click_button '08:00'
             click_link 'here'
-            first_slot = page.find("#timeslot-1-1-1 i")
-            second_slot = page.find("#timeslot-1-1-2 i")
-            expect(first_slot[:class].include?("fa-check")).to be true
-            expect(second_slot[:class].include?("fa-check")).to be true
+            first_slot = page.find("#timeslot-1-1-1")
+            second_slot = page.find("#timeslot-1-1-2")
+            expect(first_slot[:class].include?("selected")).to be true
+            expect(second_slot[:class].include?("selected")).to be true
             expect(page).to have_content
               "You've selected 120 minutes for Lane 1, click here to add 60 more minutes"
           end
