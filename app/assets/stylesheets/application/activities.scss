@@ -33,6 +33,12 @@
             min-width: 65px;
             margin-bottom: 5px;
 
+            &.btn-success {
+              background-color: #2fa6db;
+              border-color: #293870;
+              border-style: dashed;
+            }
+
             &:disabled {
               color: #bfbfbf;
               background-color: #969696;
