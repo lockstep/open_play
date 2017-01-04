@@ -250,7 +250,8 @@ feature 'Complete Reservation', :js do
             visit root_path
             search_activities
             click_on '11:00'
-            click_on '14:00'
+            click_on '12:00'
+            click_on '13:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
@@ -259,6 +260,7 @@ feature 'Complete Reservation', :js do
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
+            expect(page).to have_content '11:00 AM - 02:00 PM'
           end
         end
       end
@@ -426,7 +428,8 @@ feature 'Complete Reservation', :js do
             visit root_path
             search_activities(activity_type: 'Laser tag')
             click_on '11:00'
-            click_on '14:00'
+            click_on '12:00'
+            click_on '13:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
@@ -435,6 +438,7 @@ feature 'Complete Reservation', :js do
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
+            expect(page).to have_content '11:00 AM - 02:00 PM'
           end
         end
       end

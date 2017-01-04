@@ -31,7 +31,7 @@ class ConsolidateBookings
     bookings = []
     slots.each do |item|
       item[1].each_with_index do |slot, index|
-        if index != 0 && equal?(slot[:start_time], item[1][index-1][:end_time])
+        if index != 0 && slot[:start_time] == item[1][index-1][:end_time]
           bookings.last.end_time = convert_to_time(slot[:end_time])
         else
           bookings << build_booking(slot, item[0])
@@ -46,11 +46,7 @@ class ConsolidateBookings
   end
 
   def convert_to_time(time)
-    Time.parse(time)
-  end
-
-  def equal?(slot_1, slot_2)
-    convert_to_time(slot_1) == convert_to_time(slot_2)
+    DateTime.parse(time).to_time
   end
 
   def extract_start_end_times(time_slots, slot)
