@@ -9,7 +9,7 @@ module OrderHelper
   end
 
   def present_booking_price(booking_price)
-    return '-' if booking_price.zero?
+    return '-' if booking_price.blank? || booking_price.zero?
     price = booking_price % 1 == 0 ? booking_price.to_i : "%.2f" % booking_price
     "$ #{price}"
   end

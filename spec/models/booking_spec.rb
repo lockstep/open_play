@@ -328,4 +328,35 @@ describe Booking do
       end
     end
   end
+
+  describe '#number_of_time_slots' do
+    it 'returns correct number_of_time_slots' do
+      @booking = create(:booking,
+        start_time: '09:00:00',
+        end_time: '12:00:00'
+      )
+      expect(@booking.number_of_time_slots).to eq 3
+    end
+
+    it 'returns correct number_of_time_slots' do
+      @booking = create(:booking,
+        start_time: '13:00:00',
+        end_time: '15:00:00'
+      )
+      expect(@booking.number_of_time_slots).to eq 2
+    end
+  end
+
+  describe '#calculate_booking_price' do
+    it 'returns correct booking_price' do
+      @booking = create(:booking,
+        start_time: '09:00:00',
+        end_time: '12:00:00',
+        booking_date: '2017-01-03',
+        number_of_players: 5
+      )
+      # 3 slots * (5 + (5 players * 15))
+      expect(@booking.calculate_booking_price).to eq 240
+    end
+  end
 end

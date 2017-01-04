@@ -32,4 +32,8 @@ module DateTimeUtilities
   def present_date_in_day_month_year_format(date)
     date.strftime("%e %b %Y")
   end
+
+  def time_diff_in_minutes(start_time, end_time)
+    (end_time.seconds_since_midnight - start_time.seconds_since_midnight) / 60
+  end
 end

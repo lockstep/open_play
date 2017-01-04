@@ -1,0 +1,73 @@
+<%= form_tag(orders_path, method: :post, id: 'new-order-form') do %>
+  <div class="card-block">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class='text-xs-center'>Name</th>
+          <th class='text-xs-center'>Time</th>
+          <th class='text-xs-center'># Players</th>
+          <th class='text-xs-center'>Options</th>
+          <th class='text-xs-center'>Base Price</th>
+          <th class='text-xs-center'>Price Per Person</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.bookings.each_with_index do |booking, index| %>
+          <tr class='<%= "booking_#{index}" %>'>
+            <td class='text-xs-center'>
+              <%= booking.reservable_name %>
+            </td>
+            <td class='text-xs-center'>
+              <%= present_range_of_time(booking.start_time, booking.end_time) %>
+              <%= hidden_field_tag('order[bookings_attributes][][start_time]', booking.start_time) %>
+              <%= hidden_field_tag('order[bookings_attributes][][end_time]', booking.end_time) %>
+              <%= hidden_field_tag('order[bookings_attributes][][booking_date]', booking.booking_date) %>
+              <%= hidden_field_tag('order[bookings_attributes][][reservable_id]', booking.reservable.id) %>
+            </td>
+            <td class="text-xs-center">
+              <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
+                booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
+                placeholder: 'Number of players', class: 'form-control text-xs-center'%>
+              <span class='text-info players-detail'>
+                <%= number_of_booked_players(booking) %>
+              </span>
+            </td>
+            <td class='text-xs-left'>
+              <% if booking.reservable_options_available.empty? %>
+                <div class="text-xs-center">
+                  N/A
+                </div>
+              <% end %>
+              <% booking.reservable_options_available.each do |option| %>
+                  <%= check_box_tag "order[bookings_attributes][][reservable_options_attributes][][reservable_option_id]",
+                    "#{option.reservable_option_id}", false,
+                    id: "order_bookings_#{index}_options_#{option.reservable_option_id}" %>
+                  <%= label_tag "order_bookings_#{index}_options_#{option.reservable_option_id}",
+                    "#{option.reservable_option_name.humanize}" %>
+                  <br/>
+              <% end %>
+            </td>
+            <td class='text-xs-center'>
+              <%= present_booking_price(booking.total_base_booking_price) %>
+            </td>
+            <td class='text-xs-center'>
+              <%= present_booking_price(booking.total_per_person_price) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= render 'guest_form' %>
+  </div>
+  <div class="card-footer">
+    <div class='row' %>
+      <%= hidden_field_tag('order[activity_id]', @order.activity_id) %>
+      <%= hidden_field_tag('token_id', '') %>
+      <div class="btn-toolbar pull-right">
+        <%= link_to "Cancel", root_path , class: "btn btn-danger"%>
+        <%= submit_tag "Complete Reservation", id: 'complete-reservation',
+          class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

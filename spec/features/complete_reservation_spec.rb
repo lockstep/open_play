@@ -231,12 +231,12 @@ feature 'Complete Reservation', :js do
         visit root_path
         search_activities
         click_on '11:00'
-        click_on '12:00'
+        click_on '14:00'
         click_on 'Book'
         expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @bowling.name
         expect(page).to have_content '11:00 AM - 12:00 PM'
-        expect(page).to have_content '12:00 PM - 01:00 PM'
+        expect(page).to have_content '02:00 PM - 03:00 PM'
         expect(page).to have_content '0/30'
         expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
@@ -251,6 +251,7 @@ feature 'Complete Reservation', :js do
             search_activities
             click_on '11:00'
             click_on '12:00'
+            click_on '13:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
@@ -259,6 +260,8 @@ feature 'Complete Reservation', :js do
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
+            expect(page).to have_content '11:00 AM - 02:00 PM'
+            expect(page).to have_content '$ 60'
           end
         end
       end
@@ -406,13 +409,13 @@ feature 'Complete Reservation', :js do
         visit root_path
         search_activities(activity_type: 'Laser tag')
         click_on '11:00'
-        click_on '12:00'
+        click_on '14:00'
         click_on 'Book'
 
         expect(page).to have_content 'Monday, January 20'
         expect(page).to have_content @laser_tag.name
         expect(page).to have_content '11:00 AM - 12:00 PM'
-        expect(page).to have_content '12:00 PM - 01:00 PM'
+        expect(page).to have_content '02:00 PM - 03:00 PM'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
         expect(page).to have_content "(0/30)"
@@ -427,6 +430,7 @@ feature 'Complete Reservation', :js do
             search_activities(activity_type: 'Laser tag')
             click_on '11:00'
             click_on '12:00'
+            click_on '13:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
@@ -435,6 +439,8 @@ feature 'Complete Reservation', :js do
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
+            expect(page).to have_content '11:00 AM - 02:00 PM'
+            expect(page).to have_content '$ 60'
           end
         end
       end

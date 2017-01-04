@@ -1,4 +1,6 @@
 class Booking < ApplicationRecord
+  include DateTimeUtilities
+
   belongs_to :order, inverse_of: :bookings
   has_one :user, through: :order
   belongs_to :reservable
@@ -66,6 +68,11 @@ class Booking < ApplicationRecord
     end
   end
 
+  def number_of_time_slots
+    minutes_diff = time_diff_in_minutes(start_time, end_time)
+    minutes_diff / reservable.interval
+  end
+
   def base_booking_price
     return overridden_price.price if overridden_price?
     weekend_booking? ? weekend_price : weekday_price
@@ -76,8 +83,16 @@ class Booking < ApplicationRecord
     weekend_booking? ? per_person_weekend_price : per_person_weekday_price
   end
 
+  def total_base_booking_price
+    number_of_time_slots * base_booking_price
+  end
+
+  def total_per_person_price
+    number_of_time_slots * per_person_price
+  end
+
   def calculate_booking_price
-    base_booking_price + (number_of_players * per_person_price)
+    number_of_time_slots * (base_booking_price + (number_of_players * per_person_price))
   end
 
   def set_booking_price
