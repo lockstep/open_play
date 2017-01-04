@@ -36,7 +36,7 @@
             </thead>
             <tbody>
               <% @order.bookings.each_with_index do |booking, index| %>
-                <tr>
+                <tr class='<%= "booking_#{index}" %>'>
                   <td class='text-xs-center'>
                     <%= booking.reservable_name %>
                   </td>
@@ -71,10 +71,10 @@
                     <% end %>
                   </td>
                   <td class='text-xs-center'>
-                    <%= present_booking_price(booking.base_booking_price) %>
+                    <%= present_booking_price(booking.total_base_booking_price) %>
                   </td>
                   <td class='text-xs-center'>
-                    <%= present_booking_price(booking.per_person_price) %>
+                    <%= present_booking_price(booking.total_per_person_price) %>
                   </td>
                 </tr>
               <% end %>
