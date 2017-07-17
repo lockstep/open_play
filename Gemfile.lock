@@ -298,7 +298,7 @@ DEPENDENCIES
   administrate (~> 0.3.0)
   airbrake
   aws-sdk-v1
-  bootstrap (~> 4.0.0.alpha3)
+  bootstrap (~> 4.0.0.alpha4)
   bourbon
   byebug
   capybara
@@ -338,4 +338,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.6
+   1.15.1
