@@ -24,8 +24,8 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(
-      :first_name, :last_name, :phone_number, :password, :password_confirmation
-    )
+    permitted_params = %i[first_name last_name phone_number password
+                          password_confirmation address latitude longitude]
+    params.require(:user).permit(permitted_params)
   end
 end

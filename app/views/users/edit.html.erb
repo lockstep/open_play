@@ -46,6 +46,17 @@
   </div>
 
   <div class='form-group row'>
+    <%= label_tag 'location', 'Address', class: 'col-xs-2 col-form-label' %>
+    <div class='col-xs-10'>
+      <%= text_field_tag 'location', @user.address, data: {key: ENV['GOOGLE_API_KEY']},
+          class: 'form-control autocomplete-places' %>
+      <%= f.hidden_field :latitude, class: 'place_latitude' %>
+      <%= f.hidden_field :longitude, class: 'place_longitude' %>
+      <%= f.hidden_field :address, class: 'place_address' %>
+    </div>
+  </div>
+
+  <div class='form-group row'>
     <%= f.label :password, class: 'col-sm-2 col-form-label' %>
     <div class='<%= ('has-danger' if @user.errors[:password].any?) %> col-xs-10'>
       <%= f.password_field :password, class: 'form-control' %>

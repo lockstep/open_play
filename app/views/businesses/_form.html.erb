@@ -1,0 +1,56 @@
+<%= form_for @business, html: { multipart: true } do |f| %>
+  <div class="<%= ('has-danger' if @business.errors[:profile_picture].any?) %> form-group row">
+    <%= f.label :profile_picture %>
+    <%= f.file_field :profile_picture, placeholder: 'Business profile',
+        class: 'form-control' %>
+    <% @business.errors[:profile_picture].each do |error| %>
+      <div class="form-control-feedback">
+        <%= error %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="<%= ('has-danger' if @business.errors[:name].any?) %> form-group row">
+    <%= f.text_field :name, placeholder: 'Business name', class: 'form-control' %>
+    <% @business.errors[:name].each do |error| %>
+      <div class="form-control-feedback">
+        <%= error %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="<%= ('has-danger' if @business.errors[:phone_number].any?) %> form-group row">
+    <%= f.telephone_field :phone_number, placeholder: 'Phone (000-000-0000)',
+        class: 'form-control', maxlength: 15 %>
+    <% @business.errors[:phone_number].each do |error| %>
+      <div class="form-control-feedback">
+        <%= error %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-group row">
+    <%= text_field_tag :geocoding_address, nil,
+        value: @business.geocoding_address,
+        class: 'form-control autocomplete-places',
+        data: {key: ENV['GOOGLE_API_KEY']},
+        placeholder: 'Business location' %>
+    <%= f.hidden_field :latitude, class: 'place_latitude' %>
+    <%= f.hidden_field :longitude, class: 'place_longitude' %>
+    <%= f.hidden_field :city %>
+    <%= f.hidden_field :state %>
+    <%= f.hidden_field :zip %>
+    <%= f.hidden_field :country %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.text_area :description, placeholder: 'General information', rows: 10,
+        class: 'form-control' %>
+  </div>
+
+  <div class="form-group text-xs-center">
+    <%= f.submit (f.object.new_record? ? 'Submit' : 'Save'),
+      class: 'btn btn-primary' %>
+    <%= link_to 'Cancel' , businesses_show_path, class: 'btn btn-danger' %>
+  </div>
+<% end %>

@@ -82,7 +82,6 @@ describe BusinessesController do
       business: {
         name: 'Dream world',
         phone_number: 1234567890,
-        address: '123 Bangkok',
         description: 'Dream World is the amusement park for kids!'
       }
     }

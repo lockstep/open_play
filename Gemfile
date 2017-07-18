@@ -37,6 +37,9 @@ gem 'kaminari'
 gem "administrate", "~> 0.3.0"
 gem "bourbon" # required with administrate gem
 
+# Complete geocoding solution
+gem 'geocoder'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger
   # console

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125022347) do
+ActiveRecord::Schema.define(version: 20170721043244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,11 +63,16 @@ ActiveRecord::Schema.define(version: 20161125022347) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "phone_number"
-    t.string   "address"
     t.string   "profile_picture_file_name"
     t.string   "profile_picture_content_type"
     t.integer  "profile_picture_file_size"
     t.datetime "profile_picture_updated_at"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "country"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
     t.index ["user_id"], name: "index_businesses_on_user_id", using: :btree
   end
 
@@ -172,6 +177,13 @@ ActiveRecord::Schema.define(version: 20161125022347) do
     t.string   "last_name"
     t.boolean  "admin",                  default: false
     t.string   "phone_number"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "address"
+    t.float    "session_latitude"
+    t.float    "session_longitude"
+    t.string   "session_address"
+    t.datetime "last_searched_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
