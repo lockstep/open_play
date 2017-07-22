@@ -13,6 +13,8 @@ class Order < ApplicationRecord
   delegate :full_name, to: :guest, prefix: true
   delegate :reservable_type, to: :activity
 
+  ORDER_FEE = 1 # $ unit
+
   def booking
     bookings.first
   end
@@ -38,7 +40,7 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    bookings.map(&:booking_price).reduce(0, :+)
+    bookings.map(&:booking_price).reduce(0, :+) + ORDER_FEE
   end
 
   def self.reservations_for_business_owner(date, activity_id)

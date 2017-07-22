@@ -261,7 +261,7 @@ feature 'Complete Reservation', :js do
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
             expect(page).to have_content '11:00 AM - 02:00 PM'
-            expect(page).to have_content '$ 60'
+            expect(page).to have_content '$ 61'
           end
         end
       end
@@ -440,7 +440,7 @@ feature 'Complete Reservation', :js do
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
             expect(page).to have_content '11:00 AM - 02:00 PM'
-            expect(page).to have_content '$ 60'
+            expect(page).to have_content '$ 61'
           end
         end
       end

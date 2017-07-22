@@ -9,9 +9,9 @@ describe Order do
         create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
         @order.set_price_of_bookings
         @order.save
-
+        # order fee ($ 1)
         total_price = @order.reload.total_price
-        expect(total_price).to eq 190.0
+        expect(total_price).to eq 191.0
       end
     end
   end
