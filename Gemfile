@@ -31,7 +31,7 @@ gem 'rack-timeout'
 gem 'sidekiq'
 gem 'devise', '~> 4.2.0'
 gem "pundit" # Authorization system
-gem 'stripe'
+gem 'stripe', '~> 3.0.1'
 gem 'kaminari'
 
 gem "administrate", "~> 0.3.0"
