@@ -39,6 +39,10 @@ gem "bourbon" # required with administrate gem
 
 # Complete geocoding solution
 gem 'geocoder'
+# Twilio REST API
+gem 'twilio-ruby', '~> 5.0.0'
+# Templating engine for HTML
+gem 'haml', '~> 5.0.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger

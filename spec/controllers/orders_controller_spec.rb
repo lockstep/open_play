@@ -1,5 +1,5 @@
 describe OrdersController do
-  include ActiveJob::TestHelper
+
   describe 'GET new' do
     context 'a business exists' do
       before { @business = create(:business) }
@@ -137,20 +137,23 @@ describe OrdersController do
         login_user
         context 'user is not a business owner' do
           it 'creates a booking' do
-            stripe_obj = double(:stripe)
-            expect(StripeCharger).to receive(:new).with(21, 'tokenId12345')
-              .and_return(stripe_obj)
-            expect(stripe_obj).to receive(:charge)
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(
+              Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order),
+                             confirmation_channel: 'email')
+            )
 
-            expect { post :create, params: user_order_params(
+
+            post :create, params: user_order_params(
               activity_id: @activity.id,
               reservable_id: @reservable.id,
               option_1_id: @option_1.id,
               option_2_id: @option_2.id,
               token_id: 'tokenId12345'
-            )}.to change { enqueued_jobs.size }.by(1)
+            )
 
-            expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
             expect(Order.count).to eq 1
             order = Order.first
             expect(order.total_price).to eq 21.0
@@ -167,7 +170,14 @@ describe OrdersController do
         context 'user is a business owner' do
           before { @business.update(user: @user) }
           it 'creates a booking' do
-            expect_any_instance_of(StripeCharger).to_not receive(:charge)
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to_not receive(:new).with(
+              Float, String)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order),
+                             confirmation_channel: 'email')
+            )
+
             post :create, params: user_order_params(
               activity_id: @activity.id,
               reservable_id: @reservable.id,
@@ -176,7 +186,6 @@ describe OrdersController do
               token_id: 'tokenId12345'
             )
 
-            expect(enqueued_jobs.size).to eq 0
             expect(Order.count).to eq 1
             order = Order.first
             expect(order.total_price).to eq 21.0
@@ -193,21 +202,23 @@ describe OrdersController do
       end
       context 'user is not logged in (guest user)' do
         it 'creates a booking' do
-          stripe_obj = double(:stripe)
-          expect(StripeCharger).to receive(:new).with(21, 'tokenId12345')
-            .and_return(stripe_obj)
-          expect(stripe_obj).to receive(:charge)
+          stripe = double('stripe', charge: true)
+          expect(StripeCharger).to receive(:new).with(
+            Float, String).and_return(stripe)
+          expect(SendConfirmationOrderService).to receive(:call).with(
+            hash_including(order: an_instance_of(Order),
+                           confirmation_channel: 'email')
+          )
 
-          expect { post :create, params: guest_order_params(
+          post :create, params: guest_order_params(
             activity_id: @activity.id,
             reservable_id: @reservable.id,
             option_1_id: @option_1.id,
             option_2_id: @option_2.id,
             email: 'mark@facebook.com',
             token_id: 'tokenId12345'
-          )}.to change { enqueued_jobs.size }.by(1)
+          )
 
-          expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
           expect(Order.count).to eq 1
           order = Order.first
           expect(order.total_price).to eq 21.0
@@ -311,7 +322,8 @@ describe OrdersController do
           }
         ]
       },
-      token_id: overrides[:token_id] || ''
+      token_id: overrides[:token_id] || '',
+      confirmation_channel: overrides[:channel] || 'email'
     }
   end
 
@@ -339,7 +351,8 @@ describe OrdersController do
         email: overrides[:email],
         phone_number: '+1 650-253-0000'
       },
-      token_id: overrides[:token_id] || ''
+      token_id: overrides[:token_id] || '',
+      confirmation_channel: overrides[:channel] || 'email'
     }
   end
 end

@@ -1,6 +1,6 @@
 module ReservationHelpers
 
-  def search_activities(overrides = {})
+  def search_activities(overrides={})
     # TODO the booking date must be after the current date.
     # So I set this future date as a workaround, it needs to be fixed later.
     fill_in :booking_date, with: overrides[:booking_date] || '20 Jan 2020'

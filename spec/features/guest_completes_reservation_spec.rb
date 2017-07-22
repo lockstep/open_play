@@ -22,19 +22,73 @@ feature 'Guest Complete Reservation', :js do
       end
     end
 
-    scenario 'booking successful' do
-      visit root_path
-      search_activities
-      click_on '11:00'
-      click_on 'Book'
+    context 'gest form is valid' do
+      context 'new guest' do
+        scenario 'booking successful' do
+          stripe = double('stripe', charge: true)
+          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(SendConfirmationOrderService).to receive(:call).with(
+            hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+          )
 
-      stub_stripe_checkout_handler
-      stub_processing_order
-      fill_in_guest_form
-      click_on 'Complete Reservation'
+          visit root_path
+          search_activities
+          click_on '11:00'
+          click_on 'Book'
 
-      expect(page).to have_content 'Reservation Info'
-      expect(page).to have_content 'peter pan'
+          stub_stripe_checkout_handler
+          fill_in_guest_form
+          click_on 'Complete Reservation'
+
+          expect(page).to have_content 'Reservation Info'
+          expect(page).to have_content 'peter pan'
+          expect(Order.count).to eq 1
+          expect(Guest.count).to eq 1
+          order = Order.first
+          guest = Guest.first
+          expect(order.guest).to eq guest
+          expect(guest.first_name).to eq 'peter'
+          expect(guest.last_name).to eq 'pan'
+          expect(guest.email).to eq 'peter-pan@gmail.com'
+          expect(guest.phone_number).to eq '+1 650-253-0000'
+        end
+      end
+
+      context 'existing guest' do
+        before do
+          create(:guest, first_name: 'peter', last_name: 'pan',
+            email: 'peter-pan@gmail.com', phone_number: '+1 650-253-0000')
+        end
+
+        scenario 'booking successful' do
+          stripe = double('stripe', charge: true)
+          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(SendConfirmationOrderService).to receive(:call).with(
+            hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+          )
+
+          visit root_path
+          search_activities
+          click_on '11:00'
+          click_on 'Book'
+
+          stub_stripe_checkout_handler
+          fill_in_guest_form
+          click_on 'Complete Reservation'
+
+          expect(page).to have_content 'Reservation Info'
+          expect(page).to have_content 'peter pan'
+          expect(Order.count).to eq 1
+          expect(Guest.count).to eq 1
+          order = Order.first
+          guest = Guest.last
+          expect(order.guest).to eq guest
+          expect(guest.first_name).to eq 'peter'
+          expect(guest.last_name).to eq 'pan'
+          expect(guest.email).to eq 'peter-pan@gmail.com'
+          expect(guest.phone_number).to eq '+1 650-253-0000'
+        end
+      end
     end
 
     context 'guest form is invalid' do
@@ -58,5 +112,6 @@ feature 'Guest Complete Reservation', :js do
     fill_in :guest_last_name, with: overrides[:last_name] || 'pan'
     fill_in :guest_email, with: overrides[:email] || 'peter-pan@gmail.com'
     fill_in :guest_phone_number, with: overrides[:phone_number] || '+1 650-253-0000'
+    choose 'confirmation_channel_email'
   end
 end

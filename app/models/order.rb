@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  include ConfirmationOrderConcerns
+
   has_many :bookings, inverse_of: :order
   belongs_to :user, optional: true
   belongs_to :guest, optional: true
@@ -58,20 +60,13 @@ class Order < ApplicationRecord
   end
 
   def made_by_business_owner?
-    !guest_order? &&  user == activity.user
+    !guest_order? && user == activity.user
   end
 
   def set_price_of_bookings
     bookings.each do |booking|
       booking.set_booking_price
       booking.set_paid_externally if made_by_business_owner?
-    end
-  end
-
-  def process_order(token_id)
-    unless made_by_business_owner?
-      StripeCharger.new(total_price, token_id).charge
-      SendConfirmationMailer.booking_confirmation(id).deliver_later
     end
   end
 

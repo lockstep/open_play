@@ -1,4 +1,5 @@
 feature 'Complete Reservation', :js do
+  include ActiveJob::TestHelper
 
   background do
     @business = create(:business)
@@ -51,6 +52,11 @@ feature 'Complete Reservation', :js do
           end
 
           scenario 'books with available options successfully' do
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+            )
             visit root_path
             search_activities
             click_on '11:00'
@@ -58,7 +64,6 @@ feature 'Complete Reservation', :js do
             check 'Bumper'
             check 'Handicap accessible'
 
-            stub_processing_order
             stub_stripe_checkout_handler
 
             click_on 'Complete Reservation'
@@ -111,6 +116,12 @@ feature 'Complete Reservation', :js do
         end
 
         scenario 'books with available options successfully' do
+          stripe = double('stripe', charge: true)
+          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(SendConfirmationOrderService).to receive(:call).with(
+            hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+          )
+
           visit root_path
           search_activities
           click_on '11:00'
@@ -118,7 +129,6 @@ feature 'Complete Reservation', :js do
           check 'Bumper'
           check 'Handicap accessible'
 
-          stub_processing_order
           stub_stripe_checkout_handler
 
           click_on 'Complete Reservation'
@@ -130,13 +140,17 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+            )
             visit root_path
             search_activities
             click_on '11:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -247,6 +261,12 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+            )
+
             visit root_path
             search_activities
             click_on '11:00'
@@ -255,7 +275,6 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -321,13 +340,17 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+            )
             visit root_path
             search_activities(activity_type: 'Laser tag')
             click_on '11:00'
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -426,6 +449,12 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
+            stripe = double('stripe', charge: true)
+            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(SendConfirmationOrderService).to receive(:call).with(
+              hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+            )
+
             visit root_path
             search_activities(activity_type: 'Laser tag')
             click_on '11:00'
@@ -434,7 +463,6 @@ feature 'Complete Reservation', :js do
             click_on 'Book'
 
             stub_stripe_checkout_handler
-            stub_processing_order
 
             click_on 'Complete Reservation'
             expect(page).to have_content 'Reservation Info'
@@ -447,4 +475,65 @@ feature 'Complete Reservation', :js do
     end
   end
 
+  context 'confirmation message' do
+    scenario 'receives email confirmation' do
+      stripe = double('stripe', charge: true)
+      expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+      expect(SendConfirmationOrderService).to receive(:call).with(
+        hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
+      )
+
+      @bowling = create(:bowling, business: @business)
+      @lane = create(:lane, activity: @bowling)
+
+      visit root_path
+      search_activities
+      click_on '11:00'
+      click_on 'Book'
+      choose 'confirmation_channel_email'
+      stub_stripe_checkout_handler
+      click_on 'Complete Reservation'
+
+      expect(page).to have_content 'You will receive an email confirmation shortly.'
+    end
+
+    scenario 'receives sms confirmation' do
+      stripe = double('stripe', charge: true)
+      expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+      expect(SendConfirmationOrderService).to receive(:call).with(
+        hash_including(order: an_instance_of(Order), confirmation_channel: 'sms')
+      )
+
+      @bowling = create(:bowling, business: @business)
+      @lane = create(:lane, activity: @bowling)
+
+      visit root_path
+      search_activities
+      click_on '11:00'
+      click_on 'Book'
+      choose 'confirmation_channel_sms'
+      stub_stripe_checkout_handler
+      click_on 'Complete Reservation'
+
+      expect(page).to have_content 'You will receive a text confirmation shortly.'
+    end
+  end
+
+  scenario 'stripe cannot charges money' do
+    stripe = Stripe::CardError.new('Stripe Error', {}, 500)
+    expect(StripeCharger).to receive(:new).with(Float, String).and_raise(stripe)
+
+    @bowling = create(:bowling, business: @business)
+    @lane = create(:lane, activity: @bowling)
+
+    visit root_path
+    search_activities
+    click_on '11:00'
+    click_on 'Book'
+    choose 'confirmation_channel_sms'
+    stub_stripe_checkout_handler
+    click_on 'Complete Reservation'
+
+    expect(page).to have_content 'Stripe Error'
+  end
 end

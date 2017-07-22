@@ -1,4 +1,8 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, ->(u) { u.admin } { mount Sidekiq::Web => '/sidekiq' }
+
   namespace :admin do
     resources :users
     resources :guests

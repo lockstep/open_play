@@ -15,14 +15,19 @@ class OrdersController < ApplicationController
   end
 
   def create
-    fulfill_order
-    if @order.save
-      @order.process_order(params[:token_id])
-      redirect_to success_order_path(@order), notice: thank_you_message
+    set_user_or_guest
+    @order.set_price_of_bookings
+    if checkout_order
+      @order.save
+      SendConfirmationOrderService.call(
+        order: @order, confirmation_channel: params[:confirmation_channel])
+      redirect_to success_order_path(@order),
+        notice: thank_you_message(params[:confirmation_channel])
     else
       render :new
     end
-  rescue Stripe::CardError
+  rescue Stripe::CardError => e
+    flash[:alert] = e.message
     render :new
   end
 
@@ -105,23 +110,11 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
   end
 
-  def set_user_or_guest
-    if user_signed_in?
-      @order.user = current_user
-    else
-      @order.guest = Guest.create(guest_params[:guest])
-    end
-  end
-
-  def fulfill_order
-    set_user_or_guest
-    @order.set_price_of_bookings
-  end
-
-  def thank_you_message
+  def thank_you_message(channel)
+    text = channel == 'sms' ? 'a text' : 'an email'
     <<-EOS
       Thank you for your reservation!
-      You will receive an email confirmation shortly.
+      You will receive #{text} confirmation shortly.
     EOS
   end
 
@@ -136,5 +129,15 @@ class OrdersController < ApplicationController
   def unauthorized_access_an_action
     flash[:alert] =  "You are not authorized to perform this action."
     redirect_to root_path and return
+  end
+
+  def set_user_or_guest
+    return @order.user = current_user if current_user
+    @order.guest = Guest.where(guest_params[:guest]).first_or_create
+  end
+
+  def checkout_order
+    return @order.valid? if @order.made_by_business_owner?
+    @order.valid? && StripeCharger.new(@order.total_price, params[:token_id]).charge
   end
 end

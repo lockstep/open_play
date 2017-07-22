@@ -1,0 +1,15 @@
+.form-group.row.confirmation-channel
+  = label_tag 'confirmation_channel',
+    'How should we send your confirmation?',
+    class: 'col-xs-7 col-form-label'
+  .col-xs-5
+    .form-check-inline
+      %label.form-check-label.col-form-label
+        = radio_button_tag 'confirmation_channel', 'email', true,
+          class: 'form-check-input'
+        %span Email
+    .form-check-inline
+      %label.form-check-label.col-form-label
+        = radio_button_tag 'confirmation_channel', 'sms', false,
+          class: 'form-check-input'
+        %span SMS (Text Message)
