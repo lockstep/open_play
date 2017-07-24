@@ -20,12 +20,10 @@
 //= require jquery-timepicker/js/jquery.timepicker.min.js
 //= require google_places
 //= require checkout
-//= require welcome
 //= require timeslots
-//= require orders
-//= require orders_reservations
 //= require slick.min
 //= require activities
 //= require reservables
 //= require analytics
 //= require rate_override_schedules
+//= require_directory ./pages

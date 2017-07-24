@@ -12,4 +12,16 @@ FactoryGirl.define do
     description 'amazing amusement park'
     user { create(:user) }
   end
+
+  factory :business_with_bowling_activity, parent: :business do
+    after(:create) do |business|
+      create(:bowling, business: business)
+    end
+  end
+
+  factory :business_with_laser_tag_activity, parent: :business do
+    after(:create) do |business|
+      create(:laser_tag, business: business)
+    end
+  end
 end

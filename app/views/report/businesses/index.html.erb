@@ -1,0 +1,64 @@
+<div class='row'>
+  <div class='col-xs-12'>
+    <center>
+      <h1>
+        Business List
+      </h1>
+    </center>
+  </div>
+</div>
+<div class='spacer-30'></div>
+<%= render 'filters' %>
+<div class='spacer-30'></div>
+<div class='row'>
+  <div class='col-xs-12'>
+    <center>
+      <% if @businesses.any? %>
+        <table class='table bookings-by-business'>
+          <thead>
+            <tr>
+              <th class='text-xs-center'>#</th>
+              <th class='text-xs-center'>Name</th>
+              <th class='text-xs-right'>Total Booking Price</th>
+              <th class='text-xs-right'>Open Play Fee</th>
+              <th class='text-xs-right'>Price for Business Owner</th>
+            </tr>
+          </thead>
+          <% @businesses.each_with_index do |business, index| %>
+            <% orders = @orders.find_all {|o| o.business_id == business.id} %>
+            <tbody>
+              <tr class='business' data-toggle="collapse" data-target="#orders-for-business-<%= business.id %>" aria-expanded="false" aria-controls="group-of-rows-1">
+                <th scope='row' class='text-xs-center'>
+                  <%= index + 1 %>
+                </th>
+                <td class='text-xs-center'>
+                  <%= business.name %>
+                </td>
+                <td class='text-xs-right'>
+                  <% total_price = orders.map(&:total_valid_price).reduce(:+) || 0 %>
+                  <%= number_to_currency total_price %>
+                </td>
+                <td class='text-xs-right'>
+                  <% fee = orders.inject(0) {|sum| sum + Order::ORDER_FEE } %>
+                  <%= number_to_currency fee %>
+                </td>
+                <td class='text-xs-right'>
+                  <%= number_to_currency total_price - fee %>
+                </td>
+              </tr>
+            </tbody>
+            <tbody id='orders-for-business-<%= business.id %>' class='collapse'>
+              <tr>
+                <td colspan='5'>
+                  <%= render partial: 'order', collection: orders %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <span>There is no business.</span>
+      <% end %>
+    </center>
+  </div>
+</div>

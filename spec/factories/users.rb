@@ -12,4 +12,8 @@ FactoryGirl.define do
       longitude (-122.41941550000001)
     end
   end
+
+  factory :admin, parent: :user do
+    admin true
+  end
 end

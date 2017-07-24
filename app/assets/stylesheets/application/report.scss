@@ -1,0 +1,30 @@
+#new_order_filter {
+  label {
+    font-size: 0.8em;
+  }
+
+  input[type='submit'] {
+    margin-top: 27px;
+  }
+}
+
+.order-detail {
+  font-size: 0.8rem;
+
+  .booking-status {
+    width: 15%;
+  }
+
+  .booking-status-canceled {
+    color: red;
+  }
+}
+
+.bookings-by-business {
+  .business {
+    cursor: pointer;
+  }
+  .collapse.in {
+    display: table-row-group;
+  }
+}

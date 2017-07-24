@@ -1,0 +1,42 @@
+<div class='order-detail'>
+  Order: <%= order.id %>
+  <table style='width: 100%'>
+    <thead>
+      <tr>
+        <td>Booking Date</td>
+        <td>Name</td>
+        <td>Time</td>
+        <td># Players</td>
+        <td>Price</td>
+        <td style='booking-status'>Status</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% order.bookings.each do |booking| %>
+        <tr class='<%= "booking-status-canceled" if booking.canceled %>'>
+          <td><%= booking.booking_date %></td>
+          <td><%= booking.reservable_name %></td>
+          <td><%= present_range_of_time(booking.start_time, booking.end_time) %></td>
+          <td><%= booking.number_of_players %></td>
+          <td class='text-xs-right'><%= number_to_currency booking.booking_price %>
+          <td class='booking-status'><%= booking.canceled ? 'Canceled' : 'Valid' %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan='4' class='text-xs-right'>Open Play Fee</td>
+        <td class='text-xs-right'>
+          <%= number_to_currency Order::ORDER_FEE %>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan='4' class='text-xs-right'>
+          <strong>Total Price</strong></td>
+        <td class='text-xs-right'>
+          <strong><%= number_to_currency order.total_valid_price %></strong>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

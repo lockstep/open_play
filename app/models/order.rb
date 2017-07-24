@@ -17,6 +17,20 @@ class Order < ApplicationRecord
 
   ORDER_FEE = 1 # $ unit
 
+  scope :of_businesses, -> (business_ids) {
+    select('orders.*')
+    .select('businesses.id as business_id')
+    .joins(bookings: [reservable: [activity: :business]])
+    .where('businesses.id': business_ids)
+  }
+
+  scope :claimable_during, -> (from_date, to_date) {
+    joins(:bookings)
+    .where("booking_date >= ?", from_date)
+    .where("booking_date <= ?", to_date)
+    .distinct
+  }
+
   def booking
     bookings.first
   end
@@ -43,6 +57,14 @@ class Order < ApplicationRecord
 
   def total_price
     bookings.map(&:booking_price).reduce(0, :+) + ORDER_FEE
+  end
+
+  def total_valid_price
+    valid_price = 0
+    bookings.each do |booking|
+      valid_price = valid_price + booking.booking_price unless booking.canceled
+    end
+    valid_price + ORDER_FEE
   end
 
   def self.reservations_for_business_owner(date, activity_id)
