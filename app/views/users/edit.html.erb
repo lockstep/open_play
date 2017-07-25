@@ -50,9 +50,9 @@
     <div class='col-xs-10'>
       <%= text_field_tag 'location', @user.address, data: {key: ENV['GOOGLE_API_KEY']},
           class: 'form-control autocomplete-places' %>
-      <%= f.hidden_field :latitude, class: 'place_latitude' %>
-      <%= f.hidden_field :longitude, class: 'place_longitude' %>
-      <%= f.hidden_field :address, class: 'place_address' %>
+      <%= f.hidden_field :latitude, class: 'place-latitude' %>
+      <%= f.hidden_field :longitude, class: 'place-longitude' %>
+      <%= f.hidden_field :address, class: 'place-address' %>
     </div>
   </div>
 

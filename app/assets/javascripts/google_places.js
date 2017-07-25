@@ -1,7 +1,7 @@
 var googlePlaceApi = (function() {
-  var getAttributesFromGeocoded_data = function(geocode_results) {
+  var getAttributesFromGeocoded_data = function(geocodeResults) {
     var result = {};
-    $.each(geocode_results, function() {
+    $.each(geocodeResults, function() {
       switch(this.types[0]) {
         case 'locality':
           result.city = this.long_name;
@@ -20,8 +20,8 @@ var googlePlaceApi = (function() {
     return result;
   };
 
-  var setBusinessLocation = function(geocode_results) {
-    geocoded_data = getAttributesFromGeocoded_data(geocode_results)
+  var setBusinessLocation = function(geocodeResults) {
+    geocoded_data = getAttributesFromGeocoded_data(geocodeResults)
     $('#business_city').val(geocoded_data.city);
     $('#business_state').val(geocoded_data.state)
     $('#business_zip').val(geocoded_data.zip);
@@ -53,12 +53,12 @@ var googlePlaceApi = (function() {
         if (!place.geometry) {
           return;
         } else {
-          $('.place_latitude').val(place.geometry.location.lat());
-          $('.place_longitude').val(place.geometry.location.lng());
+          $('.place-latitude').val(place.geometry.location.lat());
+          $('.place-longitude').val(place.geometry.location.lng());
           if (isBusinessType() === true) {
             setBusinessLocation(place.address_components)
           } else {
-            $('.place_address').val(place.formatted_address);
+            $('.place-address').val(place.formatted_address);
           }
         }
       });
