@@ -5,7 +5,6 @@ feature 'Create Business' do
   include_context 'logged in user'
 
   context 'a business does not exist' do
-
     context 'all params are submitted' do
       scenario 'user can create the bussiness' do
         visit new_business_path
@@ -58,17 +57,11 @@ feature 'Create Business' do
   end
 
   def complete_business_location
-    find(:xpath, "//input[@id='business_latitude']", visible: false)
-      .set '37.3947057'
-    find(:xpath, "//input[@id='business_longitude']", visible: false)
-      .set '-122.15032510'
-    find(:xpath, "//input[@id='business_city']", visible: false)
-      .set 'Palo Alto'
-    find(:xpath, "//input[@id='business_state']", visible: false)
-      .set 'California'
-    find(:xpath, "//input[@id='business_zip']", visible: false)
-      .set '94304'
-    find(:xpath, "//input[@id='business_country']", visible: false)
-      .set 'United States'
+    find('#business_latitude', visible: false).set('37.3947057')
+    find('#business_longitude', visible: false).set('-122.15032510')
+    find('#business_city', visible: false).set('Palo Alto')
+    find('#business_state', visible: false).set('California')
+    find('#business_zip', visible: false).set('94304')
+    find('#business_country', visible: false).set('United States')
   end
 end

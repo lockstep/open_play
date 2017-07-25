@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     unless @booking_date.present?
       redirect_to root_path, alert: 'Date is required.'
     end
-    @activities = Activity.search(params[:activity_type], location_params)
+    @activities = Activity.search(location_params)
   end
 
   def paginate_reservables
@@ -22,6 +22,6 @@ class SearchController < ApplicationController
   private
 
   def location_params
-    params.permit(:address, :latitude, :longitude)
+    params.permit(:address, :latitude, :longitude, :activity_type)
   end
 end
