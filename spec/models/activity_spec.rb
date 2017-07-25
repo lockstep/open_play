@@ -7,7 +7,7 @@ describe Activity do
 
     context 'search by type' do
       it 'returns the search results correctly' do
-        results = Activity.search('LaserTag', {})
+        results = Activity.search(activity_type: 'LaserTag')
         expect(results.count).to eq 1
         expect(results.first.class).to eq LaserTag
       end

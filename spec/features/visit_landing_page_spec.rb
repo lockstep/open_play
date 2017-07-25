@@ -19,9 +19,9 @@ feature 'View Landing Page' do
 
       visit root_path
       expect(page).to have_content 'Making Family Fun Easy!'
-      expect(find('#place_address', visible: false).value).to eq nil
-      expect(find('#place_latitude', visible: false).value).to eq nil
-      expect(find('#place_longitude', visible: false).value).to eq nil
+      expect(find('.place-address', visible: false).value).to eq nil
+      expect(find('.place-latitude', visible: false).value).to eq nil
+      expect(find('.place-longitude', visible: false).value).to eq nil
       expect(@user.session_address).to eq nil
       expect(@user.session_latitude).to eq nil
       expect(@user.session_longitude).to eq nil
@@ -34,9 +34,9 @@ feature 'View Landing Page' do
 
       visit root_path
       expect(page).to have_content 'Making Family Fun Easy!'
-      expect(find('#place_address', visible: false).value).to eq 'Casablanca, Morocco'
-      expect(find('#place_latitude', visible: false).value).to eq '33.5758954'
-      expect(find('#place_longitude', visible: false).value).to eq '-7.70682099'
+      expect(find('.place-address', visible: false).value).to eq 'Casablanca, Morocco'
+      expect(find('.place-latitude', visible: false).value).to eq '33.5758954'
+      expect(find('.place-longitude', visible: false).value).to eq '-7.70682099'
 
       expect(@user.session_address).to eq 'Casablanca, Morocco'
       expect(@user.session_latitude).to eq 33.5758954
@@ -61,10 +61,10 @@ feature 'View Landing Page' do
 
       visit root_path
       expect(page).to have_content 'Making Family Fun Easy!'
-      expect(find('#place_address', visible: false).value)
+      expect(find('.place-address', visible: false).value)
         .to eq'1455 Market St #400, San Francisco, CA 94103, USA'
-      expect(find('#place_latitude', visible: false).value).to eq '37.7752315'
-      expect(find('#place_longitude', visible: false).value).to eq '-122.4175278'
+      expect(find('.place-latitude', visible: false).value).to eq '37.7752315'
+      expect(find('.place-longitude', visible: false).value).to eq '-122.4175278'
 
       expect(@user.session_address).to eq nil
       expect(@user.session_latitude).to eq nil
@@ -78,9 +78,9 @@ feature 'View Landing Page' do
 
       visit root_path
       expect(page).to have_content 'Making Family Fun Easy!'
-      expect(find('#place_address', visible: false).value).to eq 'Casablanca, Morocco'
-      expect(find('#place_latitude', visible: false).value).to eq '33.5758954'
-      expect(find('#place_longitude', visible: false).value).to eq '-7.70682099'
+      expect(find('.place-address', visible: false).value).to eq 'Casablanca, Morocco'
+      expect(find('.place-latitude', visible: false).value).to eq '33.5758954'
+      expect(find('.place-longitude', visible: false).value).to eq '-7.70682099'
 
       expect(@user.session_address).to eq 'Casablanca, Morocco'
       expect(@user.session_latitude).to eq 33.5758954

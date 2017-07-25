@@ -16,11 +16,8 @@ module ReservationHelpers
 
   def fill_in_daly_city_fields(city)
     return if city != 'Daly City, CA, United States'
-    find(:xpath, "//input[@id='place_address']", visible: false)
-      .set 'Daly City, CA, USA'
-    find(:xpath, "//input[@id='place_latitude']", visible: false)
-      .set '37.6879241'
-    find(:xpath, "//input[@id='place_longitude']", visible: false)
-      .set '-122.47020789999999'
+    find('.place-address', visible: false).set('Daly City, CA, USA')
+    find('.place-latitude', visible: false).set('37.6879241')
+    find('.place-longitude', visible: false).set('-122.47020789999999')
   end
 end
