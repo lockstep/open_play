@@ -34,8 +34,8 @@ describe SendConfirmationMailer do
       expect(text_body).to include @order.booking_place
       expect(html_body).to include @order.booking_place
       # Total Price
-      expect(text_body).to include '$ 35'
-      expect(html_body).to include '$ 35'
+      expect(text_body).to include '$ 36'
+      expect(html_body).to include '$ 36'
 
       # Booking details
       expect(text_body).to include @lane.name

@@ -76,7 +76,7 @@ describe OrdersController do
               get :prepare_complete_order, params: params
               response_data = JSON.parse(response.body)['meta']
               expect(response_data['number_of_bookings']).to eq 1
-              expect(response_data['total_price']).to eq 2000.0
+              expect(response_data['total_price']).to eq 2100.0
               expect(response_data['email']).to eq 'elon_musk@tesls.com'
             end
           end
@@ -94,7 +94,7 @@ describe OrdersController do
               get :prepare_complete_order, params: params
               response_data = JSON.parse(response.body)['meta']
               expect(response_data['number_of_bookings']).to eq 1
-              expect(response_data['total_price']).to eq 2000.0
+              expect(response_data['total_price']).to eq 2100.0
               expect(response_data['email']).to eq 'mark@facebook.com'
             end
           end
@@ -138,7 +138,7 @@ describe OrdersController do
         context 'user is not a business owner' do
           it 'creates a booking' do
             stripe_obj = double(:stripe)
-            expect(StripeCharger).to receive(:new).with(20, 'tokenId12345')
+            expect(StripeCharger).to receive(:new).with(21, 'tokenId12345')
               .and_return(stripe_obj)
             expect(stripe_obj).to receive(:charge)
 
@@ -152,7 +152,9 @@ describe OrdersController do
 
             expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
             expect(Order.count).to eq 1
-            bookings = Order.first.bookings
+            order = Order.first
+            expect(order.total_price).to eq 21.0
+            bookings = order.bookings
             expect(bookings.length).to eq 1
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
@@ -176,7 +178,9 @@ describe OrdersController do
 
             expect(enqueued_jobs.size).to eq 0
             expect(Order.count).to eq 1
-            bookings = Order.first.bookings
+            order = Order.first
+            expect(order.total_price).to eq 21.0
+            bookings = order.bookings
             expect(bookings.length).to eq 1
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
@@ -190,7 +194,7 @@ describe OrdersController do
       context 'user is not logged in (guest user)' do
         it 'creates a booking' do
           stripe_obj = double(:stripe)
-          expect(StripeCharger).to receive(:new).with(20, 'tokenId12345')
+          expect(StripeCharger).to receive(:new).with(21, 'tokenId12345')
             .and_return(stripe_obj)
           expect(stripe_obj).to receive(:charge)
 
@@ -205,7 +209,9 @@ describe OrdersController do
 
           expect(enqueued_jobs.last[:job]).to eq ActionMailer::DeliveryJob
           expect(Order.count).to eq 1
-          bookings = Order.first.bookings
+          order = Order.first
+          expect(order.total_price).to eq 21.0
+          bookings = order.bookings
           expect(bookings.length).to eq 1
           expect(bookings.first.start_time.to_s).to match '08:00:00'
           expect(bookings.first.end_time.to_s).to match '09:00:00'
