@@ -12,21 +12,39 @@ describe BusinessesController do
     end
   end
 
+  describe 'GET show' do
+    before { @business = create(:business) }
+
+    context 'user is logged in' do
+      login_user
+      before { get :show, params: { id: @business.id } }
+      it_behaves_like 'a successful request'
+    end
+
+    context 'user is not logged in' do
+      before { get :show, params: { id: @business.id } }
+      it_behaves_like 'a successful request'
+    end
+  end
+
   describe 'POST create' do
     context 'user is logged in' do
       login_user
+
       it 'creates a business' do
         post :create, params: business_params
         expect(Business.count).to eq 1
         expect(Business.first.name).to eq 'Dream world'
       end
     end
+
     context 'user is not logged in' do
       before { post :create, params: business_params }
       it_behaves_like 'it requires authentication'
     end
     context 'user is logged in' do
       login_user
+
       before do
         allow_any_instance_of(Paperclip::Attachment).to receive(:save)
           .and_return(true)
@@ -35,45 +53,70 @@ describe BusinessesController do
         params = business_params.merge(profile_image: file)
         post :create, params: params
       end
+
       it_behaves_like 'a successful redirect'
     end
   end
 
   describe 'GET edit' do
+    before { @business = create(:business) }
+
     context 'user is logged in' do
       login_user
-      before do
-        @business = create(:business, user: @user)
-        get :edit, params: {id: @business }
+
+      context 'user is a business owner' do
+        before do
+          @business.update(user: @user)
+          get :edit, params: { id: @business }
+        end
+
+        it_behaves_like 'a successful request'
       end
-      it_behaves_like 'a successful request'
+
+      context 'user is not a business owner' do
+        before do
+          get :edit, params: { id: @business }
+        end
+
+        it_behaves_like 'an unauthorized request'
+      end
     end
 
     context 'user is not logged in' do
       before do
-        @business = create(:business)
-        get :edit, params: {id: @business }
+        get :edit, params: { id: @business }
       end
       it_behaves_like 'it requires authentication'
     end
   end
 
   describe 'PATCH update' do
-    context 'user is not logged in' do
-      before do
-        @user = create(:user)
-        @business = create(:business)
-        patch :update , id: @user, business: {name: "hello"}
-      end
-      it_behaves_like 'it requires authentication'
-    end
+    before { @business = create(:business) }
+
     context 'user is logged in' do
       login_user
-      before do
-        @business = create(:business, user: @user)
-        patch :update, id: @user, business: {name: "hello"}
+
+      context 'user is a business owner' do
+        before do
+          @business.update(user: @user)
+          patch :update, params: { id: @business, business: { name: 'hello' } }
+        end
+        it_behaves_like 'a successful redirect'
       end
-      it_behaves_like 'a successful redirect'
+
+      context 'user is not a business owner' do
+        before do
+          patch :update, params: { id: @business, business: { name: 'hello' } }
+        end
+        it_behaves_like 'an unauthorized request'
+      end
+    end
+
+    context 'user is not logged in' do
+      before do
+        patch :update, params: { id: @business, business: { name: 'hello' } }
+      end
+      it_behaves_like 'it requires authentication'
     end
   end
 
@@ -81,7 +124,8 @@ describe BusinessesController do
     {
       business: {
         name: 'Dream world',
-        phone_number: 1234567890,
+        phone_number: '1234567890',
+        address_line_one: '123 Bangkok',
         description: 'Dream World is the amusement park for kids!'
       }
     }

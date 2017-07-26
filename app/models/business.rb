@@ -7,14 +7,15 @@ class Business < ApplicationRecord
   has_attached_file :profile_picture,
     url: ':s3_domain_url',
     path: 'business/:id/:basename.:extension',
+    default_url: 'avatar/:style/business-avatar.png',
     storage: :s3,
     bucket: ENV['S3_BUCKET'],
     s3_credentials: {
       access_key_id: ENV['S3_KEY'],
       secret_access_key: ENV['S3_SECRET'],
     },
-    s3_protocol: "https",
-    styles:  { original: ["300x300>"] }
+    s3_protocol: 'https',
+    styles:  { medium: ['300x300>'], larger: '600x600#' }
 
   validates_attachment_content_type :profile_picture,
     content_type: /\Aimage\/.*\z/
@@ -29,10 +30,11 @@ class Business < ApplicationRecord
   end
 
   def address
-    [city, state, zip, country].compact.reject(&:empty?).join(', ')
+    [address_line_one, city, state, zip, country]
+      .compact.reject(&:empty?).join(', ')
   end
 
   def geocoding_address
-    [city, state, country].compact.reject(&:empty?).join(', ')
+    [address_line_one, city, state, country].compact.reject(&:empty?).join(', ')
   end
 end

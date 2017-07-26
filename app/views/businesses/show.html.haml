@@ -1,0 +1,52 @@
+- content_for :meta_tags do
+  = meta_tags(title: @business.name,
+              image: asset_url(@business.profile_picture.url(:large)),
+              description: @business.description)
+
+.business
+  .row
+    .col-md-3
+      = image_tag @business.profile_picture.url(:medium),
+        class: 'img-thumbnail picture hidden-sm-down'
+      = image_tag @business.profile_picture.url(:medium),
+        class: 'img-thumbnail hidden-md-up picture-mob'
+    .col-md-9.col-xs-12.business-frame
+      .business-info
+        %h2= @business.name
+        %hr
+        %p= @business.description
+        .business-contact
+          %p
+            %i.fa.fa-lg.fa-map.icon-info
+            = @business.address
+          %p
+            %i.fa.fa-lg.fa-phone.icon-info
+            = @business.phone_number
+
+      - if policy(@business).update?
+        %div
+          %center
+            = link_to 'Edit Your Business', edit_business_path(@business),
+              class: 'btn btn-primary'
+
+.row
+  .col-md-12
+    %hr
+    .row
+      .col-md-12.offset-md-2
+        = form_tag(@business, method: 'get') do
+          .col-md-3
+            %input{ type: 'text', id: 'datepicker', name: 'booking_date', class: 'form-control', value: @booking_date }
+          .col-md-3
+            %input{ type: 'text', id: 'timepicker', name: 'booking_time', class: 'form-control', value: @booking_time }
+          .col-md-3
+            = submit_tag('Filter', class: 'btn btn-default btn-block')
+    %hr
+    .row
+      .col-md-12
+        .activity-list
+          - @activities.each do |activity|
+            %br
+            %h3= activity.type
+            = render 'search/activity_booking_pane', activity: activity,
+              show_business_tile: false

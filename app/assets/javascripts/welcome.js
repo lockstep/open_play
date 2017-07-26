@@ -1,20 +1,25 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 $(function() {
-  if ($('#datepicker').length > 0) {
+  var $datepicker = $('#datepicker');
+  if ($datepicker.length > 0) {
     // DatePicker
+    var currentValue = $datepicker.val();
     var datePicker = new Pikaday({
       field: document.getElementById('datepicker'),
       format: 'D MMM YYYY',
       minDate: moment().toDate()
     });
-    datePicker.setDate(moment().toDate());
+    var currentMoment = currentValue ? moment(currentValue) : moment();
+    datePicker.setDate(currentMoment.toDate());
   }
 
   // TimePicker
   var timePicker = $('#timepicker')
+  var currentTime = timePicker.val();
+  var setTime = currentTime ? currentTime : '17:00';
   timePicker.timepicker({ 'scrollDefault': 'now' });
-  timePicker.timepicker('setTime', '17:00');
+  timePicker.timepicker('setTime', setTime);
 });
 
 $(document).on("click", "#discovery-tiles a", function(e) {

@@ -3,6 +3,13 @@ var googlePlaceApi = (function() {
     var result = {};
     $.each(geocodeResults, function() {
       switch(this.types[0]) {
+        case 'route':
+        case 'street_number':
+          if (result.addressLineOne) {
+            result.addressLineOne =
+              result.addressLineOne + ' ' + this.long_name;
+          } else result.addressLineOne = this.long_name;
+          break;
         case 'locality':
           result.city = this.long_name;
           break;
@@ -22,6 +29,7 @@ var googlePlaceApi = (function() {
 
   var setBusinessLocation = function(geocodeResults) {
     geocoded_data = getAttributesFromGeocoded_data(geocodeResults)
+    $('#business_address_line_one').val(geocoded_data.addressLineOne);
     $('#business_city').val(geocoded_data.city);
     $('#business_state').val(geocoded_data.state)
     $('#business_zip').val(geocoded_data.zip);

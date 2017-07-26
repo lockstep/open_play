@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}
+    %meta{charset: 'utf-8'}
+    = yield(:meta_tags)
+    %title OpenPlay
+    %link{href: '/favicon.ico', rel: 'shortcut icon', type: 'image/x-icon'}
+    %link{href: '/favicon.ico', rel: 'icon', type: 'image/x-icon'}
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all'
+    = render 'layouts/javascript_variables'
+    - if Rails.env.production?
+      = javascript_include_tag 'https://checkout.stripe.com/checkout.js'
+    - elsif Rails.env.test?
+      = javascript_include_tag 'sinon.min'
+      = render 'layouts/synchronize_time_in_js'
+    - else
+      = javascript_include_tag 'checkout'
+    = javascript_include_tag 'application'
+    = render 'layouts/google_analytics'
+  %body
+    = render 'layouts/shared/navbar'
+    #main-container.container
+      - if notice || alert
+        = render 'layouts/shared/alert'
+      = yield

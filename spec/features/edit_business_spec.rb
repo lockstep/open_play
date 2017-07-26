@@ -32,7 +32,7 @@ feature 'Edit Business' do
       fill_in 'business_name', with: '123 Company'
       click_link 'Cancel'
       expect(page).to have_content business_name
-      expect(page.current_path).to eq(businesses_show_path())
+      expect(page.current_path).to eq business_path(@business)
     end
 
     scenario 'unsuccessful updated business' do

@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
   devise_for :users
 
-  resources :businesses, only: [:new, :create, :edit, :update], shallow: true do
+  resources :businesses, except: [:destroy], shallow: true do
     resources :activities, only: [:index, :new, :create, :edit, :update, :destroy] do
       get :view_analytics, on: :member
       resources :reservables, only: [:new, :create,  :edit, :update, :destroy]
@@ -34,7 +34,6 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create] do
     get :success, on: :member
   end
-  get 'businesses/show', to: 'businesses#show'
   resources :users, only: [:show, :edit, :update]
   resources :closed_schedules, only: [:destroy]
   resources :rate_override_schedules, only: [:destroy]

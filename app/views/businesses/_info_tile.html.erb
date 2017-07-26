@@ -1,15 +1,14 @@
 <% current_business = @business || business %>
 <div class="row card business">
   <div class='col-xs-12 text-xs-center'>
-    <%if current_business.profile_picture? %>
-      <%= image_tag current_business.profile_picture, class: "img-fluid logo img-thumbnail" %>
-    <%else%>
-      <%= image_tag("icon",class: "img-fluid logo img-thumbnail") %>
-    <%end%>
+    <%= link_to current_business do %>
+      <%= image_tag current_business.profile_picture.url(:medium),
+        class: "img-fluid logo img-thumbnail" %>
+    <% end %>
   </div>
   <div class="col-xs-12 business-info-minimal text-xs-center">
     <hr/>
-    <h4><%= current_business.name %></h4>
+    <h4><%= link_to current_business.name, current_business %></h4>
     <%= simple_format(current_business.address) %>
     Phone: <%= current_business.phone_number %>
     <br />

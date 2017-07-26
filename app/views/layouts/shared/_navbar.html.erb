@@ -10,7 +10,8 @@
       </button>
       <div class="dropdown-menu dropdown-menu-right">
         <% if manages_business? %>
-          <%= link_to('Your Business Info', businesses_show_path, class: 'nav-link dropdown-item') %>
+          <%= link_to('Your Business Info', current_user.business,
+            class: 'nav-link dropdown-item') %>
         <%end%>
         <%= link_to('Your Bookings', user_reservations_path(current_user), class: 'nav-link dropdown-item') %>
         <%= link_to('Your Profile', user_path(current_user), class: 'nav-link dropdown-item') %>
