@@ -34,13 +34,8 @@ class BusinessesController < ApplicationController
   end
 
   def business_params
-    permitted_params = [
-      :name,
-      :description,
-      :profile_picture,
-      :phone_number,
-      :address
-    ]
+    permitted_params = %i[name description profile_picture phone_number address
+                          city state zip country latitude longitude]
     params.require(:business).permit(permitted_params)
   end
 end

@@ -1,12 +1,11 @@
 feature 'Search Activities', js: true do
-
   background do
     @user = create(:user)
     @business = create(:business, user: @user)
   end
   include_context 'logged in user'
 
-  describe 'Bowlings exist' do
+  context 'Bowlings exist' do
     background do
       @bowling = create(:bowling, business: @business)
       @bowling_2 = create(:bowling, name: 'Classic Bowling', business: @business)
@@ -14,6 +13,7 @@ feature 'Search Activities', js: true do
         business: @business, archived: true
       )
     end
+
     context 'has multiple lanes' do
       background do
         @lane = create(
@@ -45,6 +45,7 @@ feature 'Search Activities', js: true do
           activity: @bowling_2
         )
       end
+
       context 'results found' do
         scenario 'shows list of active activities' do
           visit root_path
@@ -238,7 +239,7 @@ feature 'Search Activities', js: true do
     end
   end
 
-  describe 'Laser tag exists' do
+  context 'Laser tag exists' do
     context 'prevents back-to-back bookings' do
       background do
         @laser_tag = create(
@@ -310,6 +311,65 @@ feature 'Search Activities', js: true do
             end
           end
         end
+      end
+    end
+  end
+
+  context 'user searchs by city' do
+    background do
+      @fantastic_bowling =
+        create(:bowling, name: 'Fantastic Bowling', business: @business)
+      business2 = create(:business, user: @user, latitude: 36.7289127,
+                         longitude: (-121.27887079999999), city: 'Paicines',
+                         state: 'CA', zip: '95075')
+      @classic_bowling =
+        create(:bowling, name: 'Classic Bowling', business: business2)
+    end
+
+    context 'city is blank' do
+      context 'user location fields are nil' do
+        context 'first time searching' do
+          scenario 'shows activities which do not care cities' do
+            visit root_path
+            search_activities
+            expect(page).to have_content @fantastic_bowling.name
+            expect(page).to have_content @classic_bowling.name
+          end
+        end
+
+        context 'not the first time for searching' do
+          scenario 'shows activities based on session location' do
+            visit root_path
+            search_activities(business_city: 'Daly City, CA, United States')
+            visit root_path
+            search_activities
+            expect(page).to have_content @fantastic_bowling.name
+            expect(page).to_not have_content @classic_bowling.name
+          end
+        end
+      end
+
+      context 'user location fields exist' do
+        background do
+          @user.update(address: 'South San Francisco, CA, United States',
+                       latitude: 37.654656, longitude: (-122.40774980000003))
+        end
+
+        scenario 'shows activities based on user location' do
+          visit root_path
+          search_activities
+          expect(page).to have_content @fantastic_bowling.name
+          expect(page).to_not have_content @classic_bowling.name
+        end
+      end
+    end
+
+    context 'city exists' do
+      scenario 'shows activities based on that city' do
+        visit root_path
+        search_activities(business_city: 'Daly City, CA, United States')
+        expect(page).to have_content @fantastic_bowling.name
+        expect(page).to_not have_content @classic_bowling.name
       end
     end
   end

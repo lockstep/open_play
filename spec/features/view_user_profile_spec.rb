@@ -1,6 +1,6 @@
 feature 'View User Profile' do
   background do
-    @user = create(:user, email: 'superman@gmail.com')
+    @user = create(:user_with_location, email: 'superman@gmail.com')
   end
   include_context 'logged in user'
 
@@ -14,6 +14,7 @@ feature 'View User Profile' do
     expect(page).to have_content @user.last_name
     expect(page).to have_content @user.email
     expect(page).to have_content @user.phone_number
+    expect(page).to have_content @user.address
     expect(page).to have_link 'Edit Profile'
   end
 end

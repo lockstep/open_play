@@ -16,7 +16,15 @@ class Activity < ApplicationRecord
     %w(bowling laser_tag)
   end
 
-  def self.search(booking_date, booking_time, activity_type)
-    Activity.active.where("type = ?", activity_type)
+  def self.search(params)
+    lat = params[:latitude]
+    lng = params[:longitude]
+    if lat.present? && lng.present?
+      businesses_ids = Business.find_nearest_business(lat, lng).map(&:id)
+      Activity.where(business_id: businesses_ids, type: params[:activity_type],
+                     archived: false)
+    else
+      Activity.where(type: params[:activity_type], archived: false)
+    end
   end
 end

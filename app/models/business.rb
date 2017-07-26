@@ -1,6 +1,6 @@
 class Business < ApplicationRecord
   include PhoneValidations
-  
+
   belongs_to :user
   has_many :activities
 
@@ -18,5 +18,21 @@ class Business < ApplicationRecord
 
   validates_attachment_content_type :profile_picture,
     content_type: /\Aimage\/.*\z/
-  validates_presence_of :name, :address
+  validates_presence_of :name
+
+  geocoded_by :geocoding_address
+
+  DEFAULT_SEARCH_RADIUS = 60 # Miles
+
+  def self.find_nearest_business(lat, lng)
+    Business.near([lat, lng], DEFAULT_SEARCH_RADIUS)
+  end
+
+  def address
+    [city, state, zip, country].compact.reject(&:empty?).join(', ')
+  end
+
+  def geocoding_address
+    [city, state, country].compact.reject(&:empty?).join(', ')
+  end
 end

@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   include Userable
   include PhoneValidations
+  include UserLocationConcerns
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

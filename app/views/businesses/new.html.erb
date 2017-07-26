@@ -5,49 +5,10 @@
     </center>
   </div>
 </div>
+
 <div class="spacer-40"></div>
 <div class="row">
   <div class="col-xs-12">
-    <%= form_for @business, url: {action: 'create'}, html: { multipart: true } do |f| %>
-    <div class="<%= ('has-danger' if @business.errors[:profile_picture].any?) %> form-group row">
-      <%= f.label :profile_picture %>
-      <%= f.file_field :profile_picture, placeholder: 'Business profile', class: 'form-control' %>
-      <% @business.errors[:profile_picture].each do |error| %>
-        <div class="form-control-feedback">
-          <%= error %>
-        </div>
-      <% end %>
-    </div>
-      <div class="<%= ('has-danger' if @business.errors[:name].any?) %> form-group row">
-        <%= f.text_field :name, placeholder: 'Business name', class: 'form-control' %>
-        <% @business.errors[:name].each do |error| %>
-          <div class="form-control-feedback">
-            <%= error %>
-          </div>
-        <% end %>
-      </div>
-      <div class="<%= ('has-danger' if @business.errors[:phone_number].any?) %> form-group row">
-        <%= f.telephone_field :phone_number, placeholder: 'Phone (000-000-0000)', class: 'form-control', maxlength: 15 %>
-        <% @business.errors[:phone_number].each do |error| %>
-          <div class="form-control-feedback">
-            <%= error %>
-          </div>
-        <% end %>
-      </div>
-      <div class="<%= ('has-danger' if @business.errors[:address].any?) %> form-group row">
-        <%= f.text_area :address, placeholder: 'Business address', class: 'form-control' %>
-        <% @business.errors[:address].each do |error| %>
-          <div class="form-control-feedback">
-            <%= error %>
-          </div>
-        <% end %>
-      </div>
-      <div class="form-group row">
-        <%= f.text_area :description, placeholder: 'General information',rows: 10, class: 'form-control' %>
-      </div>
-      <div class="form-group text-xs-center">
-        <%= f.submit 'Submit', class: 'btn btn-primary' %>
-      </div>
-    <% end %>
+    <%= render 'form' %>
   </div>
 </div>

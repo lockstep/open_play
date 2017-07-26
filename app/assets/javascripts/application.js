@@ -18,6 +18,7 @@
 //= require Chart.min
 //= require pikaday/js/pikaday
 //= require jquery-timepicker/js/jquery.timepicker.min.js
+//= require google_places
 //= require checkout
 //= require welcome
 //= require timeslots
