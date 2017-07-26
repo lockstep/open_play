@@ -46,7 +46,7 @@ var googlePlaceApi = (function() {
 
     initGooglePlacesAutocomplete: function() {
       var input = document.getElementsByClassName('autocomplete-places')[0]
-      var options = { types: ['establishment'] }
+      var options = { componentRestrictions: {country: [ 'us', 'ca' ]} }
       var autocomplete = new google.maps.places.Autocomplete(input, options);
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
         var place = autocomplete.getPlace();
