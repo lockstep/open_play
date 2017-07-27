@@ -46,7 +46,7 @@ class Order < ApplicationRecord
   end
 
   def sub_total_price
-    bookings.map(&:booking_price).reduce(0, :+)
+    bookings.inject(0) { |sum, b| sum + b.booking_price } 
   end
 
   def self.reservations_for_business_owner(date, activity_id)

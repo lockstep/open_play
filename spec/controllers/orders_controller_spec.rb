@@ -141,7 +141,7 @@ describe OrdersController do
           it 'creates a booking' do
             stripe = double('stripe', charge: true)
             expect(StripeCharger).to receive(:new).with(
-              Float, String).and_return(stripe)
+              Numeric, String).and_return(stripe)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -174,7 +174,7 @@ describe OrdersController do
           it 'creates a booking' do
             stripe = double('stripe', charge: true)
             expect(StripeCharger).to_not receive(:new).with(
-              Float, String)
+              Numeric, String)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -206,7 +206,7 @@ describe OrdersController do
         it 'creates a booking' do
           stripe = double('stripe', charge: true)
           expect(StripeCharger).to receive(:new).with(
-            Float, String).and_return(stripe)
+            Numeric, String).and_return(stripe)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order),
                            confirmation_channel: 'email')

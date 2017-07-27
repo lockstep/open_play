@@ -1,7 +1,7 @@
 describe Order do
   describe '#total_price' do
     context 'books on weekday and on weekend date' do
-      it 'sum bookings price correctly' do
+      it 'sums bookings price correctly' do
         @order = create(:order)
         # weekday booking ($ 75)
         create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
@@ -13,6 +13,15 @@ describe Order do
         total_price = @order.reload.total_price
         expect(total_price).to eq 191.0
       end
+    end
+  end
+
+  describe '#sub_total_price' do
+    it 'sums total price correctly' do
+      order = build(:order)
+      create(:booking, order: order, booking_price: 50)
+      create(:booking, order: order, booking_price: 100)
+      expect(order.sub_total_price).to eq(150)
     end
   end
 
