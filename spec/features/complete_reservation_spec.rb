@@ -27,6 +27,9 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '0/30'
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
+          expect(page).to have_content 'Subtotal: $ 20'
+          expect(page).to have_content 'Open Play Fee: $ 1'
+          expect(page).to have_content 'Total: $ 21'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
 
@@ -90,6 +93,9 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '0/30'
           expect(page).to have_content '$ 10'
           expect(page).to have_content '$ 20'
+          expect(page).to have_content 'Subtotal: $ 30'
+          expect(page).to have_content 'Open Play Fee: $ 1'
+          expect(page).to have_content 'Total: $ 31'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
       end
@@ -254,6 +260,9 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content '0/30'
         expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
+        expect(page).to have_content 'Subtotal: $ 40'
+        expect(page).to have_content 'Open Play Fee: $ 1'
+        expect(page).to have_content 'Total: $ 41'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
       end
@@ -317,6 +326,9 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content "(0/30)"
           expect(page).to have_content '$ 5'
           expect(page).to have_content '$ 15'
+          expect(page).to have_content 'Subtotal: $ 20'
+          expect(page).to have_content 'Open Play Fee: $ 1'
+          expect(page).to have_content 'Total: $ 21'
         end
       end
 
@@ -334,6 +346,9 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content "(0/30)"
           expect(page).to have_content '$ 10'
           expect(page).to have_content '$ 20'
+          expect(page).to have_content 'Subtotal: $ 30'
+          expect(page).to have_content 'Open Play Fee: $ 1'
+          expect(page).to have_content 'Total: $ 31'
         end
       end
 
@@ -444,6 +459,9 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content "(0/30)"
         expect(page).to have_content '$ 5'
         expect(page).to have_content '$ 15'
+        expect(page).to have_content 'Subtotal: $ 40'
+        expect(page).to have_content 'Open Play Fee: $ 1'
+        expect(page).to have_content 'Total: $ 41'
       end
 
       context 'complete reservation' do

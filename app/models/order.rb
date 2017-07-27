@@ -42,7 +42,11 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    bookings.map(&:booking_price).reduce(0, :+) + ORDER_FEE
+    sub_total_price + ORDER_FEE
+  end
+
+  def sub_total_price
+    bookings.map(&:booking_price).sum
   end
 
   def self.reservations_for_business_owner(date, activity_id)

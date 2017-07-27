@@ -1,13 +1,14 @@
 describe OrdersController do
-
   describe 'GET new' do
     context 'a business exists' do
       before { @business = create(:business) }
       context 'an activity exists' do
         before { @activity = create(:bowling, business: @business) }
+
         context 'user is logged in' do
           login_user
           before do
+            expect_any_instance_of(Order).to receive(:set_price_of_bookings)
             @business.update(user: @user)
             get :new, params: {
               activity_id: @activity.id,
@@ -19,6 +20,7 @@ describe OrdersController do
         end
         context 'user is not logged in' do
           before do
+            expect_any_instance_of(Order).to receive(:set_price_of_bookings)
             get :new, params: {
               activity_id: @activity.id,
               date: '4/10/2016',
@@ -139,7 +141,7 @@ describe OrdersController do
           it 'creates a booking' do
             stripe = double('stripe', charge: true)
             expect(StripeCharger).to receive(:new).with(
-              Float, String).and_return(stripe)
+              Numeric, String).and_return(stripe)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -172,7 +174,7 @@ describe OrdersController do
           it 'creates a booking' do
             stripe = double('stripe', charge: true)
             expect(StripeCharger).to_not receive(:new).with(
-              Float, String)
+              Numeric, String)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -204,7 +206,7 @@ describe OrdersController do
         it 'creates a booking' do
           stripe = double('stripe', charge: true)
           expect(StripeCharger).to receive(:new).with(
-            Float, String).and_return(stripe)
+            Numeric, String).and_return(stripe)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order),
                            confirmation_channel: 'email')
