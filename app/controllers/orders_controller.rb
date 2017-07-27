@@ -12,6 +12,7 @@ class OrdersController < ApplicationController
     @order = Order.new(activity_id: params[:activity_id])
     @order.bookings = ConsolidateBookings.new(
       params[:time_slots], params[:date]).call
+    @order.set_price_of_bookings
   end
 
   def create
