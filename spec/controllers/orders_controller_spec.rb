@@ -1,13 +1,14 @@
 describe OrdersController do
-
   describe 'GET new' do
     context 'a business exists' do
       before { @business = create(:business) }
       context 'an activity exists' do
         before { @activity = create(:bowling, business: @business) }
+
         context 'user is logged in' do
           login_user
           before do
+            expect_any_instance_of(Order).to receive(:set_price_of_bookings)
             @business.update(user: @user)
             get :new, params: {
               activity_id: @activity.id,
@@ -19,6 +20,7 @@ describe OrdersController do
         end
         context 'user is not logged in' do
           before do
+            expect_any_instance_of(Order).to receive(:set_price_of_bookings)
             get :new, params: {
               activity_id: @activity.id,
               date: '4/10/2016',
