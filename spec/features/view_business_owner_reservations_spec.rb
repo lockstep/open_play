@@ -237,10 +237,9 @@ feature 'View Business Owner Reservations', :js do
             expect(page).to have_content @laser_tag.name
             expect(page).to have_content @room_one.name
             expect(page).to have_content '10:00 AM - 11:00 AM'
-
             expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
               .to have_content @booking_4.number_of_players
-            expect(page).to have_content '$ 45'
+            expect(page).to have_content '-'
             expect(page).to have_content 'true'
             expect(page).to have_link 'Check in'
             expect(page).to have_link 'Cancel'
@@ -256,7 +255,7 @@ feature 'View Business Owner Reservations', :js do
 
             expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
               .to have_content @booking_3.number_of_players
-            expect(page).to have_content '$ 110'
+            expect(page).to have_content '-'
             expect(page).to have_content 'true'
             expect(page).to have_link 'Check in'
             expect(page).to have_link 'Cancel'
@@ -305,7 +304,7 @@ feature 'View Business Owner Reservations', :js do
 
               expect(find("#number_of_people_from_booking_#{@booking_4.id}"))
                 .to have_content @booking_4.number_of_players
-              expect(page).to have_content '$ 45'
+              expect(page).to have_content '-'
               expect(page).to have_content 'true'
               expect(page).to have_link 'Check in'
               expect(page).to have_link 'Cancel'
@@ -321,7 +320,7 @@ feature 'View Business Owner Reservations', :js do
 
               expect(find("#number_of_people_from_booking_#{@booking_3.id}"))
                 .to have_content @booking_3.number_of_players
-              expect(page).to have_content '$ 110'
+              expect(page).to have_content '-'
               expect(page).to have_content 'true'
               expect(page).to have_link 'Check in'
               expect(page).to have_link 'Cancel'

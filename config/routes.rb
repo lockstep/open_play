@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   patch 'bookings/:id/cancel', to: 'bookings#cancel', as: 'booking_cancel'
 
   get 'prepare_complete_order', to: 'orders#prepare_complete_order'
+  get 'check_payment_requirement', to: 'orders#check_payment_requirement'
   get 'activities/search', to: 'activities#search'
   get 'search', to: 'search#search'
   get 'search/paginate_reservables', to: 'search#paginate_reservables'

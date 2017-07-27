@@ -56,7 +56,7 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    sub_total_price + ORDER_FEE
+    made_by_business_owner? ? 0 : sub_total_price + ORDER_FEE
   end
 
   def sub_total_price
@@ -87,8 +87,11 @@ class Order < ApplicationRecord
 
   def set_price_of_bookings
     bookings.each do |booking|
-      booking.set_booking_price
-      booking.set_paid_externally if made_by_business_owner?
+      if made_by_business_owner?
+        booking.set_paid_externally
+      else
+        booking.set_booking_price
+      end
     end
   end
 
