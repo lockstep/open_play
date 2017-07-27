@@ -60,11 +60,7 @@ class Order < ApplicationRecord
   end
 
   def total_valid_price
-    valid_price = 0
-    bookings.each do |booking|
-      valid_price = valid_price + booking.booking_price unless booking.canceled
-    end
-    valid_price + ORDER_FEE
+    bookings.map(&:effective_price).sum + ORDER_FEE
   end
 
   def self.reservations_for_business_owner(date, activity_id)

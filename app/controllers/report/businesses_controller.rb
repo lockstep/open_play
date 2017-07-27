@@ -12,17 +12,11 @@ module Report
                                        @filter.to_date)
     end
 
-    def date_from_param(param)
-      return Date.today.to_formatted_s(:db) if param.blank?
-      param
-    end
-
     def order_filter_params
-      if params.has_key? :order_filter
-        return params.require(:order_filter).permit(
-          :from_date, :to_date, :activity_type
-        )
-      end
+      return unless params.has_key?(:order_filter)
+      params.require(:order_filter).permit(
+        :from_date, :to_date, :activity_type
+      )
     end
 
     def require_admin

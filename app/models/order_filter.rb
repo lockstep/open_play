@@ -4,7 +4,7 @@ class OrderFilter
   attr_accessor :from_date, :to_date, :activity_type
 
   def initialize(params)
-    params = {} if params.nil?
+    params ||= {}
 
     if params[:from_date].blank?
       params[:from_date] = Date.current.strftime('%d %b %Y')
