@@ -103,6 +103,11 @@ class Booking < ApplicationRecord
     self.paid_externally = true
   end
 
+  def effective_price
+    return 0 if canceled
+    booking_price
+  end
+
   private
 
   def weekend_booking?

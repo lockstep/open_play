@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     root to: "users#index"
   end
 
+  namespace :report do
+    resources :businesses, only: [:index]
+  end
+
   root 'welcome#index'
   devise_for :users
 

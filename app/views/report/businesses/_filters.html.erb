@@ -1,0 +1,29 @@
+<div class='row filter'>
+  <%= form_for @filter, url: report_businesses_path, method: :get, id: 'business-filter' do |f| %>
+  <div class='col-xs-3'>
+    <div class='form-group'>
+      <label for="order_filter_from_date">From Date</label>
+      <%= f.text_field :from_date, class: 'form-control' %>
+    </div>
+  </div>
+  <div class='col-xs-3'>
+    <div class='form-group'>
+      <label for='order_filter_to_date'>To Date</label>
+      <%= f.text_field :to_date, class: 'form-control' %>
+    </div>
+  </div>
+  <div class='col-xs-3'>
+    <div class='form-group'>
+      <label for='order_filter_activity_type'>Activity Type</label>
+      <%= f.select :activity_type, options_for_select(
+      Activity.types.collect do |t|
+        [t.humanize, t.camelcase]
+      end
+      ), {include_blank: 'All'}, {class: 'form-control'} %>
+    </div>
+  </div>
+  <div class='col-xs-3'>
+    <%= submit_tag('Filter', class: 'btn btn-default btn-block') %>
+  </div>
+  <% end %>
+</div>

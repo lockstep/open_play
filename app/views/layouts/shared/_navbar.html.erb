@@ -19,6 +19,14 @@
       </div>
     </div>
 
+    <% if policy(Order).manage? %>
+      <ul class="nav navbar-nav">
+        <li class="nav-item pull-xs-right">
+          <%= link_to 'Reports', report_businesses_path, class: 'nav-link' %>
+        </li>
+      </ul>
+    <% end %>
+
     <% if manages_business? %>
       <ul class="nav navbar-nav">
         <li class="nav-item pull-xs-right">
