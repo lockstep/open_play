@@ -24,7 +24,7 @@ feature 'Business Owner Complete Reservation', :js do
       expect(page).to have_content '$ 15'
       expect(page).to_not have_content 'Subtotal: $ 20'
       expect(page).to_not have_content 'Open Play Fee: $ 1'
-      expect(page).to have_content "Business Owner don't need to pay"
+      expect(page).to have_content "By Manager"
       expect(page).to have_content 'Total: -'
       expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
     end
