@@ -1,3 +1,15 @@
+<% content_for :meta_tags do %>
+  <%- description = "Openplay.io is a scheduling and reservation system for "\
+    'bowling and laser tag. Stay tuned for Golf!'
+  %>
+  <%= meta_tags(title: 'Successfully reservation with Openplay.io',
+              image: asset_url('avatar/large/business-avatar'),
+              description: description) %>
+<% end %>
+
+<%= render '/layouts/shared/facebook_share_button_script' %>
+<%= render '/layouts/shared/twitter_share_button_script.html' %>
+
 <div class='row'>
   <h2 class='text-xs-center'>Reservation Info</h2>
   <div class='row'>
@@ -53,6 +65,7 @@
           <% end %>
         </tbody>
       </table>
+      <%= render 'sharing_buttons' %>
     </div>
     <div class='col-xs-2'></div>
   </div>
