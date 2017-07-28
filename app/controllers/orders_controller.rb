@@ -10,6 +10,7 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new(activity_id: params[:activity_id])
+    @order.user = current_user if current_user
     @order.bookings = ConsolidateBookings.new(
       params[:time_slots], params[:date]).call
     @order.set_price_of_bookings
@@ -71,6 +72,13 @@ class OrdersController < ApplicationController
       render json: { meta: { errors: @order.errors.full_messages }},
         status: :unprocessable_entity
     end
+  end
+
+  def check_payment_requirement
+    activity = Activity.find(params[:order][:activity_id])
+    render json: {
+      meta: { is_required: current_user != activity.user }
+    }
   end
 
   private

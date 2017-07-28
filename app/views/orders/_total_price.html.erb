@@ -1,8 +1,12 @@
 <div class='card order-total-price'>
   <div class='card-block text-xs-center'>
     <h5>Summary</h5>
-    <p>Subtotal: <%= present_booking_price(@order.sub_total_price) %></p>
-    <p>Open Play Fee: <%= present_booking_price(Order::ORDER_FEE) %></p>
+    <%- if @order.made_by_business_owner? %>
+      <p>Business Owner don't need to pay</p>
+    <% else %>
+      <p>Subtotal: <%= present_booking_price(@order.sub_total_price) %></p>
+      <p>Open Play Fee: <%= present_booking_price(Order::ORDER_FEE) %></p>
+    <% end %>
     <p><span class='font-weight-bold'>Total</span>: <%= present_booking_price(@order.total_price) %></p>
   </div>
 </div>

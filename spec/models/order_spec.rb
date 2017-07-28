@@ -1,17 +1,34 @@
 describe Order do
   describe '#total_price' do
     context 'books on weekday and on weekend date' do
-      it 'sums bookings price correctly' do
-        @order = create(:order)
-        # weekday booking ($ 75)
-        create(:booking, order: @order, booking_date: '2016-10-19', number_of_players: 5)
-        # weekend booking ($ 100)
-        create(:booking, order: @order, booking_date: '2016-10-22', number_of_players: 5)
-        @order.set_price_of_bookings
-        @order.save
-        # order fee ($ 1)
-        total_price = @order.reload.total_price
-        expect(total_price).to eq 191.0
+      context 'order is made by business owner' do
+        it 'sums bookings price correctly' do
+          business_owner = create(:user)
+          business = create(:business, user: business_owner)
+          bowling = create(:bowling, business: business)
+          order = create(:order, user: business_owner, activity_id: bowling.id)
+          create(:booking, order: order, booking_date: '2016-10-19', number_of_players: 5)
+          create(:booking, order: order, booking_date: '2016-10-22', number_of_players: 5)
+          order.set_price_of_bookings
+          order.save
+          expect(order.reload.total_price).to eq 0
+        end
+      end
+
+      context 'order is made by user' do
+        it 'sums bookings price correctly' do
+          user = create(:user)
+          business_owner = create(:user)
+          business = create(:business, user: business_owner)
+          bowling = create(:bowling, business: business)
+          order = create(:order, user: user, activity_id: bowling.id)
+          create(:booking, order: order, booking_date: '2016-10-19', number_of_players: 5)
+          create(:booking, order: order, booking_date: '2016-10-22', number_of_players: 5)
+          order.set_price_of_bookings
+          order.save
+          # $ 75(weekday booking) + $ 100 (weekend booking)+ $ 1 (order fee)
+          expect(order.reload.total_price).to eq 191.0
+        end
       end
     end
   end

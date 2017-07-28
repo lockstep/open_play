@@ -190,13 +190,13 @@ describe OrdersController do
 
             expect(Order.count).to eq 1
             order = Order.first
-            expect(order.total_price).to eq 21.0
+            expect(order.total_price).to eq 0
             bookings = order.bookings
             expect(bookings.length).to eq 1
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
             expect(bookings.first.reservable_options.size).to eq 2
-            expect(bookings.first.booking_price).to eq 20.0
+            expect(bookings.first.booking_price).to eq 0
             expect(bookings.first.paid_externally).to eq true
             expect(response).to redirect_to success_order_path(Order.last)
           end
@@ -303,6 +303,55 @@ describe OrdersController do
         }
       end
       it_behaves_like 'it requires authentication'
+    end
+  end
+
+  describe 'GET check_payment_requirement' do
+    before do
+      @business = create(:business)
+      @bowling = create(:bowling, business: @business)
+      @reservable = create(:reservable, activity: @bowling)
+    end
+
+    context 'user is logged in' do
+      login_user
+
+      context 'user is a business owner' do
+        before do
+          @business.update(user: @user)
+          get :check_payment_requirement, params: { order: { activity_id: @bowling.id }}
+        end
+        it_behaves_like 'a successful request'
+
+        it 'returns correct result' do
+          response_data = JSON.parse(response.body)['meta']
+          expect(response_data['is_required']).to eq false
+        end
+      end
+
+      context 'user is not a business owner' do
+        before do
+          get :check_payment_requirement, params: { order: { activity_id: @bowling.id }}
+        end
+        it_behaves_like 'a successful request'
+
+        it 'returns correct result' do
+          response_data = JSON.parse(response.body)['meta']
+          expect(response_data['is_required']).to eq true
+        end
+      end
+    end
+
+    context 'user is not logged in' do
+      before do
+        get :check_payment_requirement, params: { order: { activity_id: @bowling.id }}
+      end
+      it_behaves_like 'a successful request'
+
+      it 'returns correct result' do
+        response_data = JSON.parse(response.body)['meta']
+        expect(response_data['is_required']).to eq true
+      end
     end
   end
 
