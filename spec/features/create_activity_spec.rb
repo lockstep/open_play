@@ -17,13 +17,33 @@ feature 'Create Activity' do
       end
 
       context 'all params are submitted' do
-        scenario 'user can create the activity' do
-          activity_name = 'Table Tennis'
-          complete_activity_form(name: activity_name)
+        scenario 'creates bowling' do
+          complete_activity_form(name: 'Hello')
           expect(page).to have_content 'Successfully created activity'
-          expect(page).to have_content activity_name
+          expect(page).to have_content 'Hello'
+          expect(Activity.count).to eq 1
+          expect(Activity.first.type).to eq 'Bowling'
           expect(page.current_path).to eq(business_activities_path(@business))
         end
+
+        scenario 'creates laser tag' do
+          complete_activity_form(name: 'Hello', type: 'Laser tag')
+          expect(page).to have_content 'Successfully created activity'
+          expect(page).to have_content 'Hello'
+          expect(Activity.count).to eq 1
+          expect(Activity.first.type).to eq 'LaserTag'
+          expect(page.current_path).to eq(business_activities_path(@business))
+        end
+
+        scenario 'creates escape room' do
+          complete_activity_form(name: 'Hello', type: 'Escape room')
+          expect(page).to have_content 'Successfully created activity'
+          expect(page).to have_content 'Hello'
+          expect(Activity.count).to eq 1
+          expect(Activity.first.type).to eq 'EscapeRoom'
+          expect(page.current_path).to eq(business_activities_path(@business))
+        end
+
         context 'end_time is equal start_time' do
           scenario 'creates 24-hour activity' do
             complete_activity_form(

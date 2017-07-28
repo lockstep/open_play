@@ -1,0 +1,2 @@
+class EscapeRoomPolicy < ActivityPolicy
+end

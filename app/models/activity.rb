@@ -13,7 +13,7 @@ class Activity < ApplicationRecord
   delegate :user, to: :business
 
   def self.types
-    %w(bowling laser_tag)
+    %w(bowling laser_tag escape_room)
   end
 
   def self.search(params)
