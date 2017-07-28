@@ -13,4 +13,18 @@ describe Activity do
       end
     end
   end
+
+  describe '.types' do
+    it 'includes bowling' do
+      expect(described_class.types).to include('bowling')
+    end
+
+    it 'includes laser_tag' do
+      expect(described_class.types).to include('laser_tag')
+    end
+
+    it 'includes escape_room' do
+      expect(described_class.types).to include('escape_room')
+    end
+  end
 end
