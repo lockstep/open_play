@@ -4,9 +4,20 @@
     <%- if @order.made_by_business_owner? %>
       <p>Free Reservation (By Manager)</p>
     <% else %>
-      <p>Subtotal: <%= present_booking_price(@order.sub_total_price) %></p>
-      <p>Open Play Fee: <%= present_booking_price(Order::ORDER_FEE) %></p>
+      <p>Subtotal:
+        <span class='subtotal-price'>
+          <%= present_booking_price(@order.sub_total_price) %>
+        </span>
+      </p>
+      <p>Open Play Fee:
+        <span class='openplay-fee'>
+          <%= present_booking_price(Order::ORDER_FEE) %>
+        </span>
+      </p>
     <% end %>
-    <p><span class='font-weight-bold'>Total</span>: <%= present_booking_price(@order.total_price) %></p>
+    <p>
+      <span class='font-weight-bold'>Total</span>:
+      <span class='total-price'><%= present_booking_price(@order.total_price) %></span>
+    </p>
   </div>
 </div>
