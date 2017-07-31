@@ -25,23 +25,13 @@ feature 'Reports' do
         scenario 'admin can see order value' do
           enter_manage_orders_page
           select_date_range('20 Jan 2020', '21 Jan 2020')
-          expect(page).to have_content '$82.00'
+          expect(page).to have_content '$200.00'
           @bookings[0].update(booking_date: '2020-01-25')
           select_date_range('20 Jan 2020', '21 Jan 2020')
-          expect(page).to have_content '$41.00'
+          expect(page).to have_content '$100.00'
           first('tr.business').click
           expect(page).to have_content 'Valid'
-        end
-
-        context 'a booking was canceled' do
-          before {@bookings[0].update(canceled: true)}
-          scenario 'order value should not include cancelled booking' do
-            enter_manage_orders_page
-            select_date_range('20 Jan 2020', '20 Jan 2020')
-            expect(page).to have_content '$42.00'
-            first('tr.business').click
-            expect(page).to have_content 'Canceled'
-          end
+          expect(page).to have_content '$100'
         end
       end
     end

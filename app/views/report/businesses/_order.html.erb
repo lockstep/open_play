@@ -23,9 +23,16 @@
         </tr>
       <% end %>
       <tr>
+        <td colspan='4' class='text-xs-right'>Stripe Fee</td>
+        <td class='text-xs-right'>
+          <%= number_to_currency order.stripe_fee %>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
         <td colspan='4' class='text-xs-right'>Open Play Fee</td>
         <td class='text-xs-right'>
-          <%= number_to_currency Order::ORDER_FEE %>
+          <%= number_to_currency order.open_play_fee %>
         </td>
         <td></td>
       </tr>
@@ -33,7 +40,7 @@
         <td colspan='4' class='text-xs-right'>
           <strong>Total Price</strong></td>
         <td class='text-xs-right'>
-          <strong><%= number_to_currency order.total_valid_price %></strong>
+          <strong><%= number_to_currency order.price %></strong>
         </td>
         <td></td>
       </tr>

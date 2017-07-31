@@ -13,8 +13,11 @@ class StripeCharger
   end
 
   def charge
-    Stripe::Charge.create(
-      amount: amount_in_cents.to_i, currency: currency, source: @token_id
+    charge_result = Stripe::Charge.create(
+      amount: amount_in_cents.to_i, currency: currency, source: @token_id,
+      expand: ['balance_transaction']
     )
+    fee = charge_result['balance_transaction']['fee'] || 0
+    fee / 100.0
   end
 end

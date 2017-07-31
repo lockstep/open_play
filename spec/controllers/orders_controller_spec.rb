@@ -204,9 +204,9 @@ describe OrdersController do
       end
       context 'user is not logged in (guest user)' do
         it 'creates a booking' do
-          stripe = double('stripe', charge: true)
-          expect(StripeCharger).to receive(:new).with(
-            Numeric, String).and_return(stripe)
+          expect_any_instance_of(StripeCharger).to(
+            receive(:charge)
+          ).and_return(1.50)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order),
                            confirmation_channel: 'email')

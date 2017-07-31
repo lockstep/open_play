@@ -20,6 +20,7 @@
               <th class='text-xs-center'>#</th>
               <th class='text-xs-center'>Name</th>
               <th class='text-xs-right'>Total Booking Price</th>
+              <th class='text-xs-right'>Stripe Fee</th>
               <th class='text-xs-right'>Open Play Fee</th>
               <th class='text-xs-right'>Price for Business Owner</th>
             </tr>
@@ -35,21 +36,25 @@
                   <%= business.name %>
                 </td>
                 <td class='text-xs-right'>
-                  <% total_price = orders.map(&:total_valid_price).reduce(:+) || 0 %>
-                  <%= number_to_currency total_price %>
+                  <% price = orders.map(&:price).sum %>
+                  <%= number_to_currency price %>
                 </td>
                 <td class='text-xs-right'>
-                  <% fee = orders.inject(0) {|sum| sum + Order::ORDER_FEE } %>
-                  <%= number_to_currency fee %>
+                  <% stripe_fee = orders.map(&:stripe_fee).sum %>
+                  <%= number_to_currency stripe_fee %>
                 </td>
                 <td class='text-xs-right'>
-                  <%= number_to_currency total_price - fee %>
+                  <% open_play_fee = orders.map(&:open_play_fee).sum %>
+                  <%= number_to_currency open_play_fee %>
+                </td>
+                <td class='text-xs-right'>
+                  <%= number_to_currency price - stripe_fee - open_play_fee %>
                 </td>
               </tr>
             </tbody>
             <tbody id='orders-for-business-<%= business.id %>' class='collapse'>
               <tr>
-                <td colspan='5'>
+                <td colspan='6'>
                   <%= render partial: 'order', collection: orders %>
                 </td>
               </tr>
