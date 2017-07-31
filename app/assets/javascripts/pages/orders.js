@@ -24,6 +24,13 @@ $(function() {
   window.addEventListener('popstate', function() {
     OPEN_PLAY.checkoutHandler.close();
   });
+
+  $('.order-players').on('keyup', function(e) {
+    var subTotalPrice = calculateSubTotalPrice(e);
+    $('.subtotal-price').text('$ ' + subTotalPrice);
+    var totalPrice = calculateTotalPrice(subTotalPrice);
+    $('.total-price').text('$ ' + totalPrice);
+  });
 });
 
 
@@ -73,4 +80,35 @@ function renderOrderErrors(errors) {
   errors.forEach(function(error) {
     $('#bookings-errors ul').append("<li role='menu-item'>" + error + "</li>")
   })
+}
+
+function calculateSubTotalPrice(e) {
+  var subTotalPrice = 0.0;
+  var rows = $(e.target).closest('tbody').find('tr');  
+  $.each(rows, function(index, value) {
+    var $tr = $(value);
+    var numberOfPlayers = parseInt($tr.find('.order-players').val());
+    if ($.isNumeric(numberOfPlayers) && numberOfPlayers != 0) {
+      var baseBookingPriceText = $tr.find('.base-booking-price').text();
+      var baseBookingPrice = getFloatValueFromPriceSring(baseBookingPriceText);
+      var perPersonPriceText = $tr.find('.per-person-price').text();
+      var perPersonPrice = getFloatValueFromPriceSring(perPersonPriceText);
+      subTotalPrice += (baseBookingPrice + (numberOfPlayers * perPersonPrice));
+    }
+  });
+  return subTotalPrice;
+}
+
+function calculateTotalPrice(subTotalPrice) {
+  var openPlayFeeText = $('.openplay-fee').text();
+  var openPlayFee = getFloatValueFromPriceSring(openPlayFeeText);
+  if (subTotalPrice != 0) {
+    return openPlayFee + subTotalPrice;
+  } else {
+    return 0;
+  }
+}
+
+function getFloatValueFromPriceSring(str) {
+  return parseFloat(str.trim().replace('$ ', ''));
 }

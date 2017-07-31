@@ -40,6 +40,80 @@ feature 'View Reservation Info', :js do
           expect(page).to have_content '$ 30'
         end
       end
+
+      context 'user changes number of players' do
+        context 'number of players are not zero' do
+          context 'number is numeric' do
+            scenario 'sees the total price changes' do
+              travel_to Time.new(2017, 1, 12) do
+                visit root_path
+                search_activities
+                find('button', text: '09:00').trigger('click')
+                find('button', text: '15:00').trigger('click')
+                click_on 'Book'
+                fill_in 'order_bookings_0_number_of_players', with: 2
+                fill_in 'order_bookings_1_number_of_players', with: 2
+                expect(page).to have_content 'Subtotal: $ 70'
+                expect(page).to have_content 'Open Play Fee: $ 1'
+                expect(page).to have_content 'Total: $ 71'
+              end
+            end
+          end
+
+          context 'number is not numreric' do
+            scenario 'price not included from row that are not numeric players' do
+              travel_to Time.new(2017, 1, 12) do
+                visit root_path
+                search_activities
+                find('button', text: '09:00').trigger('click')
+                find('button', text: '15:00').trigger('click')
+                click_on 'Book'
+                fill_in 'order_bookings_0_number_of_players', with: 'hello'
+                fill_in 'order_bookings_1_number_of_players', with: 2
+                expect(page).to have_content 'Subtotal: $ 35'
+                expect(page).to have_content 'Open Play Fee: $ 1'
+                expect(page).to have_content 'Total: $ 36'
+              end
+            end
+          end
+        end
+
+        context 'number of players are zero' do
+          context 'some bookings have zero number of players' do
+            scenario 'price not included from row that have zero players' do
+              travel_to Time.new(2017, 1, 12) do
+                visit root_path
+                search_activities
+                find('button', text: '09:00').trigger('click')
+                find('button', text: '15:00').trigger('click')
+                click_on 'Book'
+                fill_in 'order_bookings_0_number_of_players', with: 0
+                fill_in 'order_bookings_1_number_of_players', with: 2
+                expect(page).to have_content 'Subtotal: $ 35'
+                expect(page).to have_content 'Open Play Fee: $ 1'
+                expect(page).to have_content 'Total: $ 36'
+              end
+            end
+          end
+
+          context 'both booking have zero number of players' do
+            scenario 'total price becomes zero' do
+              travel_to Time.new(2017, 1, 12) do
+                visit root_path
+                search_activities
+                find('button', text: '09:00').trigger('click')
+                find('button', text: '15:00').trigger('click')
+                click_on 'Book'
+                fill_in 'order_bookings_0_number_of_players', with: 0
+                fill_in 'order_bookings_1_number_of_players', with: 0
+                expect(page).to have_content 'Subtotal: $ 0'
+                expect(page).to have_content 'Open Play Fee: $ 1'
+                expect(page).to have_content 'Total: $ 0'
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
