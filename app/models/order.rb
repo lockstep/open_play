@@ -15,6 +15,10 @@ class Order < ApplicationRecord
   delegate :full_name, to: :guest, prefix: true
   delegate :reservable_type, to: :activity
 
+  monetize :price_cents
+  monetize :stripe_fee_cents
+  monetize :open_play_fee_cents
+
   ORDER_FEE = 1 # $ unit
 
   scope :of_businesses, -> (business_ids) {

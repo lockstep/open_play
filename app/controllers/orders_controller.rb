@@ -19,8 +19,8 @@ class OrdersController < ApplicationController
   def create
     set_user_or_guest
     @order.set_price_of_bookings
-    if checkout_order
-      @order.save
+    if @order.valid?
+      charge_order(params[:token_id])
       SendConfirmationOrderService.call(
         order: @order, confirmation_channel: params[:confirmation_channel])
       redirect_to success_order_path(@order),
@@ -145,8 +145,12 @@ class OrdersController < ApplicationController
     @order.guest = Guest.where(guest_params[:guest]).first_or_create
   end
 
-  def checkout_order
-    return @order.valid? if @order.made_by_business_owner?
-    @order.valid? && StripeCharger.new(@order.total_price, params[:token_id]).charge
+  def charge_order(stripe_token_id)
+    unless @order.made_by_business_owner?
+      @order.stripe_fee_cents = StripeCharger.charge(@order.total_price, stripe_token_id)
+      @order.open_play_fee = Order::ORDER_FEE
+    end
+    @order.price = @order.total_price
+    @order.save
   end
 end

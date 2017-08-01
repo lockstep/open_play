@@ -22,11 +22,12 @@ feature 'Guest Complete Reservation', :js do
       end
     end
 
-    context 'gest form is valid' do
+    context 'guest form is valid' do
       context 'new guest' do
         scenario 'booking successful' do
-          stripe = double('stripe', charge: true)
-          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(StripeCharger).to(
+            receive(:charge)
+          ).and_return(149)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
           )
@@ -47,6 +48,9 @@ feature 'Guest Complete Reservation', :js do
           order = Order.first
           guest = Guest.first
           expect(order.guest).to eq guest
+          expect(order.price_cents).to eq 2100
+          expect(order.stripe_fee_cents).to eq 149
+          expect(order.open_play_fee_cents).to eq 100
           expect(guest.first_name).to eq 'peter'
           expect(guest.last_name).to eq 'pan'
           expect(guest.email).to eq 'peter-pan@gmail.com'
@@ -61,8 +65,9 @@ feature 'Guest Complete Reservation', :js do
         end
 
         scenario 'booking successful' do
-          stripe = double('stripe', charge: true)
-          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(StripeCharger).to(
+            receive(:charge)
+          ).and_return(1.49)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
           )

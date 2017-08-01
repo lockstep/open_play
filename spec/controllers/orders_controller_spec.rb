@@ -139,9 +139,8 @@ describe OrdersController do
         login_user
         context 'user is not a business owner' do
           it 'creates a booking' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(
-              Numeric, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(
+              Numeric, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -172,9 +171,7 @@ describe OrdersController do
         context 'user is a business owner' do
           before { @business.update(user: @user) }
           it 'creates a booking' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to_not receive(:new).with(
-              Numeric, String)
+            expect(StripeCharger).to_not receive(:charge).with(Numeric, String)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -204,9 +201,7 @@ describe OrdersController do
       end
       context 'user is not logged in (guest user)' do
         it 'creates a booking' do
-          stripe = double('stripe', charge: true)
-          expect(StripeCharger).to receive(:new).with(
-            Numeric, String).and_return(stripe)
+          expect(StripeCharger).to receive(:charge).and_return(150)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order),
                            confirmation_channel: 'email')
