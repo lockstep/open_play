@@ -1,3 +1,14 @@
+<% content_for :meta_tags do %>
+  <%= meta_tags(title: @order.social_media_title,
+                image: asset_url(@order.activity_picture.url(:large)),
+                description: @order.activity_description,
+                url: business_url(@order.activity_business_id)
+               ) %>
+<% end %>
+
+<%= render '/layouts/shared/facebook_share_button_script' %>
+<%= render '/layouts/shared/twitter_share_button_script.html' %>
+
 <div class='row'>
   <h2 class='text-xs-center'>Reservation Info</h2>
   <div class='row'>
@@ -53,6 +64,7 @@
           <% end %>
         </tbody>
       </table>
+      <%= render 'sharing_buttons' %>
     </div>
     <div class='col-xs-2'></div>
   </div>
