@@ -55,8 +55,7 @@ feature 'Complete Reservation', :js do
           end
 
           scenario 'books with available options successfully' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -122,8 +121,7 @@ feature 'Complete Reservation', :js do
         end
 
         scenario 'books with available options successfully' do
-          stripe = double('stripe', charge: true)
-          expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+          expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
           )
@@ -146,8 +144,7 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -270,8 +267,7 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -355,8 +351,7 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -467,8 +462,7 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            stripe = double('stripe', charge: true)
-            expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -495,8 +489,7 @@ feature 'Complete Reservation', :js do
 
   context 'confirmation message' do
     scenario 'receives email confirmation' do
-      stripe = double('stripe', charge: true)
-      expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+      expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
       expect(SendConfirmationOrderService).to receive(:call).with(
         hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
       )
@@ -516,8 +509,7 @@ feature 'Complete Reservation', :js do
     end
 
     scenario 'receives sms confirmation' do
-      stripe = double('stripe', charge: true)
-      expect(StripeCharger).to receive(:new).with(Float, String).and_return(stripe)
+      expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
       expect(SendConfirmationOrderService).to receive(:call).with(
         hash_including(order: an_instance_of(Order), confirmation_channel: 'sms')
       )
@@ -539,7 +531,7 @@ feature 'Complete Reservation', :js do
 
   scenario 'stripe cannot charges money' do
     stripe = Stripe::CardError.new('Stripe Error', {}, 500)
-    expect(StripeCharger).to receive(:new).with(Float, String).and_raise(stripe)
+    expect(StripeCharger).to receive(:charge).with(Float, String).and_raise(stripe)
 
     @bowling = create(:bowling, business: @business)
     @lane = create(:lane, activity: @bowling)

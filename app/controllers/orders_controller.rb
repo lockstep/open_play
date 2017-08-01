@@ -147,7 +147,7 @@ class OrdersController < ApplicationController
 
   def charge_order(stripe_token_id)
     unless @order.made_by_business_owner?
-      @order.stripe_fee = StripeCharger.new(@order.total_price, stripe_token_id).charge
+      @order.stripe_fee_cents = StripeCharger.charge(@order.total_price, stripe_token_id)
       @order.open_play_fee = Order::ORDER_FEE
     end
     @order.price = @order.total_price

@@ -36,19 +36,19 @@
                   <%= business.name %>
                 </td>
                 <td class='text-xs-right'>
-                  <% price = orders.map(&:price).sum %>
-                  <%= number_to_currency price %>
+                  <% price = orders.sum(&:price) %>
+                  <%= humanized_money_with_symbol price %>
                 </td>
                 <td class='text-xs-right'>
-                  <% stripe_fee = orders.map(&:stripe_fee).sum %>
-                  <%= number_to_currency stripe_fee %>
+                  <% stripe_fee = orders.sum(&:stripe_fee) %>
+                  <%= humanized_money_with_symbol stripe_fee %>
                 </td>
                 <td class='text-xs-right'>
-                  <% open_play_fee = orders.map(&:open_play_fee).sum %>
-                  <%= number_to_currency open_play_fee %>
+                  <% open_play_fee = orders.sum(&:open_play_fee) %>
+                  <%= humanized_money_with_symbol open_play_fee %>
                 </td>
                 <td class='text-xs-right'>
-                  <%= number_to_currency price - stripe_fee - open_play_fee %>
+                  <%= humanized_money_with_symbol price - stripe_fee - open_play_fee %>
                 </td>
               </tr>
             </tbody>
