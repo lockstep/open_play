@@ -102,13 +102,16 @@ ActiveRecord::Schema.define(version: 20170731073232) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "activity_id"
     t.integer  "guest_id"
-    t.integer  "price_cents",         default: 0, null: false
-    t.integer  "open_play_fee_cents", default: 0, null: false
-    t.integer  "stripe_fee_cents",    default: 0, null: false
+    t.integer  "price_cents",            default: 0,     null: false
+    t.string   "price_currency",         default: "USD", null: false
+    t.integer  "open_play_fee_cents",    default: 0,     null: false
+    t.string   "open_play_fee_currency", default: "USD", null: false
+    t.integer  "stripe_fee_cents",       default: 0,     null: false
+    t.string   "stripe_fee_currency",    default: "USD", null: false
     t.index ["activity_id"], name: "index_orders_on_activity_id", using: :btree
     t.index ["guest_id"], name: "index_orders_on_guest_id", using: :btree
     t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
