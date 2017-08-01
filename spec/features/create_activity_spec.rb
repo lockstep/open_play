@@ -18,34 +18,55 @@ feature 'Create Activity' do
 
       context 'all params are submitted' do
         scenario 'creates bowling' do
-          complete_activity_form(name: 'Hello')
+          allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+            .and_return(true)
+
+          complete_activity_form
           expect(page).to have_content 'Successfully created activity'
-          expect(page).to have_content 'Hello'
+          expect(page).to have_content 'Country Club Lanes'
           expect(Activity.count).to eq 1
-          expect(Activity.first.type).to eq 'Bowling'
+          activity = Activity.first
+          expect(activity.type).to eq 'Bowling'
+          expect(activity.description).to eq 'Enjoy your activity with us'
+          expect(activity.picture_file_name).to eq 'avatar.png'
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
         scenario 'creates laser tag' do
-          complete_activity_form(name: 'Hello', type: 'Laser tag')
+          allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+            .and_return(true)
+
+          complete_activity_form(type: 'Laser tag')
           expect(page).to have_content 'Successfully created activity'
-          expect(page).to have_content 'Hello'
+          expect(page).to have_content 'Country Club Lanes'
           expect(Activity.count).to eq 1
-          expect(Activity.first.type).to eq 'LaserTag'
+          activity = Activity.first
+          expect(activity.type).to eq 'LaserTag'
+          expect(activity.description).to eq 'Enjoy your activity with us'
+          expect(activity.picture_file_name).to eq 'avatar.png'
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
         scenario 'creates escape room' do
-          complete_activity_form(name: 'Hello', type: 'Escape room')
+          allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+            .and_return(true)
+
+          complete_activity_form(type: 'Escape room')
           expect(page).to have_content 'Successfully created activity'
-          expect(page).to have_content 'Hello'
+          expect(page).to have_content 'Country Club Lanes'
           expect(Activity.count).to eq 1
-          expect(Activity.first.type).to eq 'EscapeRoom'
+          activity = Activity.first
+          expect(activity.type).to eq 'EscapeRoom'
+          expect(activity.description).to eq 'Enjoy your activity with us'
+          expect(activity.picture_file_name).to eq 'avatar.png'
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
         context 'end_time is equal start_time' do
           scenario 'creates 24-hour activity' do
+            allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+              .and_return(true)
+
             complete_activity_form(
               start_time: '08:00',
               end_time: '08:00'
@@ -59,6 +80,18 @@ feature 'Create Activity' do
         scenario 'user sees the activity name is required' do
           complete_activity_form(name: '')
           expect(page).to have_content "can't be blank"
+        end
+      end
+
+      context 'invalid picture formats' do
+        scenario 'user sees image is invalid' do
+          allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+            .and_return(false)
+
+          complete_activity_form(
+            picture: 'spec/support/fixtures/paperclip/avatar.txt'
+          )
+          expect(page).to have_content 'Uploaded file is not a valid image'
         end
       end
 
@@ -85,6 +118,9 @@ feature 'Create Activity' do
 
       context 'all params are submitted' do
         scenario 'user can add more activity' do
+          allow_any_instance_of(Paperclip::Attachment).to receive(:save)
+            .and_return(true)
+
           activity_name = 'Bowling Club'
           complete_activity_form(name: activity_name)
           expect(page).to have_content 'Successfully created activity'
@@ -101,6 +137,10 @@ feature 'Create Activity' do
       fill_in 'activity_name', with: overrides[:name] || 'Country Club Lanes'
       fill_in 'activity_start_time', with: overrides[:start_time] || '08:00'
       fill_in 'activity_end_time', with: overrides[:end_time] || '16:00'
+      fill_in 'activity_description', with: overrides[:description] ||
+        'Enjoy your activity with us'
+      attach_file 'activity_picture', overrides[:picture] ||
+        'spec/support/fixtures/paperclip/avatar.png'
       click_button 'Submit'
     end
   end
