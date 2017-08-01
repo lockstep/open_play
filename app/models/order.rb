@@ -10,7 +10,8 @@ class Order < ApplicationRecord
   scope :filtered_by_activity, -> (id) { where(activity_id: id) }
   scope :filtered_by_user, -> (id) { where(user_id: id) }
 
-  delegate :name, to: :activity, prefix: true
+  delegate :name, :type, :description, :picture, :business_id, to: :activity,
+           prefix: true
   delegate :full_name, to: :user, prefix: true
   delegate :full_name, to: :guest, prefix: true
   delegate :reservable_type, to: :activity
