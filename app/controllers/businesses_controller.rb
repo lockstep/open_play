@@ -33,7 +33,7 @@ class BusinessesController < ApplicationController
   def show
     @booking_date = Date.parse(params[:booking_date] || Date.today.to_s).to_s
     @booking_time = params[:booking_time] || Time.current.strftime("%H:%M")
-    @activities = Activity.where(archived: false)
+    @activities = @business.activities.where(archived: false)
   end
 
   private
