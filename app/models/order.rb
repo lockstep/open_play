@@ -65,7 +65,7 @@ class Order < ApplicationRecord
   end
 
   def sub_total_price
-    bookings.map(&:booking_price).sum
+    made_by_business_owner? ? 0 : bookings.map(&:booking_price).sum
   end
 
   def total_valid_price

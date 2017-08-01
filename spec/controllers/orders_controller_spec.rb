@@ -120,6 +120,64 @@ describe OrdersController do
     end
   end
 
+  describe 'GET get_order_prices' do
+    context 'a lane exists' do
+      before do
+        @business = create(:business)
+        @bowling = create(:bowling, business: @business)
+        @lane = create(:lane, activity: @bowling)
+      end
+
+      context 'user is logged in' do
+        login_user
+        context 'user is a business owner' do
+          before { @business.update(user: @user) }
+
+          it 'returns correct metadata' do
+            params = user_order_params(
+              activity_id: @bowling.id,
+              reservable_id: @lane.id
+            )
+            get :get_order_prices, params: params
+            response_data = JSON.parse(response.body)['meta']
+            expect(response_data['sub_total_price']).to eq 0
+            expect(response_data['total_price']).to eq 0
+          end
+        end
+
+        context 'user is not a business owner' do
+          it 'returns correct metadata' do
+            params = user_order_params(
+              activity_id: @bowling.id,
+              reservable_id: @lane.id
+            )
+            get :get_order_prices, params: params
+            response_data = JSON.parse(response.body)['meta']
+            expect(response_data['sub_total_price']).to eq 20
+            expect(response_data['total_price']).to eq 21
+          end
+        end
+      end
+
+      context 'user is not logged in' do
+        it 'returns correct metadata' do
+          params = guest_order_params(
+            activity_id: @bowling.id,
+            reservable_id: @lane.id,
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone_number: ''
+          )
+          get :get_order_prices, params: params
+          response_data = JSON.parse(response.body)['meta']
+          expect(response_data['sub_total_price']).to eq 20
+          expect(response_data['total_price']).to eq 21
+        end
+      end
+    end
+  end
+
   describe 'POST create' do
     context 'a reservable exists' do
       before do
@@ -392,10 +450,10 @@ describe OrdersController do
         ]
       },
       guest: {
-        first_name: 'mark',
-        last_name: 'zuckerberg',
+        first_name: overrides[:first_name] || 'mark',
+        last_name: overrides[:last_name] || 'zuckerberg',
         email: overrides[:email],
-        phone_number: '+1 650-253-0000'
+        phone_number: overrides[:phone_number] || '+1 650-253-0000'
       },
       token_id: overrides[:token_id] || '',
       confirmation_channel: overrides[:channel] || 'email'

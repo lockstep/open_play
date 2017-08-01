@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   before_action :ensure_time_slot_selection_is_present, only: [:new]
   before_action :set_booking_date, only: [:reservations_for_business_owner,
     :reservations_for_users]
-  before_action :set_order, only: [:create, :prepare_complete_order]
+  before_action :set_order, only: %i[create prepare_complete_order get_order_prices]
 
   def new
     @order = Order.new(activity_id: params[:activity_id])
@@ -78,6 +78,16 @@ class OrdersController < ApplicationController
     activity = Activity.find(params[:order][:activity_id])
     render json: {
       meta: { is_required: current_user != activity.user }
+    }
+  end
+
+  def get_order_prices
+    @order.set_price_of_bookings
+    render json: {
+      meta: {
+        sub_total_price: @order.sub_total_price,
+        total_price: @order.total_price
+      }
     }
   end
 
