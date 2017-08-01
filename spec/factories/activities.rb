@@ -6,6 +6,7 @@ FactoryGirl.define do
     prevent_back_to_back_booking false
     allow_multi_party_bookings false
     business { create(:business) }
+    description 'So much fun with your family'
   end
 
   factory :bowling, parent: :activity, class: 'Bowling' do

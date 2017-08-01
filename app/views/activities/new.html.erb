@@ -26,6 +26,28 @@
           <% end %>
         </div>
       </div>
+
+      <div class="<%= ('has-danger' if @activity.errors[:picture].any?) %> form-group row">
+        <div class="col-xs-2">
+          <%= f.label :picture %>
+        </div>
+        <div class='col-xs-10'>
+          <%= f.file_field :picture, placeholder: 'Picture', class: 'form-control' %>
+          <div class='form-control-feedback'>
+            <%= @activity.errors[:picture].last %>
+          </div>
+        </div>
+      </div>
+
+      <div class='form-group row'>
+        <div class='col-xs-2'>
+          <%= f.label :description, nil, class: 'col-form-label' %>
+        </div>
+        <div class='col-xs-10'>
+          <%= f.text_area :description, class: 'form-control', rows: 5 %>
+        </div>
+      </div>
+
       <div class="form-group row">
         <div class="col-xs-2">
           <%= f.label :start_time, class: 'col-form-label' %>
@@ -39,7 +61,6 @@
         <div class="col-xs-4">
           <%= f.text_field :end_time, class: 'form-control'%>
         </div>
-
         <% if @activity.errors[:end_time].any? %>
           <div class="has-danger col-xs-12">
             <div class="row">
@@ -54,18 +75,21 @@
           </div>
         <% end %>
       </div>
+
       <div class="row form-group">
         <div class="col-xs-12">
           <%= f.label :prevent_back_to_back_booking, 'Prevent back-to-back bookings:' %>
           <%= f.check_box :prevent_back_to_back_booking %>
         </div>
       </div>
+
       <div class="row form-group">
         <div class="col-xs-12">
           <%= f.label :allow_multi_party_bookings, 'Allow multi-party bookings:' %>
           <%= f.check_box :allow_multi_party_bookings %>
         </div>
       </div>
+
       <div class="from-group row">
         <div class="col-xs-12">
           <center>

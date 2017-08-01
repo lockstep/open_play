@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170731073232) do
+ActiveRecord::Schema.define(version: 20170801070356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,11 @@ ActiveRecord::Schema.define(version: 20170731073232) do
     t.boolean  "prevent_back_to_back_booking", default: false
     t.boolean  "archived",                     default: false
     t.boolean  "allow_multi_party_bookings",   default: false
+    t.text     "description"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
     t.index ["business_id"], name: "index_activities_on_business_id", using: :btree
   end
 
