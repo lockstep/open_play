@@ -1,5 +1,5 @@
 <% content_for :meta_tags do %>
-  <%= meta_tags(title: social_media_title(@order),
+  <%= meta_tags(title: @order.social_media_title,
                 image: asset_url(@order.activity_picture.url(:large)),
                 description: @order.activity_description,
                 url: business_url(@order.activity_business_id)

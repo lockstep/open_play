@@ -13,8 +13,4 @@ module ActivitiesHelper
     'active' if controller_name == 'rate_override_schedules' &&
     (action_name == 'index' || action_name == 'create')
   end
-
-  def activity_unit(activity_type)
-    activity_type == 'Bowling' ? 'round' : 'room'
-  end
 end

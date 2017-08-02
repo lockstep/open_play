@@ -24,13 +24,4 @@ module OrderHelper
     return 'Canceled' if booking.canceled
     ''
   end
-
-  def readable_activity_type(order)
-    order.activity_type.underscore.split('_').join(' ')
-  end
-
-  def social_media_title(order)
-    "I just booked a #{activity_unit(order.activity_type)} of "\
-    "#{readable_activity_type(order)} on OpenPlay at #{order.activity_name}"
-  end
 end

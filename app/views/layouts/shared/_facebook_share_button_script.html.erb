@@ -6,7 +6,7 @@
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10";
-    js.src += "&appId=<%= ENV['FACEBOOK_APP_ID'] %>"
+    js.src += "&appId=<%= ENV.fetch('FACEBOOK_APP_ID') %>"
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>

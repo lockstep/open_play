@@ -9,7 +9,7 @@
     </div>
     <div class='social-medias'>
       <a class='twitter-share-button'
-        href="https://twitter.com/intent/tweet?text=<%= social_media_title(@order) %>"
+        href="https://twitter.com/intent/tweet?text=<%= @order.social_media_title %>"
         data-url="<%= business_url(@order.activity_business_id) %>"
         data-size='large'>
       Tweet</a>

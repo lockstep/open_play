@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
   end
 
   def success
-    @order = Order.includes(activity: :business).find(params[:id])
+    @order = Order.includes(activity: :business).find(params[:id]).decorate
   end
 
   def reservations_for_business_owner
