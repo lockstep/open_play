@@ -2,7 +2,7 @@
   <%= meta_tags(title: social_media_title(@order),
                 image: asset_url(@order.activity_picture.url(:large)),
                 description: @order.activity_description,
-                url: business_full_url(@order)
+                url: business_url(@order.activity_business_id)
                ) %>
 <% end %>
 

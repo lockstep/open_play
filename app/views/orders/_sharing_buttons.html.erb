@@ -1,15 +1,17 @@
 <div class='text-xs-center'>
   <div class='row social-medias'>
-    <div class='fb-share-button' data-href="<%= business_full_url(@order) %>"
+    <div class='fb-share-button'
+      data-href="<%= business_url(@order.activity_business_id) %>"
       data-layout='button' data-size='large' data-mobile-iframe='true'>
       <a class='fb-xfbml-parse-ignore' target='_blank'
-        href="<%= business_full_url(@order) %>%2F&amp;src=sdkpreparse">Share
+        href="<%= business_url(@order.activity_business_id) %>%2F&amp;src=sdkpreparse">Share
       </a>
     </div>
     <div class='social-medias'>
       <a class='twitter-share-button'
         href="https://twitter.com/intent/tweet?text=<%= social_media_title(@order) %>"
-        data-url="<%= business_full_url(@order) %>" data-size='large'>
+        data-url="<%= business_url(@order.activity_business_id) %>"
+        data-size='large'>
       Tweet</a>
     </div>
   </div>
