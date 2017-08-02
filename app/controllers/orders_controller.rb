@@ -82,6 +82,7 @@ class OrdersController < ApplicationController
   end
 
   def get_order_prices
+    set_user_or_guest
     @order.set_price_of_bookings
     render json: {
       meta: {

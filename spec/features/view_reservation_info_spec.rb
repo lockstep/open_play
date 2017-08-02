@@ -41,5 +41,46 @@ feature 'View Reservation Info', :js do
         end
       end
     end
+
+    context 'user changes number of players' do
+      context 'user is a business owner' do
+        before do
+          @business.update(user: @user)
+        end
+
+        scenario 'sees the total price changes' do
+          travel_to Time.new(2017, 1, 12) do
+            visit root_path
+            search_activities
+            find('button', text: '09:00').trigger('click')
+            find('button', text: '15:00').trigger('click')
+            click_on 'Book'
+            fill_in 'order_bookings_0_number_of_players', with: 2
+            fill_in 'order_bookings_1_number_of_players', with: 2
+            expect(page).to have_content 'Summary'
+            expect(page).to have_content 'Free Reservation (By Manager)'
+            expect(page).to have_content 'Total: -'
+          end
+        end
+      end
+
+      context 'user is not a business owner' do
+        scenario 'sees the total price changes' do
+          travel_to Time.new(2017, 1, 12) do
+            visit root_path
+            search_activities
+            find('button', text: '09:00').trigger('click')
+            find('button', text: '15:00').trigger('click')
+            click_on 'Book'
+            fill_in 'order_bookings_0_number_of_players', with: 2
+            fill_in 'order_bookings_1_number_of_players', with: 2
+            expect(page).to have_content 'Summary'
+            expect(page).to have_content 'Subtotal: $ 70'
+            expect(page).to have_content 'Open Play Fee: $ 1'
+            expect(page).to have_content 'Total: $ 71'
+          end
+        end
+      end
+    end
   end
 end

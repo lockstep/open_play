@@ -27,7 +27,8 @@
             <td class="text-xs-center">
               <%= text_field_tag 'order[bookings_attributes][][number_of_players]',
                 booking.number_of_players, id: "order_bookings_#{index}_number_of_players" ,
-                placeholder: 'Number of players', class: 'form-control text-xs-center'%>
+                placeholder: 'Number of players',
+                class: 'form-control text-xs-center order-players' %>
               <span class='text-info players-detail'>
                 <%= number_of_booked_players(booking) %>
               </span>

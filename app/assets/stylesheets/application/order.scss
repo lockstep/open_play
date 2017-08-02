@@ -3,9 +3,17 @@
     padding-left: 0;
   }
 }
-.order-total-price {
+.order-prices-container {
   p {
     margin-bottom: 0;
+  }
+  &.loading {
+    .spinner {
+      display: block;
+    }
+    .prices-detail {
+      opacity: 0.5;
+    }
   }
 }
 
