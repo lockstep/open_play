@@ -61,7 +61,7 @@ describe OrdersController do
               get :prepare_complete_order, params: params
               response_data = JSON.parse(response.body)['meta']
               expect(response_data['number_of_bookings']).to eq 1
-              expect(response_data['total_price']).to eq 0.0
+              expect(response_data['total_price_cents']).to eq 0
               expect(response_data['email']).to eq 'elon_musk@tesls.com'
             end
           end
@@ -78,7 +78,7 @@ describe OrdersController do
               get :prepare_complete_order, params: params
               response_data = JSON.parse(response.body)['meta']
               expect(response_data['number_of_bookings']).to eq 1
-              expect(response_data['total_price']).to eq 2100.0
+              expect(response_data['total_price_cents']).to eq 2100
               expect(response_data['email']).to eq 'elon_musk@tesls.com'
             end
           end
@@ -96,7 +96,7 @@ describe OrdersController do
               get :prepare_complete_order, params: params
               response_data = JSON.parse(response.body)['meta']
               expect(response_data['number_of_bookings']).to eq 1
-              expect(response_data['total_price']).to eq 2100.0
+              expect(response_data['total_price_cents']).to eq 2100
               expect(response_data['email']).to eq 'mark@facebook.com'
             end
           end
@@ -198,7 +198,7 @@ describe OrdersController do
         context 'user is not a business owner' do
           it 'creates a booking' do
             expect(StripeCharger).to receive(:charge).with(
-              Numeric, String).and_return(149)
+              an_instance_of(Money), String).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -215,13 +215,13 @@ describe OrdersController do
 
             expect(Order.count).to eq 1
             order = Order.first
-            expect(order.total_price).to eq 21.0
+            expect(order.price_cents).to eq 2100
             bookings = order.bookings
             expect(bookings.length).to eq 1
             expect(bookings.first.start_time.to_s).to match '08:00:00'
             expect(bookings.first.end_time.to_s).to match '09:00:00'
             expect(bookings.first.reservable_options.size).to eq 2
-            expect(bookings.first.booking_price).to eq 20.0
+            expect(bookings.first.booking_price_cents).to eq 2000
             expect(bookings.first.paid_externally).to eq false
             expect(response).to redirect_to success_order_path(Order.last)
           end
@@ -229,7 +229,9 @@ describe OrdersController do
         context 'user is a business owner' do
           before { @business.update(user: @user) }
           it 'creates a booking' do
-            expect(StripeCharger).to_not receive(:charge).with(Numeric, String)
+            expect(StripeCharger).to_not receive(:charge).with(
+              an_instance_of(Money), String
+            )
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order),
                              confirmation_channel: 'email')
@@ -276,13 +278,13 @@ describe OrdersController do
 
           expect(Order.count).to eq 1
           order = Order.first
-          expect(order.total_price).to eq 21.0
+          expect(order.price_cents).to eq 2100
           bookings = order.bookings
           expect(bookings.length).to eq 1
           expect(bookings.first.start_time.to_s).to match '08:00:00'
           expect(bookings.first.end_time.to_s).to match '09:00:00'
           expect(bookings.first.reservable_options.size).to eq 2
-          expect(bookings.first.booking_price).to eq 20.0
+          expect(bookings.first.booking_price_cents).to eq 2000
           expect(bookings.first.paid_externally).to eq false
           expect(response).to redirect_to success_order_path(Order.last)
         end

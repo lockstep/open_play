@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170801070356) do
+ActiveRecord::Schema.define(version: 20170802141325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,12 +51,13 @@ ActiveRecord::Schema.define(version: 20170801070356) do
     t.string   "options"
     t.integer  "order_id"
     t.integer  "reservable_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.boolean  "checked_in",        default: false
-    t.boolean  "canceled",          default: false
-    t.float    "booking_price",     default: 0.0
-    t.boolean  "paid_externally",   default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "checked_in",             default: false
+    t.boolean  "canceled",               default: false
+    t.boolean  "paid_externally",        default: false
+    t.integer  "booking_price_cents",    default: 0,     null: false
+    t.string   "booking_price_currency", default: "USD", null: false
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
     t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
   end
@@ -125,16 +126,18 @@ ActiveRecord::Schema.define(version: 20170801070356) do
   create_table "rate_override_schedules", force: :cascade do |t|
     t.string  "label"
     t.date    "overridden_on"
-    t.string  "overridden_days",            default: [],   array: true
+    t.string  "overridden_days",            default: [],                 array: true
     t.boolean "overridden_all_day"
     t.boolean "overridden_specific_day"
     t.time    "overriding_begins_at"
     t.time    "overriding_ends_at"
     t.boolean "overridden_all_reservables", default: true
-    t.integer "overridden_reservables",     default: [],   array: true
-    t.float   "price",                      default: 0.0
-    t.float   "per_person_price",           default: 0.0
+    t.integer "overridden_reservables",     default: [],                 array: true
     t.integer "activity_id"
+    t.integer "price_cents",                default: 0,     null: false
+    t.string  "price_currency",             default: "USD", null: false
+    t.integer "per_person_price_cents",     default: 0,     null: false
+    t.string  "per_person_price_currency",  default: "USD", null: false
     t.index ["activity_id"], name: "index_rate_override_schedules_on_activity_id", using: :btree
   end
 
@@ -161,14 +164,18 @@ ActiveRecord::Schema.define(version: 20170801070356) do
     t.time     "start_time"
     t.time     "end_time"
     t.integer  "activity_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.integer  "maximum_players"
-    t.float    "weekday_price",            default: 0.0
-    t.float    "weekend_price",            default: 0.0
-    t.boolean  "archived",                 default: false
-    t.float    "per_person_weekday_price", default: 0.0
-    t.float    "per_person_weekend_price", default: 0.0
+    t.boolean  "archived",                          default: false
+    t.integer  "weekday_price_cents",               default: 0,     null: false
+    t.string   "weekday_price_currency",            default: "USD", null: false
+    t.integer  "weekend_price_cents",               default: 0,     null: false
+    t.string   "weekend_price_currency",            default: "USD", null: false
+    t.integer  "per_person_weekday_price_cents",    default: 0,     null: false
+    t.string   "per_person_weekday_price_currency", default: "USD", null: false
+    t.integer  "per_person_weekend_price_cents",    default: 0,     null: false
+    t.string   "per_person_weekend_price_currency", default: "USD", null: false
     t.index ["activity_id"], name: "index_reservables_on_activity_id", using: :btree
   end
 

@@ -27,7 +27,7 @@ describe Order do
           order.set_price_of_bookings
           order.save
           # $ 75(weekday booking) + $ 100 (weekend booking)+ $ 1 (order fee)
-          expect(order.reload.total_price).to eq 191.0
+          expect(order.reload.total_price.cents).to eq 19100
         end
       end
     end
@@ -55,7 +55,7 @@ describe Order do
         order = create(:order, user: user, activity_id: bowling.id)
         create(:booking, order: order, booking_price: 50)
         create(:booking, order: order, booking_price: 100)
-        expect(order.sub_total_price).to eq(150)
+        expect(order.sub_total_price.cents).to eq(15000)
       end
     end
   end
@@ -117,7 +117,7 @@ describe Order do
 
   describe '#sms_message' do
     before do
-      booking = create(:booking, booking_price: 100.5)
+      booking = create(:booking, booking_price_cents: 10050)
       @order = booking.order
     end
 

@@ -13,6 +13,9 @@ class RateOverrideSchedule < ApplicationRecord
   delegate :name, to: :activity, prefix: true
   delegate :user, to: :activity
 
+  monetize :price_cents
+  monetize :per_person_price_cents
+
   scope :find_by_activity_or_reservable, -> (activity_id, reservable_id) {
     where("(overridden_all_reservables = true AND activity_id = ?)
       OR overridden_reservables @> ?", activity_id, "{#{reservable_id}}")

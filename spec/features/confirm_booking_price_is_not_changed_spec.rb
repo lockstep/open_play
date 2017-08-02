@@ -25,7 +25,7 @@ feature 'Confirm booking price is not changed', :js do
             click_button @user.email
           end
           click_link 'Your Bookings'
-          expect(page).to have_content '$ 25'
+          expect(page).to have_content '$25'
         end
       end
     end

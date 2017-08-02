@@ -64,7 +64,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.base_booking_price).to eq 30
+          expect(booking.base_booking_price.cents).to eq 3000
         end
         it 'returns rate override schedule price' do
           booking = described_class.new(
@@ -74,7 +74,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_2.id
           )
-          expect(booking.base_booking_price).to eq 40
+          expect(booking.base_booking_price.cents).to eq 4000
         end
         it 'returns rate override schedule price' do
           booking = described_class.new(
@@ -84,7 +84,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_2.id
           )
-          expect(booking.base_booking_price).to eq 50
+          expect(booking.base_booking_price.cents).to eq 5000
         end
       end
       context 'does not match with rate override schedules' do
@@ -96,7 +96,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.base_booking_price).to eq 10
+          expect(booking.base_booking_price.cents).to eq 1000
         end
         it 'returns reservable price' do
           booking = described_class.new(
@@ -106,7 +106,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.base_booking_price).to eq 10
+          expect(booking.base_booking_price.cents).to eq 1000
         end
         it 'returns reservable price' do
           booking = described_class.new(
@@ -116,7 +116,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.base_booking_price).to eq 20
+          expect(booking.base_booking_price.cents).to eq 2000
         end
       end
     end
@@ -129,7 +129,7 @@ describe Booking do
           order_id: @order.id,
           reservable_id: @reservable_1.id
         )
-        expect(booking.base_booking_price).to eq 10
+        expect(booking.base_booking_price.cents).to eq 1000
       end
     end
   end
@@ -199,7 +199,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.per_person_price).to eq 35
+          expect(booking.per_person_price.cents).to eq 3500
         end
         it 'returns rate override schedule price' do
           booking = described_class.new(
@@ -209,7 +209,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_2.id
           )
-          expect(booking.per_person_price).to eq 45
+          expect(booking.per_person_price.cents).to eq 4500
         end
         it 'returns rate override schedule price' do
           booking = described_class.new(
@@ -219,7 +219,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_2.id
           )
-          expect(booking.per_person_price).to eq 55
+          expect(booking.per_person_price.cents).to eq 5500
         end
       end
       context 'does not match with rate override schedules' do
@@ -231,7 +231,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.per_person_price).to eq 15
+          expect(booking.per_person_price.cents).to eq 1500
         end
         it 'returns reservable price' do
           booking = described_class.new(
@@ -241,7 +241,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_2.id
           )
-          expect(booking.per_person_price).to eq 17
+          expect(booking.per_person_price.cents).to eq 1700
         end
         it 'returns reservable price' do
           booking = described_class.new(
@@ -251,7 +251,7 @@ describe Booking do
             order_id: @order.id,
             reservable_id: @reservable_1.id
           )
-          expect(booking.per_person_price).to eq 25
+          expect(booking.per_person_price.cents).to eq 2500
         end
       end
     end
@@ -264,7 +264,7 @@ describe Booking do
           order_id: @order.id,
           reservable_id: @reservable_1.id
         )
-        expect(booking.per_person_price).to eq 15
+        expect(booking.per_person_price.cents).to eq 1500
       end
     end
   end
@@ -301,9 +301,9 @@ describe Booking do
         expect(results.count).to eq 2
         expect(results.keys[0]).to eq @booking.booking_date
         expect(results.values[0])
-          .to eq @booking.reload.booking_price + @booking_2.reload.booking_price
+          .to eq @booking.reload.booking_price_cents + @booking_2.reload.booking_price_cents
         expect(results.keys[1]).to eq @booking_3.booking_date
-        expect(results.values[1]).to eq @booking_3.reload.booking_price
+        expect(results.values[1]).to eq @booking_3.reload.booking_price_cents
       end
 
       context 'some of bookings have been canceled' do
@@ -316,7 +316,7 @@ describe Booking do
           expect(results.count).to eq 1
           expect(results.keys[0]).to eq @booking.booking_date
           expect(results.values[0])
-            .to eq @booking_2.reload.booking_price
+            .to eq @booking_2.reload.booking_price_cents
         end
       end
     end
@@ -356,7 +356,7 @@ describe Booking do
         number_of_players: 5
       )
       # 3 slots * (5 + (5 players * 15))
-      expect(@booking.calculate_booking_price).to eq 240
+      expect(@booking.calculate_booking_price.cents).to eq 24000
     end
   end
 end

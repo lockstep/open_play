@@ -98,7 +98,7 @@ class OrdersController < ApplicationController
     render json: {
       meta: {
         number_of_bookings: @order.bookings.length,
-        total_price: @order.calculate_cost(current_user),
+        total_price_cents: @order.calculate_cost(current_user).cents,
         email: user_signed_in? ? current_user.email : params[:guest][:email]
       }
     }

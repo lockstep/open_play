@@ -17,6 +17,7 @@ MoneyRails.configure do |config|
   # Example:
   # config.add_rate "USD", "CAD", 1.24515
   # config.add_rate "CAD", "USD", 0.803115
+  config.add_rate "USD", "CAD", 1.26
 
   # To handle the inclusion of validations for monetized fields
   # The default value is true
@@ -89,6 +90,4 @@ MoneyRails.configure do |config|
   #
   # Example:
   # config.raise_error_on_money_parsing = false
-
-  config.no_cents_if_whole = false
 end

@@ -63,7 +63,7 @@ function prepareCompleteOrder() {
     success: function(response) {
       OPEN_PLAY.checkoutInitiator(
         response.meta.number_of_bookings,
-        response.meta.total_price,
+        response.meta.total_price_cents,
         response.meta.email
       );
     },

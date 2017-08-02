@@ -40,8 +40,8 @@ feature 'Create Rate Override Schedule', js: true do
             expect(page).to have_content '6 Nov 2016'
             expect(page).to have_content 'All day'
             expect(page).to have_content 'All reservables'
-            expect(page).to have_content '$ 15'
-            expect(page).to have_content '$ 20'
+            expect(page).to have_content '$15'
+            expect(page).to have_content '$20'
             expect(page).to have_selector '#destroy-rate-override-schedule-1'
           end
         end
@@ -65,8 +65,8 @@ feature 'Create Rate Override Schedule', js: true do
               expect(page).to have_content 'Every Monday'
               expect(page).to have_content 'All day'
               expect(page).to have_content 'All reservables'
-              expect(page).to have_content '$ 15'
-              expect(page).to have_content '$ 20'
+              expect(page).to have_content '$15'
+              expect(page).to have_content '$20'
               expect(page).to have_selector '#destroy-rate-override-schedule-1'
             end
           end
@@ -110,8 +110,8 @@ feature 'Create Rate Override Schedule', js: true do
               expect(page).to have_content 'Every Monday, Sunday'
               expect(page).to have_content 'All day'
               expect(page).to have_content 'All reservables'
-              expect(page).to have_content '$ 15'
-              expect(page).to have_content '$ 20'
+              expect(page).to have_content '$15'
+              expect(page).to have_content '$20'
               expect(page).to have_selector '#destroy-rate-override-schedule-1'
             end
           end
@@ -138,8 +138,8 @@ feature 'Create Rate Override Schedule', js: true do
               expect(page).to have_content '6 Nov 2016'
               expect(page).to have_content '10:00 AM - 11:00 AM'
               expect(page).to have_content 'All reservables'
-              expect(page).to have_content '$ 15'
-              expect(page).to have_content '$ 20'
+              expect(page).to have_content '$15'
+              expect(page).to have_content '$20'
               expect(page).to have_selector '#destroy-rate-override-schedule-1'
             end
           end
@@ -188,8 +188,8 @@ feature 'Create Rate Override Schedule', js: true do
             expect(page).to have_content 'Every Monday'
             expect(page).to have_content '10:00 AM - 11:00 AM'
             expect(page).to have_content 'All reservables'
-            expect(page).to have_content '$ 15'
-            expect(page).to have_content '$ 20'
+            expect(page).to have_content '$15'
+            expect(page).to have_content '$20'
             expect(page).to have_selector '#destroy-rate-override-schedule-1'
           end
         end
@@ -216,8 +216,8 @@ feature 'Create Rate Override Schedule', js: true do
             expect(page).to have_content '6 Nov 2016'
             expect(page).to have_content '10:00 AM - 11:00 AM'
             expect(page).to have_content 'lane one'
-            expect(page).to have_content '$ 15'
-            expect(page).to have_content '$ 20'
+            expect(page).to have_content '$15'
+            expect(page).to have_content '$20'
             expect(page).to have_selector '#destroy-rate-override-schedule-1'
           end
           context 'a reservable is not checked' do
