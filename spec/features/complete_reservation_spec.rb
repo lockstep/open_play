@@ -174,60 +174,6 @@ feature 'Complete Reservation', :js do
               expect(page).to have_content "can't be blank"
             end
           end
-
-          context 'number of players is not an integer' do
-            context 'number of players is string' do
-              scenario 'books unsuccessfully' do
-                visit root_path
-                search_activities
-                click_on '11:00'
-                click_on 'Book'
-                fill_in 'order_bookings_0_number_of_players', with: 'hello'
-                click_on 'Complete Reservation'
-
-                expect(page).to have_content "is not a number"
-              end
-            end
-
-            context 'number of players is floating point' do
-              scenario 'books unsuccessfully' do
-                visit root_path
-                search_activities
-                click_on '11:00'
-                click_on 'Book'
-                fill_in 'order_bookings_0_number_of_players', with: '1.5'
-                click_on 'Complete Reservation'
-
-                expect(page).to have_content "must be an integer"
-              end
-            end
-          end
-          context 'number of players is less than zero' do
-            scenario 'books unsuccessfully' do
-              visit root_path
-              search_activities
-              click_on '11:00'
-              click_on 'Book'
-              fill_in 'order_bookings_0_number_of_players', with: '-1'
-              click_on 'Complete Reservation'
-
-              expect(page).to have_content "must be greater than 0"
-            end
-          end
-          # TODO (after search funcationlity complete)
-          # to validate number_of_players in case of bookings exist
-          context 'number of players is over than available players' do
-            scenario 'books unsuccessfully' do
-              visit root_path
-              search_activities
-              click_on '11:00'
-              click_on 'Book'
-              fill_in 'order_bookings_0_number_of_players', with: '35'
-              click_on 'Complete Reservation'
-
-              expect(page).to have_content 'must be fewer than available players'
-            end
-          end
         end
       end
     end
@@ -379,58 +325,6 @@ feature 'Complete Reservation', :js do
               click_on 'Complete Reservation'
 
               expect(page).to have_content "can't be blank"
-            end
-          end
-          context 'number of players is not an integer' do
-            context 'number of players is string' do
-              scenario 'books unsuccessfully' do
-                visit root_path
-                search_activities(activity_type: 'Laser tag')
-                click_on '11:00'
-                click_on 'Book'
-                fill_in 'order_bookings_0_number_of_players', with: 'hello'
-                click_on 'Complete Reservation'
-
-                expect(page).to have_content "is not a number"
-              end
-            end
-            context 'number of players is floating point' do
-              scenario 'books unsuccessfully' do
-                visit root_path
-                search_activities(activity_type: 'Laser tag')
-                click_on '11:00'
-                click_on 'Book'
-                fill_in 'order_bookings_0_number_of_players', with: '1.5'
-                click_on 'Complete Reservation'
-
-                expect(page).to have_content "must be an integer"
-              end
-            end
-          end
-          context 'number of players is less than zero' do
-            scenario 'books unsuccessfully' do
-              visit root_path
-              search_activities(activity_type: 'Laser tag')
-              click_on '11:00'
-              click_on 'Book'
-              fill_in 'order_bookings_0_number_of_players', with: '-1'
-              click_on 'Complete Reservation'
-
-              expect(page).to have_content "must be greater than 0"
-            end
-          end
-          # TODO (after search funcationlity complete)
-          # to validate number_of_players in case of bookings exist
-          context 'number of players is over than available players' do
-            scenario 'books unsuccessfully' do
-              visit root_path
-              search_activities(activity_type: 'Laser tag')
-              click_on '11:00'
-              click_on 'Book'
-              fill_in 'order_bookings_0_number_of_players', with: '35'
-              click_on 'Complete Reservation'
-
-              expect(page).to have_content 'must be fewer than available players'
             end
           end
         end
