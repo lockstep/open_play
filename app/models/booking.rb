@@ -13,17 +13,19 @@ class Booking < ApplicationRecord
     greater_than: 0, if: Proc.new{ |object| object.errors.empty? }
   validate :number_of_players_cannot_exceed_maximum, on: :create
 
-  delegate :activity_name, to: :reservable, prefix: true
-  delegate :name, to: :reservable, prefix: true
-  delegate :number_of_booked_players, to: :reservable, prefix: true
-  delegate :options_available, to: :reservable, prefix: true
+  delegate :activity,
+           :activity_name,
+           :name,
+           :number_of_booked_players,
+           :available_players,
+           :options_available,
+           to: :reservable, prefix: true
   delegate :weekday_price,
     :weekend_price,
     :maximum_players,
     :per_person_weekday_price,
     :per_person_weekend_price, to: :reservable
   delegate :id, to: :user, prefix: true, allow_nil: true
-  delegate :activity, to: :reservable, prefix: true
   delegate :id, to: :order, prefix: true, allow_nil: true
   delegate :reserver_full_name, to: :order, prefix: true
 

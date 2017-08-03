@@ -24,6 +24,12 @@ $(function() {
   window.addEventListener('popstate', function() {
     OPEN_PLAY.checkoutHandler.close();
   });
+
+  $('.order-players').on('change keyup', function (e) {
+    if (parseInt($(e.target).val(), 10)) {
+      getOrderPrices();
+    }
+  });
 });
 
 
@@ -63,6 +69,28 @@ function prepareCompleteOrder() {
     },
     error: function(xhr, status, error) {
       renderOrderErrors(xhr.responseJSON.meta.errors)
+    }
+  });
+}
+
+function getOrderPrices() {
+  $.ajax({
+    url: '/get_order_prices',
+    type: 'get',
+    data: $('#new-order-form').serialize(),
+    beforeSend: function() {
+      $('.order-prices-container').addClass('loading');
+    },
+    success: function(response) {
+      if (response.meta.total_price != '0') {
+        $('.subtotal-price').text('$ ' + response.meta.sub_total_price);
+        $('.total-price').text('$ ' + response.meta.total_price);
+      } else {
+        $('.total-price').text('-');
+      }
+    },
+    complete: function() {
+      $('.order-prices-container').removeClass('loading');
     }
   });
 }

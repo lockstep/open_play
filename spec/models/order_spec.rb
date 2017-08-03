@@ -34,11 +34,29 @@ describe Order do
   end
 
   describe '#sub_total_price' do
-    it 'sums total price correctly' do
-      order = build(:order)
-      create(:booking, order: order, booking_price: 50)
-      create(:booking, order: order, booking_price: 100)
-      expect(order.sub_total_price).to eq(150)
+    context 'order is made by business owner' do
+      it 'sums total price correctly' do
+        business_owner = create(:user)
+        business = create(:business, user: business_owner)
+        bowling = create(:bowling, business: business)
+        order = create(:order, user: business_owner, activity_id: bowling.id)
+        create(:booking, order: order, booking_price: 50)
+        create(:booking, order: order, booking_price: 100)
+        expect(order.sub_total_price).to eq(0)
+      end
+    end
+
+    context 'order is not made by business owner' do
+      it 'sums total price correctly' do
+        user = create(:user)
+        business_owner = create(:user)
+        business = create(:business, user: business_owner)
+        bowling = create(:bowling, business: business)
+        order = create(:order, user: user, activity_id: bowling.id)
+        create(:booking, order: order, booking_price: 50)
+        create(:booking, order: order, booking_price: 100)
+        expect(order.sub_total_price).to eq(150)
+      end
     end
   end
 
