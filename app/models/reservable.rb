@@ -19,18 +19,11 @@ class Reservable < ApplicationRecord
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
 
-  monetize :weekday_price_cents, :numericality => {
-    :greater_than_or_equal_to => 0
-  }
-  monetize :weekend_price_cents, :numericality => {
-    :greater_than_or_equal_to => 0
-  }
-  monetize :per_person_weekday_price_cents, :numericality => {
-    :greater_than_or_equal_to => 0
-  }
-  monetize :per_person_weekend_price_cents, :numericality => {
-    :greater_than_or_equal_to => 0
-  }
+  monetize :weekday_price_cents,
+           :weekend_price_cents,
+           :per_person_weekday_price_cents,
+           :per_person_weekend_price_cents,
+           numericality: { greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(archived: false) }
   scope :filtered_by_activity_ids, -> (ids) { where(activity_id: ids) }

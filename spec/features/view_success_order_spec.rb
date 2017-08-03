@@ -18,7 +18,7 @@ feature 'View Success Order' do
       expect(page).to have_content 'Tom Cruise'
       expect(page).to have_content 'Saturday, February 3'
       expect(page).to have_content 'Country Club Lanes'
-      expect(page).to have_content '$ 1'
+      expect(page).to have_content '$1'
       expect(page).to have_content 'Lane 1'
       expect(page).to have_content '09:00 AM - 10:00 AM'
       expect(page).to have_content '10'
