@@ -140,8 +140,8 @@ describe OrdersController do
             )
             get :get_order_prices, params: params
             response_data = JSON.parse(response.body)['meta']
-            expect(response_data['sub_total_price']).to eq 0
-            expect(response_data['total_price']).to eq 0
+            expect(response_data['sub_total_price_cents']).to eq 0
+            expect(response_data['total_price_cents']).to eq 0
           end
         end
 
@@ -153,8 +153,8 @@ describe OrdersController do
             )
             get :get_order_prices, params: params
             response_data = JSON.parse(response.body)['meta']
-            expect(response_data['sub_total_price']).to eq 20
-            expect(response_data['total_price']).to eq 21
+            expect(response_data['sub_total_price_cents']).to eq 2000
+            expect(response_data['total_price_cents']).to eq 2100
           end
         end
       end
@@ -171,8 +171,8 @@ describe OrdersController do
           )
           get :get_order_prices, params: params
           response_data = JSON.parse(response.body)['meta']
-          expect(response_data['sub_total_price']).to eq 20
-          expect(response_data['total_price']).to eq 21
+          expect(response_data['sub_total_price_cents']).to eq 2000
+          expect(response_data['total_price_cents']).to eq 2100
         end
       end
     end

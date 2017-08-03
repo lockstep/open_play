@@ -82,9 +82,9 @@ function getOrderPrices() {
       $('.order-prices-container').addClass('loading');
     },
     success: function(response) {
-      if (response.meta.total_price != '0') {
-        $('.subtotal-price').text('$ ' + response.meta.sub_total_price);
-        $('.total-price').text('$ ' + response.meta.total_price);
+      if (response.meta.total_price_cents != '0') {
+        $('.subtotal-price').text('$' + response.meta.sub_total_price_cents / 100.0);
+        $('.total-price').text('$' + response.meta.total_price_cents / 100.0);
       } else {
         $('.total-price').text('-');
       }

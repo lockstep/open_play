@@ -1,28 +1,18 @@
 describe OrderHelper do
   describe '#present_booking_price' do
+    include MoneyRails::ActionViewExtension
+
     context 'booking_price is zero' do
       it 'displays booking_price correctly' do
-        expect(present_booking_price(0)).to eq '-'
+        expect(present_booking_price(Money.new(0))).to eq '-'
       end
     end
-    xcontext 'booking_price is not zero' do
-      context 'one decimal place' do
-        it 'displays booking_price correctly' do
-          expect(present_booking_price(15.5)).to eq '$ 15.50'
-        end
-        it 'displays booking_price correctly' do
-          expect(present_booking_price(15.0)).to eq '$ 15'
-        end
+    context 'booking_price is not zero' do
+      it 'displays booking_price correctly' do
+        expect(present_booking_price(Money.new(1550))).to eq '$15.50'
       end
-      context 'four decimal places' do
-        it 'displays booking_price correctly' do
-          expect(present_booking_price(15.1234)).to eq '$ 15.12'
-        end
-      end
-      context 'an integer number' do
-        it 'displays booking_price correctly' do
-          expect(present_booking_price(15)).to eq '$ 15'
-        end
+      it 'displays booking_price correctly' do
+        expect(present_booking_price(Money.new(1500))).to eq '$15'
       end
     end
   end

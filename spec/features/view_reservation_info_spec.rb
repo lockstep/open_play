@@ -75,9 +75,9 @@ feature 'View Reservation Info', :js do
             fill_in 'order_bookings_0_number_of_players', with: 2
             fill_in 'order_bookings_1_number_of_players', with: 2
             expect(page).to have_content 'Summary'
-            expect(page).to have_content 'Subtotal: $ 70'
-            expect(page).to have_content 'Open Play Fee: $ 1'
-            expect(page).to have_content 'Total: $ 71'
+            expect(page).to have_content 'Subtotal: $70'
+            expect(page).to have_content 'Open Play Fee: $1'
+            expect(page).to have_content 'Total: $71'
           end
         end
       end

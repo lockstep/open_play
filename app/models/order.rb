@@ -61,11 +61,11 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    made_by_business_owner? ? 0 : sub_total_price + order_fee
+    made_by_business_owner? ? Money.new(0) : sub_total_price + order_fee
   end
 
   def sub_total_price
-    made_by_business_owner? ? 0 : bookings.to_a.sum(&:booking_price)
+    made_by_business_owner? ? Money.new(0) : bookings.to_a.sum(&:booking_price)
   end
 
   def total_valid_price
@@ -73,7 +73,7 @@ class Order < ApplicationRecord
   end
 
   def order_fee
-    ORDER_FEE.exchange_to(sub_total_price.currency)
+    ORDER_FEE.exchange_to(bookings[0].booking_price.currency)
   end
 
   def self.reservations_for_business_owner(date, activity_id)

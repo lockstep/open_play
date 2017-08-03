@@ -9,7 +9,7 @@ module OrderHelper
   end
 
   def present_booking_price(booking_price)
-    return '-' if booking_price.blank? || booking_price.zero?
+    return '-' if booking_price.cents == 0
     humanized_money_with_symbol booking_price
   end
 
