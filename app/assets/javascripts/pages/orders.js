@@ -25,7 +25,7 @@ $(function() {
     OPEN_PLAY.checkoutHandler.close();
   });
 
-  $('.order-players').on('blur', function (e) {
+  $('.order-players').on('change keyup', function (e) {
     if (parseInt($(e.target).val(), 10)) {
       getOrderPrices();
     }
