@@ -1,6 +1,7 @@
 activity = Activity.find_by(name: 'Country Club')
 
 Reservable.where(name: 'Item 1').first_or_create do |reservable|
+  reservable.type = 'Lane'
   reservable.start_time = '09:00:00'
   reservable.end_time = '17:00:00'
   reservable.interval = 60
