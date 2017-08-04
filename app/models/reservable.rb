@@ -13,15 +13,17 @@ class Reservable < ApplicationRecord
   validates_presence_of :name
   validates :interval, numericality: { only_integer: true }
   validates :maximum_players, numericality: { only_integer: true, greater_than: 0 }
-  validates :weekday_price, numericality: { greater_than_or_equal_to: 0 }
-  validates :weekend_price, numericality: { greater_than_or_equal_to: 0 }
-  validates :per_person_weekday_price, numericality: { greater_than_or_equal_to: 0 }
-  validates :per_person_weekend_price, numericality: { greater_than_or_equal_to: 0 }
 
   delegate :name, to: :activity, prefix: true
   delegate :type, to: :activity, prefix: true
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
+
+  monetize :weekday_price_cents,
+           :weekend_price_cents,
+           :per_person_weekday_price_cents,
+           :per_person_weekend_price_cents,
+           numericality: { greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(archived: false) }
   scope :filtered_by_activity_ids, -> (ids) { where(activity_id: ids) }

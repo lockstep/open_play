@@ -86,8 +86,8 @@ class OrdersController < ApplicationController
     @order.set_price_of_bookings
     render json: {
       meta: {
-        sub_total_price: @order.sub_total_price,
-        total_price: @order.total_price
+        sub_total_price: @order.sub_total_price.to_f,
+        total_price: @order.total_price.to_f
       }
     }
   end
@@ -98,7 +98,7 @@ class OrdersController < ApplicationController
     render json: {
       meta: {
         number_of_bookings: @order.bookings.length,
-        total_price: @order.calculate_cost(current_user),
+        total_price_cents: @order.calculate_cost(current_user).cents,
         email: user_signed_in? ? current_user.email : params[:guest][:email]
       }
     }

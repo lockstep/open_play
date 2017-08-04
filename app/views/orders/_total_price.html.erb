@@ -14,7 +14,7 @@
             <%= present_booking_price(@order.sub_total_price) %>
           </span>
         </p>
-        <p>Open Play Fee: <%= present_booking_price(Order::ORDER_FEE) %></p>
+        <p>Open Play Fee: <%= present_booking_price(@order.order_fee) %></p>
       <% end %>
       <p>
         <span class='font-weight-bold'>Total</span>:

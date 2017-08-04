@@ -25,11 +25,11 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content @bowling.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(page).to have_content '0/30'
-          expect(page).to have_content '$ 5'
-          expect(page).to have_content '$ 15'
-          expect(page).to have_content 'Subtotal: $ 20'
-          expect(page).to have_content 'Open Play Fee: $ 1'
-          expect(page).to have_content 'Total: $ 21'
+          expect(page).to have_content '$5'
+          expect(page).to have_content '$15'
+          expect(page).to have_content 'Subtotal: $20'
+          expect(page).to have_content 'Open Play Fee: $1'
+          expect(page).to have_content 'Total: $21'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
 
@@ -55,7 +55,9 @@ feature 'Complete Reservation', :js do
           end
 
           scenario 'books with available options successfully' do
-            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+            expect(StripeCharger).to receive(:charge).with(
+              an_instance_of(Money), String
+            ).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -90,11 +92,11 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content @bowling.name
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(page).to have_content '0/30'
-          expect(page).to have_content '$ 10'
-          expect(page).to have_content '$ 20'
-          expect(page).to have_content 'Subtotal: $ 30'
-          expect(page).to have_content 'Open Play Fee: $ 1'
-          expect(page).to have_content 'Total: $ 31'
+          expect(page).to have_content '$10'
+          expect(page).to have_content '$20'
+          expect(page).to have_content 'Subtotal: $30'
+          expect(page).to have_content 'Open Play Fee: $1'
+          expect(page).to have_content 'Total: $31'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         end
       end
@@ -121,7 +123,9 @@ feature 'Complete Reservation', :js do
         end
 
         scenario 'books with available options successfully' do
-          expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+          expect(StripeCharger).to receive(:charge).with(
+            an_instance_of(Money), String
+          ).and_return(149)
           expect(SendConfirmationOrderService).to receive(:call).with(
             hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
           )
@@ -144,7 +148,9 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+            expect(StripeCharger).to receive(:charge).with(
+              an_instance_of(Money), String
+            ).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -201,11 +207,11 @@ feature 'Complete Reservation', :js do
         expect(page).to have_content '11:00 AM - 12:00 PM'
         expect(page).to have_content '02:00 PM - 03:00 PM'
         expect(page).to have_content '0/30'
-        expect(page).to have_content '$ 5'
-        expect(page).to have_content '$ 15'
-        expect(page).to have_content 'Subtotal: $ 40'
-        expect(page).to have_content 'Open Play Fee: $ 1'
-        expect(page).to have_content 'Total: $ 41'
+        expect(page).to have_content '$5'
+        expect(page).to have_content '$15'
+        expect(page).to have_content 'Subtotal: $40'
+        expect(page).to have_content 'Open Play Fee: $1'
+        expect(page).to have_content 'Total: $41'
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
       end
@@ -213,7 +219,9 @@ feature 'Complete Reservation', :js do
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+            expect(StripeCharger).to receive(:charge).with(
+              an_instance_of(Money), String
+            ).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -231,7 +239,7 @@ feature 'Complete Reservation', :js do
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
             expect(page).to have_content '11:00 AM - 02:00 PM'
-            expect(page).to have_content '$ 61'
+            expect(page).to have_content '$61'
           end
         end
       end
@@ -266,11 +274,11 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
           expect(page).to have_content "(0/30)"
-          expect(page).to have_content '$ 5'
-          expect(page).to have_content '$ 15'
-          expect(page).to have_content 'Subtotal: $ 20'
-          expect(page).to have_content 'Open Play Fee: $ 1'
-          expect(page).to have_content 'Total: $ 21'
+          expect(page).to have_content '$5'
+          expect(page).to have_content '$15'
+          expect(page).to have_content 'Subtotal: $20'
+          expect(page).to have_content 'Open Play Fee: $1'
+          expect(page).to have_content 'Total: $21'
         end
       end
 
@@ -286,18 +294,20 @@ feature 'Complete Reservation', :js do
           expect(page).to have_content '11:00 AM - 12:00 PM'
           expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
           expect(page).to have_content "(0/30)"
-          expect(page).to have_content '$ 10'
-          expect(page).to have_content '$ 20'
-          expect(page).to have_content 'Subtotal: $ 30'
-          expect(page).to have_content 'Open Play Fee: $ 1'
-          expect(page).to have_content 'Total: $ 31'
+          expect(page).to have_content '$10'
+          expect(page).to have_content '$20'
+          expect(page).to have_content 'Subtotal: $30'
+          expect(page).to have_content 'Open Play Fee: $1'
+          expect(page).to have_content 'Total: $31'
         end
       end
 
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+            expect(StripeCharger).to receive(:charge).with(
+              an_instance_of(Money), String
+            ).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -346,17 +356,19 @@ feature 'Complete Reservation', :js do
         expect(find_field('order_bookings_0_number_of_players').value).to eq '1'
         expect(find_field('order_bookings_1_number_of_players').value).to eq '1'
         expect(page).to have_content "(0/30)"
-        expect(page).to have_content '$ 5'
-        expect(page).to have_content '$ 15'
-        expect(page).to have_content 'Subtotal: $ 40'
-        expect(page).to have_content 'Open Play Fee: $ 1'
-        expect(page).to have_content 'Total: $ 41'
+        expect(page).to have_content '$5'
+        expect(page).to have_content '$15'
+        expect(page).to have_content 'Subtotal: $40'
+        expect(page).to have_content 'Open Play Fee: $1'
+        expect(page).to have_content 'Total: $41'
       end
 
       context 'complete reservation' do
         context 'params are valid' do
           scenario 'books successfully' do
-            expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+            expect(StripeCharger).to receive(:charge).with(
+              an_instance_of(Money), String
+            ).and_return(149)
             expect(SendConfirmationOrderService).to receive(:call).with(
               hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
             )
@@ -374,7 +386,7 @@ feature 'Complete Reservation', :js do
             expect(page).to have_content 'Reservation Info'
             expect(page).to have_content 'Tom Cruise'
             expect(page).to have_content '11:00 AM - 02:00 PM'
-            expect(page).to have_content '$ 61'
+            expect(page).to have_content '$61'
           end
         end
       end
@@ -383,7 +395,9 @@ feature 'Complete Reservation', :js do
 
   context 'confirmation message' do
     scenario 'receives email confirmation' do
-      expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+      expect(StripeCharger).to receive(:charge).with(
+        an_instance_of(Money), String
+      ).and_return(149)
       expect(SendConfirmationOrderService).to receive(:call).with(
         hash_including(order: an_instance_of(Order), confirmation_channel: 'email')
       )
@@ -403,7 +417,9 @@ feature 'Complete Reservation', :js do
     end
 
     scenario 'receives sms confirmation' do
-      expect(StripeCharger).to receive(:charge).with(Float, String).and_return(149)
+      expect(StripeCharger).to receive(:charge).with(
+        an_instance_of(Money), String
+      ).and_return(149)
       expect(SendConfirmationOrderService).to receive(:call).with(
         hash_including(order: an_instance_of(Order), confirmation_channel: 'sms')
       )
@@ -425,7 +441,9 @@ feature 'Complete Reservation', :js do
 
   scenario 'stripe cannot charges money' do
     stripe = Stripe::CardError.new('Stripe Error', {}, 500)
-    expect(StripeCharger).to receive(:charge).with(Float, String).and_raise(stripe)
+    expect(StripeCharger).to receive(:charge).with(
+      an_instance_of(Money), String
+    ).and_raise(stripe)
 
     @bowling = create(:bowling, business: @business)
     @lane = create(:lane, activity: @bowling)

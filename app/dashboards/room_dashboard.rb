@@ -21,11 +21,11 @@ class RoomDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     maximum_players: Field::Number,
-    weekday_price: Field::Number.with_options(decimals: 2),
-    weekend_price: Field::Number.with_options(decimals: 2),
+    weekday_price: MoneyField,
+    weekend_price: MoneyField,
     archived: Field::Boolean,
-    per_person_weekday_price: Field::Number.with_options(decimals: 2),
-    per_person_weekend_price: Field::Number.with_options(decimals: 2),
+    per_person_weekday_price: MoneyField,
+    per_person_weekend_price: MoneyField,
   }.freeze
 
   # COLLECTION_ATTRIBUTES

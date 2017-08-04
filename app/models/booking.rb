@@ -29,6 +29,8 @@ class Booking < ApplicationRecord
   delegate :id, to: :order, prefix: true, allow_nil: true
   delegate :reserver_full_name, to: :order, prefix: true
 
+  monetize :booking_price_cents
+
   scope :during, -> (start_time, end_time, date) {
     where(start_time: start_time, end_time: end_time, booking_date: date)
   }
@@ -60,7 +62,7 @@ class Booking < ApplicationRecord
 
   def self.revenues_by_date_in_60_days
     group(:booking_date).past_60_days.active.order(:booking_date)
-      .sum(:booking_price)
+      .sum(:booking_price_cents)
   end
 
   def number_of_players_cannot_exceed_maximum
@@ -106,7 +108,7 @@ class Booking < ApplicationRecord
   end
 
   def effective_price
-    return 0 if canceled
+    return Money.new(0, 'USD') if canceled
     booking_price
   end
 

@@ -50,8 +50,8 @@ describe RateOverrideSchedulesController do
               expect(schedule.overriding_begins_at).to eq nil
               expect(schedule.overriding_ends_at).to eq nil
               expect(schedule.overridden_all_reservables).to eq true
-              expect(schedule.price).to eq 10.0
-              expect(schedule.per_person_price).to eq 15.0
+              expect(schedule.price_cents).to eq 1000
+              expect(schedule.per_person_price_cents).to eq 1500
               expect(schedule.activity).to eq @activity
               expect(response).to redirect_to activity_rate_override_schedules_path(@activity)
             end

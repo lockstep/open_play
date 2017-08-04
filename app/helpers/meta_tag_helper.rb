@@ -38,6 +38,7 @@ module MetaTagHelper
   end
 
   def cleanup(text)
+    return '' if text.nil?
     strip_tags(text).gsub('"', '&#34;')
   end
 end

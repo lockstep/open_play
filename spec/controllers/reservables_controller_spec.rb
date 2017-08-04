@@ -68,10 +68,10 @@ describe ReservablesController do
               expect(reservable.start_time.to_s).to match '08:00'
               expect(reservable.end_time.to_s).to match '16:00'
               expect(reservable.maximum_players).to eq 30
-              expect(reservable.weekday_price).to eq 15
-              expect(reservable.weekend_price).to eq 20
-              expect(reservable.per_person_weekday_price).to eq 10
-              expect(reservable.per_person_weekend_price).to eq 30
+              expect(reservable.weekday_price_cents).to eq 1500
+              expect(reservable.weekend_price_cents).to eq 2000
+              expect(reservable.per_person_weekday_price_cents).to eq 1000
+              expect(reservable.per_person_weekend_price_cents).to eq 3000
             end
             context '24-hour reservable defined by using the same start and end time' do
               it 'creates an 24-hour reservable successfully' do
@@ -131,10 +131,10 @@ describe ReservablesController do
               expect(reservable.start_time.to_s).to match '08:00'
               expect(reservable.end_time.to_s).to match '16:00'
               expect(reservable.maximum_players).to eq 30
-              expect(reservable.weekday_price).to eq 15
-              expect(reservable.weekend_price).to eq 20
-              expect(reservable.per_person_weekday_price).to eq 10
-              expect(reservable.per_person_weekend_price).to eq 30
+              expect(reservable.weekday_price_cents).to eq 1500
+              expect(reservable.weekend_price_cents).to eq 2000
+              expect(reservable.per_person_weekday_price_cents).to eq 1000
+              expect(reservable.per_person_weekend_price_cents).to eq 3000
             end
           end
           context 'user is not a business owner' do

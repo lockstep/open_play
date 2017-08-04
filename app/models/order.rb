@@ -20,7 +20,7 @@ class Order < ApplicationRecord
   monetize :stripe_fee_cents
   monetize :open_play_fee_cents
 
-  ORDER_FEE = 1 # $ unit
+  ORDER_FEE = Money.new(100, 'USD')
 
   scope :of_businesses, -> (business_ids) {
     select('orders.*')
@@ -61,15 +61,19 @@ class Order < ApplicationRecord
   end
 
   def total_price
-    made_by_business_owner? ? 0 : sub_total_price + ORDER_FEE
+    made_by_business_owner? ? Money.new(0) : sub_total_price + order_fee
   end
 
   def sub_total_price
-    made_by_business_owner? ? 0 : bookings.to_a.sum(&:booking_price)
+    made_by_business_owner? ? Money.new(0) : bookings.to_a.sum(&:booking_price)
   end
 
   def total_valid_price
-    bookings.map(&:effective_price).sum + ORDER_FEE
+    bookings.map(&:effective_price).sum + order_fee
+  end
+
+  def order_fee
+    ORDER_FEE.exchange_to(bookings[0].booking_price.currency)
   end
 
   def self.reservations_for_business_owner(date, activity_id)
@@ -101,8 +105,8 @@ class Order < ApplicationRecord
   end
 
   def calculate_cost(current_user)
-    return 0 if current_user && current_user ==  activity.user
+    return Money.new(0) if current_user && current_user ==  activity.user
     set_price_of_bookings
-    total_price * 100
+    total_price
   end
 end
