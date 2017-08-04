@@ -71,16 +71,18 @@ module TimeSlotsHelper
       time_was_booked = (requested_time >= start_booking_time) &&
         (requested_time < end_booking_time)
       if time_was_booked
-        unless reservable_available_for_multi_party?(reservable,booking, requested_date)
+        if reservable_available_for_multi_party?(reservable,booking, requested_date)
+          return { available: true, booked_by: booking.user_id }
+        else
           return { available: false, booked_by: booking.user_id }
         end
-        return { available: true, booked_by: booking.user_id }
       end
     end
     return { available: true }
   end
 
   def reservable_available_for_multi_party?(reservable, booking, requested_date)
+    return false if reservable.party_room?
     reservable.allow_multi_party_bookings &&
       reservable.available_players(
         booking.start_time,

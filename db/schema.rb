@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170802141325) do
+ActiveRecord::Schema.define(version: 20170811045441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,7 +58,9 @@ ActiveRecord::Schema.define(version: 20170802141325) do
     t.boolean  "paid_externally",        default: false
     t.integer  "booking_price_cents",    default: 0,     null: false
     t.string   "booking_price_currency", default: "USD", null: false
+    t.integer  "parent_id"
     t.index ["order_id"], name: "index_bookings_on_order_id", using: :btree
+    t.index ["parent_id"], name: "index_bookings_on_parent_id", using: :btree
     t.index ["reservable_id"], name: "index_bookings_on_reservable_id", using: :btree
   end
 
@@ -157,6 +159,13 @@ ActiveRecord::Schema.define(version: 20170802141325) do
     t.index ["reservable_option_id"], name: "index_reservable_options_availables_on_reservable_option_id", using: :btree
   end
 
+  create_table "reservable_sub_reservables", force: :cascade do |t|
+    t.integer "parent_reservable_id"
+    t.integer "sub_reservable_id"
+    t.integer "priority_number"
+    t.index ["parent_reservable_id"], name: "index_reservable_sub_reservables_on_parent_reservable_id", using: :btree
+  end
+
   create_table "reservables", force: :cascade do |t|
     t.string   "name"
     t.string   "type"
@@ -164,18 +173,21 @@ ActiveRecord::Schema.define(version: 20170802141325) do
     t.time     "start_time"
     t.time     "end_time"
     t.integer  "activity_id"
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.integer  "maximum_players"
-    t.boolean  "archived",                          default: false
-    t.integer  "weekday_price_cents",               default: 0,     null: false
-    t.string   "weekday_price_currency",            default: "USD", null: false
-    t.integer  "weekend_price_cents",               default: 0,     null: false
-    t.string   "weekend_price_currency",            default: "USD", null: false
-    t.integer  "per_person_weekday_price_cents",    default: 0,     null: false
-    t.string   "per_person_weekday_price_currency", default: "USD", null: false
-    t.integer  "per_person_weekend_price_cents",    default: 0,     null: false
-    t.string   "per_person_weekend_price_currency", default: "USD", null: false
+    t.boolean  "archived",                           default: false
+    t.integer  "weekday_price_cents",                default: 0,     null: false
+    t.string   "weekday_price_currency",             default: "USD", null: false
+    t.integer  "weekend_price_cents",                default: 0,     null: false
+    t.string   "weekend_price_currency",             default: "USD", null: false
+    t.integer  "per_person_weekday_price_cents",     default: 0,     null: false
+    t.string   "per_person_weekday_price_currency",  default: "USD", null: false
+    t.integer  "per_person_weekend_price_cents",     default: 0,     null: false
+    t.string   "per_person_weekend_price_currency",  default: "USD", null: false
+    t.text     "description"
+    t.integer  "headcount",                          default: 0
+    t.integer  "maximum_players_per_sub_reservable", default: 0
     t.index ["activity_id"], name: "index_reservables_on_activity_id", using: :btree
   end
 

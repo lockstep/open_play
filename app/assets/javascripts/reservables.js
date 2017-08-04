@@ -7,6 +7,12 @@ $(function() {
     var reservableEndTime = $('#reservable_end_time');
     reservableEndTime.timepicker({ 'scrollDefault': 'now' });
     reservableEndTime.timepicker('setTime', '16:00');
+
+    $('.form-check-input').change(function() {
+      var $row = $(this).closest('.row');
+      var $priorityNumberField = $row.find('input[type=number]');
+      $priorityNumberField.prop('disabled', !this.checked)
+    });
   };
 
   if ($('#edit_reservable').length > 0) {

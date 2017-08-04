@@ -48,7 +48,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @order.bookings.each do |booking| %>
+          <% @order.valuable_bookings.each do |booking| %>
             <tr>
               <td><%= booking.reservable_name %></td>
               <td><%= present_range_of_time(booking.start_time, booking.end_time) %></td>

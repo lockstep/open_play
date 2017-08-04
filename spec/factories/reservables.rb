@@ -34,4 +34,26 @@ FactoryGirl.define do
   factory :room, parent: :reservable, class: 'Room' do
     name "Room 1"
   end
+
+  factory :party_room, parent: :reservable, class: 'PartyRoom' do
+    name 'FunRoom'
+    description 'Having a good time with us'
+    headcount 10
+    maximum_players_per_sub_reservable 20
+
+    after(:create) do |party_room|
+      reservable1 = create(:lane, name: 'lane 1', activity: party_room.activity)
+      reservable2 = create(:lane, name: 'lane 2', activity: party_room.activity)
+      party_room.children.create(
+        parent_reservable_id: party_room.id,
+        sub_reservable_id: reservable1.id,
+        priority_number: 1
+      )
+      party_room.children.create(
+        parent_reservable_id: party_room.id,
+        sub_reservable_id: reservable2.id,
+        priority_number: 2
+      )
+    end
+  end
 end

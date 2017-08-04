@@ -5,7 +5,7 @@ feature 'delete activity' do
   end
   include_context 'logged in user'
 
-  context 'an activity exist' do
+  context 'activity exists' do
     before { @activity = create(:bowling, business: @business) }
 
     scenario 'user can delete the activity' do

@@ -27,4 +27,30 @@ describe Activity do
       expect(described_class.types).to include('escape_room')
     end
   end
+
+  describe '#build_reservable' do
+    it 'builds a lane' do
+      bowling = build_stubbed(:bowling, start_time: '08:00', end_time: '10:00')
+      reservable = bowling.build_reservable('Lane')
+      expect(reservable.type).to eq 'Lane'
+      expect(reservable.start_time).to eq Time.parse('2000-01-01 08:00:00 +0000')
+      expect(reservable.end_time).to eq Time.parse('2000-01-01 10:00:00 +0000')
+    end
+
+    it 'builds a room' do
+      laser_tag = build_stubbed(:laser_tag, start_time: '08:00', end_time: '10:00')
+      reservable = laser_tag.build_reservable('Room')
+      expect(reservable.type).to eq 'Room'
+      expect(reservable.start_time).to eq Time.parse('2000-01-01 08:00:00 +0000')
+      expect(reservable.end_time).to eq Time.parse('2000-01-01 10:00:00 +0000')
+    end
+
+    it 'builds a party room' do
+      laser_tag = build_stubbed(:laser_tag, start_time: '08:00', end_time: '10:00')
+      reservable = laser_tag.build_reservable('PartyRoom')
+      expect(reservable.type).to eq 'PartyRoom'
+      expect(reservable.start_time).to eq Time.parse('2000-01-01 08:00:00 +0000')
+      expect(reservable.end_time).to eq Time.parse('2000-01-01 10:00:00 +0000')
+    end
+  end
 end

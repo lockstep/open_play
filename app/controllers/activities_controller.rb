@@ -6,7 +6,7 @@ class ActivitiesController < ApplicationController
   after_action :verify_authorized
 
   def index
-    @activities = @business.activities.active
+    @activities = @business.activities.active.decorate
     authorize @business.activities.build
   end
 

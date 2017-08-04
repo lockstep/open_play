@@ -1,0 +1,63 @@
+<%- if @reservable.party_room? %>
+  <div class="<%= ('has-danger' if @reservable.errors[:headcount].any?) %> form-group row">
+    <%= f.label :headcount, nil, class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.number_field :headcount, { min: 0, class: 'form-control' } %>
+      <% @reservable.errors[:headcount].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players_per_sub_reservable].any?) %> form-group row">
+    <%= f.label :maximum_players_per_sub_reservable, nil,
+      class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.number_field :maximum_players_per_sub_reservable,
+        { min: 0, class: 'form-control' } %>
+      <% @reservable.errors[:maximum_players_per_sub_reservable].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%- if action == 'create' %>
+    <%- sub_reservables = sub_reservable_list(@reservable) %>
+    <%- sub_reservables.each_with_index do |reservable, index| %>
+      <div class="<%= ('has-danger' if @reservable.errors[:sub_reservables].any?) %> form-group row">
+        <%- if index == 0 %>
+          <%= label_tag 'sub_reservable', 'Sub reservables',
+            class: 'col-sm-4 offset-sm-2 control-label' %>
+        <% end %>
+        <div class="col-sm-2 <%= 'offset-sm-6' if index != 0 %>">
+          <div class='form-check form-control'>
+            <label class='form-check-label'>
+              <%= check_box_tag "reservable[sub_reservables][#{index}][id]", reservable.id,
+                false, class: 'form-check-input' %> <%= reservable.name %>
+            </label>
+          </div>
+        </div>
+        <div class='col-sm-3'>
+          <%= number_field_tag "reservable[sub_reservables][#{index}][priority_number]", nil,
+            { min: 0, class: 'form-control', placeholder: 'priority number like 1, 2',
+              disabled: true } %>
+        </div>
+      </div>
+      <%- if sub_reservables.last == reservable %>
+        <div class="<%= ('has-danger' if @reservable.errors[:sub_reservables].any?) %> form-group row">
+          <div class='col-sm-4 offset-sm-6'>
+            <% @reservable.errors[:sub_reservables].each do |error| %>
+              <div class='form-control-feedback'>
+                <%= error %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

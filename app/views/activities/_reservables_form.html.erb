@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <% @activity.reservables.active.each do |reservable| %>
-          <tr>
+          <tr class='<%= "reservable_#{reservable.id}" %>'>
             <td><%= reservable.name %></td>
             <td><%= reservable.interval %></td>
             <td><%= present_time(reservable.start_time)%></td>

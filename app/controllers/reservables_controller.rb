@@ -4,27 +4,24 @@ class ReservablesController < ApplicationController
   after_action :verify_authorized
 
   def new
-    @reservable = current_activity.build_reservable
+    @reservable = current_activity.build_reservable(params[:type])
     authorize @reservable
   end
 
   def create
-    @reservable = current_activity.build_reservable
+    @reservable = current_activity.build_reservable(params[:type])
     authorize @reservable
-    if @reservable.update_attributes(reservable_params)
-      options = params[:options]
-      unless options.nil?
-        options.each do |option|
-          @reservable.options_available.create(
-            reservable_option_id: option
-          )
-        end
+    if @reservable.validate_sub_reservables(reservable_params) &&
+       @reservable.update_attributes(reservable_params.except(:sub_reservables))
+      @reservable.assign_sub_reservables(reservable_params)
+      params[:options]&.each do |option|
+        @reservable.options_available.create(reservable_option_id: option)
       end
       redirect_to business_activities_path(current_activity.business),
         notice: "#{@reservable.type} was successfully added."
-    else
-      render :new
+      return
     end
+    render :new
   end
 
   def edit; end
@@ -72,18 +69,21 @@ class ReservablesController < ApplicationController
   end
 
   def reservable_params
-    params.require(:reservable)
-      .permit([
-        :name,
-        :interval,
-        :start_time,
-        :end_time,
-        :maximum_players,
-        :weekday_price,
-        :weekend_price,
-        :per_person_weekday_price,
-        :per_person_weekend_price
-      ])
+    permitted_params = [
+      :name,
+      :description,
+      :headcount,
+      :maximum_players_per_sub_reservable,
+      :interval,
+      :start_time,
+      :end_time,
+      :maximum_players,
+      :weekday_price,
+      :weekend_price,
+      :per_person_weekday_price,
+      :per_person_weekend_price,
+      sub_reservables: %i[id priority_number]
+    ]
+    params.require(:reservable).permit(permitted_params)
   end
-
 end

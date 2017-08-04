@@ -1,13 +1,13 @@
 class Reservable < ApplicationRecord
   include TimeValidations
+  include SubReservablesConcerns
+
+  PARTY_ROOM_TYPE = 'PartyRoom'.freeze
 
   belongs_to :activity
-  has_many :options,
-    foreign_key: 'reservable_type',
-    primary_key: 'type',
-    class_name: 'ReservableOption'
+  has_many :options, foreign_key: 'reservable_type', primary_key: 'type',
+           class_name: 'ReservableOption'
   has_many :options_available, class_name: 'ReservableOptionsAvailable'
-  accepts_nested_attributes_for :options_available
   has_many :bookings
 
   validates_presence_of :name
@@ -19,6 +19,8 @@ class Reservable < ApplicationRecord
   delegate :allow_multi_party_bookings, to: :activity
   delegate :user, to: :activity
 
+  accepts_nested_attributes_for :options_available
+
   monetize :weekday_price_cents,
            :weekend_price_cents,
            :per_person_weekday_price_cents,
@@ -26,8 +28,6 @@ class Reservable < ApplicationRecord
            numericality: { greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(archived: false) }
-  scope :filtered_by_activity_ids, -> (ids) { where(activity_id: ids) }
-  scope :find_by_ids, -> (ids) { where(id: ids) }
 
   def number_of_booked_players(start_time, end_time, date)
     bookings
@@ -64,11 +64,15 @@ class Reservable < ApplicationRecord
   end
 
   def self.list_reservable_names_by_ids(reservable_ids)
-    find_by_ids(reservable_ids).order(:name).pluck(:name)
+    where(id: reservable_ids).order(:name).pluck(:name)
   end
 
   def rate_override_schedule(date, time)
     schedules = RateOverrideSchedule.find_by_activity_or_reservable(activity.id, id)
     schedules.find { |schedule| schedule.match?(date, time, interval) }
+  end
+
+  def party_room?
+    type == PARTY_ROOM_TYPE
   end
 end
