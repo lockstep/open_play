@@ -86,8 +86,8 @@ class OrdersController < ApplicationController
     @order.set_price_of_bookings
     render json: {
       meta: {
-        sub_total_price_cents: @order.sub_total_price.cents,
-        total_price_cents: @order.total_price.cents
+        sub_total_price: @order.sub_total_price.to_f,
+        total_price: @order.total_price.to_f
       }
     }
   end

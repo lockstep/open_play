@@ -33,12 +33,12 @@ $(function() {
 });
 
 
-OPEN_PLAY.checkoutInitiator = function(number_of_bookings ,total_price, email) {
+OPEN_PLAY.checkoutInitiator = function(number_of_bookings, total_price_cents, email) {
   var unit = number_of_bookings == 1 ? 'booking' : 'bookings';
   OPEN_PLAY.checkoutHandler.open({
     name: 'Open Play',
     description: number_of_bookings + ' ' + unit,
-    amount: total_price,
+    amount: total_price_cents,
     email: email
   });
 }
@@ -82,9 +82,9 @@ function getOrderPrices() {
       $('.order-prices-container').addClass('loading');
     },
     success: function(response) {
-      if (response.meta.total_price_cents != '0') {
-        $('.subtotal-price').text('$' + response.meta.sub_total_price_cents / 100.0);
-        $('.total-price').text('$' + response.meta.total_price_cents / 100.0);
+      if (response.meta.total_price != '0') {
+        $('.subtotal-price').text('$' + response.meta.sub_total_price);
+        $('.total-price').text('$' + response.meta.total_price);
       } else {
         $('.total-price').text('-');
       }
