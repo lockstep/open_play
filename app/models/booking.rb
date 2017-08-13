@@ -2,16 +2,22 @@ class Booking < ApplicationRecord
   include DateTimeUtilities
 
   belongs_to :order, inverse_of: :bookings
-  has_one :user, through: :order
   belongs_to :reservable
-  has_many :reservable_options, class_name: 'BookingReservableOption',
-    inverse_of: :booking
-  accepts_nested_attributes_for :reservable_options
+  belongs_to :parent, class_name: 'Booking', optional: true
+  has_one :user, through: :order
+  has_many :reservable_options,
+           class_name: 'BookingReservableOption',
+           inverse_of: :booking
+  has_many :children, class_name: 'Booking', foreign_key: 'parent_id'
 
   validates_presence_of :order, :number_of_players
-  validates_numericality_of :number_of_players, only_integer: true,
-    greater_than: 0, if: Proc.new{ |object| object.errors.empty? }
+  validates_numericality_of :number_of_players,
+                            only_integer: true,
+                            greater_than: 0,
+                            if: proc { |object| object.errors.empty? }
   validate :number_of_players_cannot_exceed_maximum, on: :create
+
+  accepts_nested_attributes_for :reservable_options
 
   delegate :activity,
            :activity_name,
@@ -19,12 +25,15 @@ class Booking < ApplicationRecord
            :number_of_booked_players,
            :available_players,
            :options_available,
+           :party_room?,
+           :allocate_reservables,
            to: :reservable, prefix: true
   delegate :weekday_price,
-    :weekend_price,
-    :maximum_players,
-    :per_person_weekday_price,
-    :per_person_weekend_price, to: :reservable
+           :weekend_price,
+           :maximum_players,
+           :per_person_weekday_price,
+           :per_person_weekend_price,
+           to: :reservable
   delegate :id, to: :user, prefix: true, allow_nil: true
   delegate :id, to: :order, prefix: true, allow_nil: true
   delegate :reserver_full_name, to: :order, prefix: true
@@ -42,10 +51,11 @@ class Booking < ApplicationRecord
   }
   scope :past_60_days, -> { where('created_at >= ?', 60.days.ago) }
   scope :active, -> { where(canceled: false) }
+  scope :children_bookings, -> { where('parent_id IS NOT NULL') }
 
   def self.belongs_to_business(business_id)
     activity_ids = Business.find(business_id).activities.pluck(:id)
-    reservable_ids = Reservable.filtered_by_activity_ids(activity_ids).pluck(:id)
+    reservable_ids = Reservable.where(activity_id: activity_ids).pluck(:id)
     filtered_by_reservable_ids(reservable_ids)
       .sorted_by_booking_time
         .order(:order_id)

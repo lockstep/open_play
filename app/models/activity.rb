@@ -7,6 +7,7 @@ class Activity < ApplicationRecord
   has_many :orders
   has_many :closed_schedules, dependent: :destroy
   has_many :rate_override_schedules, dependent: :destroy
+  has_many :party_rooms, foreign_key: 'activity_id'
 
   has_attached_file :picture,
     url: ':s3_domain_url',
@@ -44,5 +45,19 @@ class Activity < ApplicationRecord
     else
       Activity.where(type: params[:activity_type], archived: false)
     end
+  end
+
+  def build_reservable(type)
+    reservable = case type
+                 when 'Lane'
+                   lanes.new
+                 when 'Room'
+                   rooms.new
+                 when 'PartyRoom'
+                   party_rooms.new
+                 end
+    reservable.start_time = start_time
+    reservable.end_time = end_time
+    reservable
   end
 end

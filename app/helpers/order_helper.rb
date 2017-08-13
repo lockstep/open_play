@@ -5,7 +5,7 @@ module OrderHelper
       booking.end_time,
       booking.booking_date
     )
-    "(#{booked_player_count}/#{booking.maximum_players})"
+    "(#{booked_player_count}/#{maximum_players(booking.reservable)})"
   end
 
   def present_booking_price(booking_price)

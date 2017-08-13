@@ -21,6 +21,7 @@ feature 'edit activity' do
         expect(page).to have_content @activity.name
         click_link 'Edit'
         edit_activity_form(name: 'Super Bowling')
+
         expect(page).to have_content 'Successfully updated activity'
         expect(page).to have_content 'Super Bowling'
         activity = Activity.first
@@ -34,93 +35,8 @@ feature 'edit activity' do
         expect(page).to have_content @activity.name
         click_link 'Edit'
         edit_activity_form(name: '')
+
         expect(page).to have_content "can't be blank"
-      end
-    end
-
-    scenario 'user can delete reservables' do
-      visit root_path
-      click_link 'Manage Business'
-      click_link 'Edit'
-      expect(page).to have_content @reservable.name
-      click_link 'Delete'
-      expect(page).to have_content 'Successfully deleted reservable'
-      expect(page).to_not have_content @reservable.name
-    end
-
-    context 'user can edit reservables' do
-      scenario 'successfully edited reservable' do
-        visit root_path
-        click_link 'Manage Business'
-        click_link 'Edit'
-        expect(page).to have_content @reservable.name
-        click_link 'Edit'
-        expect(page).to have_content 'Edit a Lane'
-        fill_in :reservable_name, with: 'Amazing Lane 1'
-        click_on 'Submit'
-        expect(page).to have_content 'Successfully updated reservable'
-        expect(page).to have_content 'Amazing Lane 1'
-      end
-      scenario 'unsuccessfully edited reservable' do
-        visit root_path
-        click_link 'Manage Business'
-        click_link 'Edit'
-        expect(page).to have_content @reservable.name
-        click_link 'Edit'
-        expect(page).to have_content 'Edit a Lane'
-        fill_in :reservable_interval, with: ''
-        fill_in :reservable_name, with: ''
-        click_on 'Submit'
-        expect(page).to have_content "can't be blank"
-        expect(page).to have_content "is not a number"
-      end
-
-      context 'editting per_person_weekday_price' do
-        scenario 'successfully edited reservable' do
-          visit root_path
-          click_link 'Manage Business'
-          click_link 'Edit'
-          click_link 'Edit'
-          fill_in :reservable_per_person_weekday_price, with: '15.8'
-          click_on 'Submit'
-
-          expect(page).to have_content '$15.80'
-        end
-
-        scenario 'unsuccessfully edited reservable' do
-          visit root_path
-          click_link 'Manage Business'
-          click_link 'Edit'
-          click_link 'Edit'
-          fill_in :reservable_per_person_weekday_price, with: 'abc'
-          click_on 'Submit'
-
-          expect(page).to have_content 'is not a number'
-        end
-      end
-
-      context 'editting per_person_weekend_price' do
-        scenario 'successfully edited reservable' do
-          visit root_path
-          click_link 'Manage Business'
-          click_link 'Edit'
-          click_link 'Edit'
-          fill_in :reservable_per_person_weekend_price, with: '20'
-          click_on 'Submit'
-
-          expect(page).to have_content '$20'
-        end
-
-        scenario 'unsuccessfully edited reservable' do
-          visit root_path
-          click_link 'Manage Business'
-          click_link 'Edit'
-          click_link 'Edit'
-          fill_in :reservable_per_person_weekend_price, with: 'abc'
-          click_on 'Submit'
-
-          expect(page).to have_content 'is not a number'
-        end
       end
     end
   end

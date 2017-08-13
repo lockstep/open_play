@@ -9,17 +9,17 @@ describe ReservablesController do
           context 'user is a business owner' do
             before do
               @business.update(user: @user)
-              get :new, params: { activity_id: @laser_tag.id }
+              get :new, params: { activity_id: @laser_tag.id, type: 'Room' }
             end
             it_behaves_like 'a successful request'
           end
           context 'user is not a business owner' do
-            before { get :new, params: { activity_id: @laser_tag.id } }
+            before { get :new, params: { activity_id: @laser_tag.id, type: 'Room' } }
             it_behaves_like 'an unauthorized request'
           end
         end
         context 'user is not logged in' do
-          before { get :new, params: { activity_id: @laser_tag.id } }
+          before { get :new, params: { activity_id: @laser_tag.id, type: 'Room' } }
           it_behaves_like 'it requires authentication'
         end
       end
@@ -31,17 +31,17 @@ describe ReservablesController do
           context 'user is a business owner' do
             before do
               @business.update(user: @user)
-              get :new, params: { activity_id: @bowling.id }
+              get :new, params: { activity_id: @bowling.id, type: 'Lane' }
             end
             it_behaves_like 'a successful request'
           end
           context 'user is not a business owner' do
-            before { get :new, params: { activity_id: @bowling.id } }
+            before { get :new, params: { activity_id: @bowling.id, type: 'Lane' } }
             it_behaves_like 'an unauthorized request'
           end
         end
         context 'user is not logged in' do
-          before { get :new, params: { activity_id: @bowling.id } }
+          before { get :new, params: { activity_id: @bowling.id, type: 'Lane' } }
           it_behaves_like 'it requires authentication'
         end
       end
@@ -109,7 +109,8 @@ describe ReservablesController do
               weekend_price: 20,
               per_person_weekday_price: 10,
               per_person_weekend_price: 30
-            }
+            },
+            type: 'Room'
           }
         end
       end
@@ -161,7 +162,8 @@ describe ReservablesController do
             weekend_price: 20,
             per_person_weekday_price: 10,
             per_person_weekend_price: 30
-          }
+          },
+          type: 'Lane'
         }
       end
     end

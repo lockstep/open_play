@@ -19,7 +19,7 @@
       = javascript_include_tag 'checkout'
     = javascript_include_tag 'application'
     = render 'layouts/google_analytics'
-  %body
+  %body{class: "#{controller_name} #{action_name} "}
     = render 'layouts/shared/navbar'
     #main-container.container
       - if notice || alert

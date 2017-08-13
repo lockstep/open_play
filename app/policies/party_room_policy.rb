@@ -1,0 +1,2 @@
+class PartyRoomPolicy < ReservablePolicy
+end

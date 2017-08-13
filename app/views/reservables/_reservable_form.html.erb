@@ -1,0 +1,142 @@
+<%= form_for reservable , as: :reservable, url: { action: action },
+  html: { class: 'form-horizontal' } do |f| %>
+
+  <div class="<%= ('has-danger' if reservable.errors[:name].any?) %> form-group row">
+      <%= f.label :name, class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :name, class: 'form-control' %>
+      <% reservable.errors[:name].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if reservable.errors[:description].any?) %> form-group row">
+      <%= f.label :description, class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_area :description, rows: 5, class: 'form-control' %>
+      <% reservable.errors[:description].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render 'party_room_form', f: f, action: action %>
+
+  <div class="<%= ('has-danger' if reservable.errors[:interval].any?) %> form-group row">
+    <%= f.label :interval, 'Play Duration per Booking (min)',
+      class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.number_field :interval, { min: 0,
+        placeholder: 'e.g. 60 for one hour', class: 'form-control' } %>
+      <% reservable.errors[:interval].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% unless reservable.options.nil? %>
+    <% @reservable.options.each do |option| %>
+      <div class='form-group row'>
+        <div class='col-sm-12'>
+          <%= check_box_tag "options[#{option.id}]" %>
+          <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class='form-group row'>
+    <%= f.label :start_time, class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :start_time, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:end_time].any?) %> form-group row">
+      <%= f.label :end_time, class: 'col-sm-4 offset-sm-2 control-label' %>
+      <div class='col-sm-5'>
+        <%= f.text_field :end_time, class: 'form-control' %>
+        <% @reservable.errors[:end_time].each do |error| %>
+          <div class='form-control-feedback'>
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group row">
+    <%= f.label :maximum_players, "Maximum of players per #{@reservable.type}", class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.number_field :maximum_players, { min: 0, class: 'form-control' } %>
+      <% @reservable.errors[:maximum_players].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:weekday_price].any?) %> form-group row">
+    <%= f.label :weekday_price, 'Weekday Price (Base)',
+      class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :weekday_price, class: 'form-control' %>
+      <% @reservable.errors[:weekday_price].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:per_person_weekday_price].any?) %> form-group row">
+    <%= f.label :per_person_weekday_price, 'Weekday Price (Per Person)', class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :per_person_weekday_price, class: 'form-control' %>
+      <% @reservable.errors[:per_person_weekday_price].each do |error| %>
+        <div class='form-control-feedback'>
+        <%= error %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:weekend_price].any?) %> form-group row">
+    <%= f.label :weekend_price, 'Weekend Price (Base)', class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :weekend_price, class: 'form-control' %>
+      <% @reservable.errors[:weekend_price].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:per_person_weekend_price].any?) %> form-group row">
+    <%= f.label :per_person_weekend_price, 'Weekend Price (Per Person)',
+      class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.text_field :per_person_weekend_price, class: 'form-control' %>
+      <% @reservable.errors[:per_person_weekend_price].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class='form-group row'>
+    <div class='col-sm-12 text-xs-center'>
+      <%= hidden_field_tag 'type', @reservable.type %>
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
