@@ -166,6 +166,17 @@ feature 'Create Party Room', :js do
         end
       end
     end
+
+    context 'party room exists' do
+      background { create(:party_room, activity: @bowling) }
+
+      scenario 'user should not see party room as sub reservable' do
+        visit root_path
+        click_link 'Manage Business'
+        click_link 'Add a Party room'
+        expect(page).to_not have_content 'FunRoom'
+      end
+    end
   end
 
   def complete_room_form(overrides = {})
