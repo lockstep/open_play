@@ -22,7 +22,7 @@ feature 'reserve party room', :js do
       context 'searching activities page' do
         scenario 'user sees sum of number of players per sub reservable as a maximum capacity' do
           user_searchs_for_bowling
-          expect(page).to have_content '(40 max of people)'
+          expect(page).to have_content 'Max 40 people per reservation'
         end
       end
 
@@ -39,7 +39,7 @@ feature 'reserve party room', :js do
       context 'searching activities page' do
         scenario 'user sees max number of players as maximum capacity' do
           user_searchs_for_bowling
-          expect(page).to have_content '(30 max of people)'
+          expect(page).to have_content 'Max 30 people per reservation'
         end
       end
 

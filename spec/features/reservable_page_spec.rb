@@ -15,8 +15,8 @@ feature 'Reservable Page' do
 
       scenario 'display default times the same as the activity times' do
         click_link 'Add a Lane'
-        expect(find_field('reservable_start_time').value).to match '09:00'
-        expect(find_field('reservable_end_time').value).to match '17:00'
+        expect(find_field('reservable_start_time').value).to match '09:00 AM'
+        expect(find_field('reservable_end_time').value).to match '05:00 PM'
       end
 
       context 'Reservable type as Lane' do

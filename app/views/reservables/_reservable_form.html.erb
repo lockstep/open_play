@@ -25,8 +25,6 @@
     </div>
   </div>
 
-  <%= render 'party_room_form', f: f, action: action %>
-
   <div class="<%= ('has-danger' if reservable.errors[:interval].any?) %> form-group row">
     <%= f.label :interval, 'Play Duration per Booking (min)',
       class: 'col-sm-4 offset-sm-2 control-label' %>
@@ -72,6 +70,8 @@
         <% end %>
       </div>
   </div>
+
+  <%= render 'party_room_form', f: f, action: action %>
 
   <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group row">
     <%= f.label :maximum_players, "Maximum of players per #{@reservable.type}", class: 'col-sm-4 offset-sm-2 control-label' %>

@@ -1,24 +1,10 @@
 <%- if @reservable.party_room? %>
-  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players_per_sub_reservable].any?) %> form-group row">
-    <%= f.label :maximum_players_per_sub_reservable, nil,
-      class: 'col-sm-4 offset-sm-2 control-label' %>
-    <div class='col-sm-5'>
-      <%= f.number_field :maximum_players_per_sub_reservable,
-        { min: 0, class: 'form-control' } %>
-      <% @reservable.errors[:maximum_players_per_sub_reservable].each do |error| %>
-        <div class='form-control-feedback'>
-          <%= error %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
   <%- if action == 'create' %>
     <%- sub_reservables = sub_reservable_list(@reservable) %>
     <%- sub_reservables.each_with_index do |reservable, index| %>
       <div class="<%= ('has-danger' if @reservable.errors[:sub_reservables].any?) %> form-group row">
         <%- if index == 0 %>
-          <%= label_tag 'sub_reservable', 'Sub reservables',
+          <%= label_tag 'sub_reservable', "Associated #{reservable.type}",
             class: 'col-sm-4 offset-sm-2 control-label' %>
         <% end %>
         <div class="col-sm-2 <%= 'offset-sm-6' if index != 0 %>">
@@ -48,4 +34,20 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <div class="<%= ('has-danger' if @reservable.errors[:maximum_players_per_sub_reservable].any?) %> form-group row">
+    <%= f.label :maximum_players_per_sub_reservable,
+      "Maximum of players per #{@reservable.sub_reservables_type}",
+      class: 'col-sm-4 offset-sm-2 control-label' %>
+    <div class='col-sm-5'>
+      <%= f.number_field :maximum_players_per_sub_reservable,
+        { min: 0, class: 'form-control' } %>
+      <% @reservable.errors[:maximum_players_per_sub_reservable].each do |error| %>
+        <div class='form-control-feedback'>
+          <%= error %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
 <% end %>

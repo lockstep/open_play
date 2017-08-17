@@ -31,4 +31,8 @@ class PartyRoom < Reservable
     end
     allocated_reservable
   end
+
+  def sub_reservables_type
+    activity.reservables.first.type
+  end
 end
