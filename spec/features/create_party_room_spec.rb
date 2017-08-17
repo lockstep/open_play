@@ -59,7 +59,6 @@ feature 'Create Party Room', :js do
           party_room = Reservable.last
           expect(party_room.name).to eq 'PartyRoom 1'
           expect(party_room.description).to eq 'So much fun here'
-          expect(party_room.headcount).to eq 10
           expect(party_room.maximum_players_per_sub_reservable).to eq 5
           expect(party_room.sub_reservables.count).to eq 1
           expect(party_room.sub_reservables.first).to eq @lane
@@ -100,7 +99,6 @@ feature 'Create Party Room', :js do
           party_room = Reservable.last
           expect(party_room.name).to eq 'PartyRoom 1'
           expect(party_room.description).to eq 'So much fun here'
-          expect(party_room.headcount).to eq 10
           expect(party_room.maximum_players_per_sub_reservable).to eq 5
           expect(party_room.sub_reservables.count).to eq 2
           expect(party_room.sub_reservables.first).to eq @lane
@@ -123,22 +121,6 @@ feature 'Create Party Room', :js do
     end
 
     context 'params are invalid' do
-      context 'zero headcount' do
-        scenario 'does not create reservable' do
-          visit root_path
-          click_link 'Manage Business'
-          click_link 'Add a Party room'
-          complete_room_form(headcount: 0)
-          determine_sub_reservable_with_priority_number(
-            index: 0,
-            lane_name: @lane.name,
-            priority_number: 5
-          )
-          click_on 'Submit'
-          expect(page).to have_content 'must be greater than 0'
-        end
-      end
-
       context 'zero maximum players per sub reservable' do
         scenario 'does not create reservable' do
           visit root_path
@@ -182,7 +164,6 @@ feature 'Create Party Room', :js do
   def complete_room_form(overrides = {})
     fill_in :reservable_name, with: overrides[:name] || 'PartyRoom 1'
     fill_in :reservable_description, with: overrides[:description] || 'So much fun here'
-    fill_in :reservable_headcount, with: overrides[:headcount] || 10
     fill_in :reservable_maximum_players_per_sub_reservable,
             with: overrides[:players_per_sub_reservable] || 5
     fill_in :reservable_interval, with: overrides[:interval] || 60

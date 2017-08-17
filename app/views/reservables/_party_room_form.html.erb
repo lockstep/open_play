@@ -1,16 +1,4 @@
 <%- if @reservable.party_room? %>
-  <div class="<%= ('has-danger' if @reservable.errors[:headcount].any?) %> form-group row">
-    <%= f.label :headcount, nil, class: 'col-sm-4 offset-sm-2 control-label' %>
-    <div class='col-sm-5'>
-      <%= f.number_field :headcount, { min: 0, class: 'form-control' } %>
-      <% @reservable.errors[:headcount].each do |error| %>
-        <div class='form-control-feedback'>
-          <%= error %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
   <div class="<%= ('has-danger' if @reservable.errors[:maximum_players_per_sub_reservable].any?) %> form-group row">
     <%= f.label :maximum_players_per_sub_reservable, nil,
       class: 'col-sm-4 offset-sm-2 control-label' %>

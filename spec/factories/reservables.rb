@@ -38,7 +38,6 @@ FactoryGirl.define do
   factory :party_room, parent: :reservable, class: 'PartyRoom' do
     name 'FunRoom'
     description 'Having a good time with us'
-    headcount 10
     maximum_players_per_sub_reservable 20
 
     after(:create) do |party_room|

@@ -72,7 +72,6 @@ class ReservablesController < ApplicationController
     permitted_params = [
       :name,
       :description,
-      :headcount,
       :maximum_players_per_sub_reservable,
       :interval,
       :start_time,

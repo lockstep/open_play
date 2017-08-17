@@ -1,5 +1,4 @@
 class PartyRoom < Reservable
-  validates :headcount, numericality: { only_integer: true, greater_than: 0 }
   validates :maximum_players_per_sub_reservable, numericality: {
     only_integer: true, greater_than: 0 }
 
