@@ -10,7 +10,7 @@ $(function() {
 
     $('.form-check-input').change(function() {
       var $row = $(this).closest('.row');
-      var $priorityNumberField = $row.find('input[type=number]');
+      var $priorityNumberField = $row.find('select');
       $priorityNumberField.prop('disabled', !this.checked)
     });
   };

@@ -25,8 +25,6 @@
     </div>
   </div>
 
-  <%= render 'party_room_form', f: f, action: action %>
-
   <div class="<%= ('has-danger' if reservable.errors[:interval].any?) %> form-group row">
     <%= f.label :interval, 'Play Duration per Booking (min)',
       class: 'col-sm-4 offset-sm-2 control-label' %>
@@ -55,14 +53,16 @@
   <div class='form-group row'>
     <%= f.label :start_time, class: 'col-sm-4 offset-sm-2 control-label' %>
     <div class='col-sm-5'>
-      <%= f.text_field :start_time, class: 'form-control' %>
+      <%= f.text_field :start_time, value: "#{present_time(f.object.start_time)}",
+        class: 'form-control' %>
     </div>
   </div>
 
   <div class="<%= ('has-danger' if @reservable.errors[:end_time].any?) %> form-group row">
       <%= f.label :end_time, class: 'col-sm-4 offset-sm-2 control-label' %>
       <div class='col-sm-5'>
-        <%= f.text_field :end_time, class: 'form-control' %>
+        <%= f.text_field :end_time, value: "#{present_time(f.object.end_time)}",
+          class: 'form-control' %>
         <% @reservable.errors[:end_time].each do |error| %>
           <div class='form-control-feedback'>
             <%= error %>
@@ -70,6 +70,8 @@
         <% end %>
       </div>
   </div>
+
+  <%= render 'party_room_form', f: f, action: action %>
 
   <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group row">
     <%= f.label :maximum_players, "Maximum of players per #{@reservable.type}", class: 'col-sm-4 offset-sm-2 control-label' %>

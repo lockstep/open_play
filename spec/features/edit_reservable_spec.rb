@@ -109,11 +109,6 @@ feature 'edit reservable' do
         expect(@reservable.reload.description).to eq 'hello world'
       end
 
-      scenario 'business owner cannot see headcount' do
-        navigate_to_edit_lane
-        expect(page).to_not have_field 'reservable_headcount'
-      end
-
       scenario 'business owner cannot see maximum_players_per_sub_reservable' do
         navigate_to_edit_lane
         expect(page).to_not have_field 'reservable_maximum_players_per_sub_reservable'
@@ -134,14 +129,6 @@ feature 'edit reservable' do
 
     context 'party room exists' do
       before { @reservable = create(:party_room, activity: @activity) }
-
-      scenario 'business owner can edit headcount' do
-        navigate_to_edit_party_room
-        fill_in 'reservable_headcount', with: 15
-        click_on 'Submit'
-        expect(page).to have_content 'Successfully updated reservable'
-        expect(@reservable.reload.headcount).to eq 15
-      end
 
       scenario 'business owner can edit description' do
         navigate_to_edit_party_room

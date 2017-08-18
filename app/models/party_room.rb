@@ -1,5 +1,4 @@
 class PartyRoom < Reservable
-  validates :headcount, numericality: { only_integer: true, greater_than: 0 }
   validates :maximum_players_per_sub_reservable, numericality: {
     only_integer: true, greater_than: 0 }
 
@@ -31,5 +30,9 @@ class PartyRoom < Reservable
       allocated_reservable[reservable.sub_reservable_id.to_s] = allocated_count
     end
     allocated_reservable
+  end
+
+  def sub_reservables_type
+    activity.reservables.first.type
   end
 end

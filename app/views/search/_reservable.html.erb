@@ -3,7 +3,7 @@
     <div class='card-block'>
       <h5 class="card-title reservable-name"><%= reservable.name %></h5>
       <h6 class='card-subtitle text-muted'>
-        (<%= maximum_players(reservable) %> max of people)
+        Max <%= maximum_players(reservable) %> people per reservation
       </h6>
       <p class='card-text'><%= reservable.description %></p>
       <div class="row-times" data-slick='{"initialSlide":

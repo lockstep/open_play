@@ -6,6 +6,10 @@ class ReservablesController < ApplicationController
   def new
     @reservable = current_activity.build_reservable(params[:type])
     authorize @reservable
+    @sub_reservables = BuildSubReservablesService.new(
+      reservable: @reservable,
+      new_record: true
+    ).call
   end
 
   def create
@@ -19,9 +23,14 @@ class ReservablesController < ApplicationController
       end
       redirect_to business_activities_path(current_activity.business),
         notice: "#{@reservable.type} was successfully added."
-      return
+    else
+      @sub_reservables = BuildSubReservablesService.new(
+        reservable: @reservable,
+        new_record: false,
+        reservable_params: reservable_params
+      ).call
+      render :new
     end
-    render :new
   end
 
   def edit; end
@@ -72,7 +81,6 @@ class ReservablesController < ApplicationController
     permitted_params = [
       :name,
       :description,
-      :headcount,
       :maximum_players_per_sub_reservable,
       :interval,
       :start_time,

@@ -110,21 +110,25 @@ class Order < ApplicationRecord
     total_price
   end
 
-  def set_party_room
-    return unless booking.reservable_party_room?
-    booking.reservable_allocate_reservables(
-      booking.number_of_players
-    ).each do |reservable_id, total_players|
-      bookings << Booking.new(
-        start_time: booking.start_time,
-        end_time: booking.end_time,
-        booking_date: booking.booking_date,
-        number_of_players: total_players,
-        reservable_id: reservable_id.to_i,
-        booking_price_cents: 0,
-        parent: booking
-      )
+  def allocate_bookings
+    child_bookings = []
+    bookings.each do |booking|
+      next unless booking.reservable_party_room?
+      booking.reservable_allocate_reservables(
+        booking.number_of_players
+      ).each do |reservable_id, total_players|
+        child_bookings << Booking.new(
+          start_time: booking.start_time,
+          end_time: booking.end_time,
+          booking_date: booking.booking_date,
+          number_of_players: total_players,
+          reservable_id: reservable_id.to_i,
+          booking_price_cents: 0,
+          parent: booking
+        )
+      end
     end
+    bookings << child_bookings
   end
 
   def valuable_bookings
