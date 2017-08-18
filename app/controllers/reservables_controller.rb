@@ -6,6 +6,9 @@ class ReservablesController < ApplicationController
   def new
     @reservable = current_activity.build_reservable(params[:type])
     authorize @reservable
+    @sub_reservables = BuildSubReservablesService.new(
+      @reservable, nil, action_name
+    ).call
   end
 
   def create
@@ -19,9 +22,12 @@ class ReservablesController < ApplicationController
       end
       redirect_to business_activities_path(current_activity.business),
         notice: "#{@reservable.type} was successfully added."
-      return
+    else
+      @sub_reservables = BuildSubReservablesService.new(
+        @reservable, reservable_params, action_name
+      ).call
+      render :new
     end
-    render :new
   end
 
   def edit; end

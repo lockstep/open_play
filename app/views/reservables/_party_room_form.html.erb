@@ -1,37 +1,46 @@
 <%- if @reservable.party_room? %>
+
   <%- if action == 'create' %>
-    <%- sub_reservables = sub_reservable_list(@reservable) %>
-    <%- sub_reservables.each_with_index do |reservable, index| %>
+    <div class='form-group row'>
+      <%= label_tag 'sub_reservable', "Associated #{@reservable.sub_reservables_type}",
+        class: 'col-sm-4 offset-sm-2 control-label' %>
+      <div class='col-sm-2 text-xs-center'>
+        <span>Reservable name</span>
+      </div>
+      <div class='col-sm-3 text-xs-center'>
+        <span>Priority number</span>
+      </div>
+    </div>
+
+    <% @sub_reservables.each_with_index do |(key, value), index| %>
       <div class="<%= ('has-danger' if @reservable.errors[:sub_reservables].any?) %> form-group row">
-        <%- if index == 0 %>
-          <%= label_tag 'sub_reservable', "Associated #{reservable.type}",
-            class: 'col-sm-4 offset-sm-2 control-label' %>
-        <% end %>
-        <div class="col-sm-2 <%= 'offset-sm-6' if index != 0 %>">
+        <div class="col-sm-2 <%= 'offset-sm-6' %>">
           <div class='form-check form-control'>
             <label class='form-check-label'>
-              <%= check_box_tag "reservable[sub_reservables][#{index}][id]", reservable.id,
-                false, class: 'form-check-input' %> <%= reservable.name %>
+              <%= check_box_tag "reservable[sub_reservables][#{index}][id]", key,
+                value[:checked], class: 'form-check-input' %> <%= value[:name] %>
             </label>
           </div>
         </div>
         <div class='col-sm-3'>
-          <%= number_field_tag "reservable[sub_reservables][#{index}][priority_number]", nil,
-            { min: 0, class: 'form-control', placeholder: 'priority number like 1, 2',
-              disabled: true } %>
+          <%= select_tag "reservable[sub_reservables][#{index}][priority_number]",
+            options_for_select(1..@reservable.sub_reservables_candidate.count,
+              value[:priority_number]),
+            class: 'form-control', disabled: value[:disabled] %>
         </div>
       </div>
-      <%- if sub_reservables.last == reservable %>
-        <div class="<%= ('has-danger' if @reservable.errors[:sub_reservables].any?) %> form-group row">
-          <div class='col-sm-4 offset-sm-6'>
-            <% @reservable.errors[:sub_reservables].each do |error| %>
-              <div class='form-control-feedback'>
-                <%= error %>
-              </div>
-            <% end %>
-          </div>
+    <% end %>
+
+    <%- if @reservable.errors[:sub_reservables].any? %>
+      <div class='has-danger form-group row'>
+        <div class='col-sm-4 offset-sm-6'>
+          <% @reservable.errors[:sub_reservables].each do |error| %>
+            <div class='form-control-feedback'>
+              <%= error %>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     <% end %>
   <% end %>
 

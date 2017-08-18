@@ -35,4 +35,11 @@ class PartyRoom < Reservable
   def sub_reservables_type
     activity.reservables.first.type
   end
+
+  def sub_reservables_candidate
+    Reservable
+      .where('activity_id = ? AND type != ?', activity_id,
+             Reservable::PARTY_ROOM_TYPE)
+      .order(:id)
+  end
 end

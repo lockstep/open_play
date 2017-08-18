@@ -44,7 +44,7 @@ feature 'Create Party Room', :js do
           determine_sub_reservable_with_priority_number(
             index: 0,
             lane_name: @lane.name,
-            priority_number: 5
+            priority_number: 1
           )
           click_on 'Submit'
 
@@ -70,7 +70,7 @@ feature 'Create Party Room', :js do
           reservable_sub_reservables = party_room.children.first
           expect(reservable_sub_reservables.parent_reservable).to eq party_room
           expect(reservable_sub_reservables.sub_reservable).to eq @lane
-          expect(reservable_sub_reservables.priority_number).to eq 5
+          expect(reservable_sub_reservables.priority_number).to eq 1
         end
       end
 
@@ -81,10 +81,10 @@ feature 'Create Party Room', :js do
           click_link 'Add a Party room'
           complete_room_form
           determine_sub_reservable_with_priority_number(
-            index: 0, lane_name: @lane.name, priority_number: 5
+            index: 0, lane_name: @lane.name, priority_number: 1
           )
           determine_sub_reservable_with_priority_number(
-            index: 1, lane_name: @lane_two.name, priority_number: 10
+            index: 1, lane_name: @lane_two.name, priority_number: 2
           )
           click_on 'Submit'
 
@@ -111,11 +111,11 @@ feature 'Create Party Room', :js do
           reservable_sub_reservables = party_room.children.first
           expect(reservable_sub_reservables.parent_reservable).to eq party_room
           expect(reservable_sub_reservables.sub_reservable).to eq @lane
-          expect(reservable_sub_reservables.priority_number).to eq 5
+          expect(reservable_sub_reservables.priority_number).to eq 1
           reservable_sub_reservables_two = party_room.children.last
           expect(reservable_sub_reservables_two.parent_reservable).to eq party_room
           expect(reservable_sub_reservables_two.sub_reservable).to eq @lane_two
-          expect(reservable_sub_reservables_two.priority_number).to eq 10
+          expect(reservable_sub_reservables_two.priority_number).to eq 2
         end
       end
     end
@@ -130,7 +130,7 @@ feature 'Create Party Room', :js do
           determine_sub_reservable_with_priority_number(
             index: 0,
             lane_name: @lane.name,
-            priority_number: 5
+            priority_number: 1
           )
           click_on 'Submit'
           expect(page).to have_content 'must be greater than 0'
@@ -145,6 +145,27 @@ feature 'Create Party Room', :js do
           complete_room_form(uncheck_sub_reservable: true)
           click_on 'Submit'
           expect(page).to have_content 'must be choosen at least one'
+        end
+
+        scenario 'remembers sub reservables' do
+          visit root_path
+          click_link 'Manage Business'
+          click_link 'Add a Party room'
+          complete_room_form(players_per_sub_reservable: 0)
+          determine_sub_reservable_with_priority_number(
+            index: 0,
+            lane_name: @lane.name,
+            priority_number: 1
+          )
+          click_on 'Submit'
+          expect(page).to have_field(
+            'reservable_sub_reservables_0_id', checked: true)
+          expect(page).to have_field(
+            'reservable_sub_reservables_0_priority_number', disabled: false)
+          expect(page).to have_field(
+            'reservable_sub_reservables_1_id', checked: false)
+          expect(page).to have_field(
+            'reservable_sub_reservables_1_priority_number', disabled: true)
         end
       end
     end
@@ -177,8 +198,8 @@ feature 'Create Party Room', :js do
   end
 
   def determine_sub_reservable_with_priority_number(params = {})
-    check params[:lane_name]
-    fill_in "reservable_sub_reservables_#{params[:index]}_priority_number",
-            with: params[:priority_number] || 5
+    find("#reservable_sub_reservables_#{params[:index]}_id").trigger('click')
+    select params[:priority_number] || 1,
+      from: "reservable_sub_reservables_#{params[:index]}_priority_number"
   end
 end
