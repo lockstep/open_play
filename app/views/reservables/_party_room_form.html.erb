@@ -5,7 +5,7 @@
       <%= label_tag 'sub_reservable', "Associated #{@reservable.sub_reservables_type}",
         class: 'col-sm-4 offset-sm-2 control-label' %>
       <div class='col-sm-2 text-xs-center'>
-        <span>Reservable name</span>
+        <span><%= @reservable.sub_reservables_type %></span>
       </div>
       <div class='col-sm-3 text-xs-center'>
         <span>Priority number</span>
