@@ -110,7 +110,7 @@ class Order < ApplicationRecord
     total_price
   end
 
-  def set_party_room
+  def allocate_bookings
     child_bookings = []
     bookings.each do |booking|
       next unless booking.reservable_party_room?

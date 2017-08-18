@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     set_user_or_guest
     @order.set_price_of_bookings
     if @order.valid?
-      @order.set_party_room
+      @order.allocate_bookings
       charge_order(params[:token_id])
       SendConfirmationOrderService.call(
         order: @order, confirmation_channel: params[:confirmation_channel])
