@@ -16,7 +16,8 @@ class Booking < ApplicationRecord
                             greater_than: 0,
                             if: proc { |object| object.errors.empty? }
   validate :number_of_players_cannot_exceed_maximum, on: :create
-  validates_uniqueness_of :reservable_id, scope: [:booking_date, :start_time, :end_time]
+  validates_uniqueness_of :reservable_id,
+    scope: [:booking_date, :start_time, :end_time, :parent_id]
 
   accepts_nested_attributes_for :reservable_options
 
