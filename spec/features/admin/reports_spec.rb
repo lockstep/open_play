@@ -19,14 +19,17 @@ feature 'Reports' do
         before do
           activity = create(:bowling, business: @bowling)
           reservable = create(:reservable, activity: activity)
-          @bookings = create_list(:booking, 2, booking_date: '2020-01-20',
+          @bookings1 = create(:booking, booking_date: '2020-01-20',
                            reservable: reservable, booking_price: 40)
+          create(:booking, booking_date: '2020-01-20',
+                 reservable: reservable, booking_price: 40,
+                 start_time: '10:00:00', end_time: '11:00:00')
         end
         scenario 'admin can see order value' do
           enter_manage_orders_page
           select_date_range('20 Jan 2020', '21 Jan 2020')
           expect(page).to have_content '$200'
-          @bookings[0].update(booking_date: '2020-01-25')
+          @bookings1.update(booking_date: '2020-01-25')
           select_date_range('20 Jan 2020', '21 Jan 2020')
           expect(page).to have_content '$100'
           first('tr.business').click
