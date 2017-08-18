@@ -43,7 +43,7 @@ class BuildSubReservablesService
   end
 
   def assign_priority_number(reservable)
-    return 1 if action_name == 'new'
+    return nil if action_name == 'new'
     return nil if sub_reservables_params[reservable.id.to_s].blank?
     sub_reservables_params[reservable.id.to_s][:priority_number]
   end
