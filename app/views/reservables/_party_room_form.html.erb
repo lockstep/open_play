@@ -24,7 +24,8 @@
         </div>
         <div class='col-sm-3'>
           <%= select_tag "reservable[sub_reservables][#{index}][priority_number]",
-            options_for_select(1..@reservable.sub_reservables_candidate.count,
+            options_for_select(
+              1..Reservable.sub_reservables_candidate(@reservable.activity_id).count,
               value[:priority_number]),
             class: 'form-control', disabled: value[:disabled] %>
         </div>

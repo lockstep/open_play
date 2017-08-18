@@ -7,7 +7,8 @@ class ReservablesController < ApplicationController
     @reservable = current_activity.build_reservable(params[:type])
     authorize @reservable
     @sub_reservables = BuildSubReservablesService.new(
-      @reservable, nil, action_name
+      reservable: @reservable,
+      new_record: true
     ).call
   end
 
@@ -24,7 +25,9 @@ class ReservablesController < ApplicationController
         notice: "#{@reservable.type} was successfully added."
     else
       @sub_reservables = BuildSubReservablesService.new(
-        @reservable, reservable_params, action_name
+        reservable: @reservable,
+        new_record: false,
+        reservable_params: reservable_params
       ).call
       render :new
     end

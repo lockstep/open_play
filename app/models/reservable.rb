@@ -28,6 +28,10 @@ class Reservable < ApplicationRecord
            numericality: { greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(archived: false) }
+  scope :sub_reservables_candidate, ->(activity_id) {
+    where('activity_id = ? AND type != ?', activity_id, Reservable::PARTY_ROOM_TYPE)
+    .order(:id)
+  }
 
   def number_of_booked_players(start_time, end_time, date)
     bookings
