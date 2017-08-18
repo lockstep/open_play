@@ -39,17 +39,6 @@
     </div>
   </div>
 
-  <% unless reservable.options.nil? %>
-    <% @reservable.options.each do |option| %>
-      <div class='form-group row'>
-        <div class='col-sm-12'>
-          <%= check_box_tag "options[#{option.id}]" %>
-          <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-
   <div class='form-group row'>
     <%= f.label :start_time, class: 'col-sm-4 offset-sm-2 control-label' %>
     <div class='col-sm-5'>
@@ -141,4 +130,15 @@
       <%= f.submit 'Submit', class: 'btn btn-primary' %>
     </div>
   </div>
+
+  <% unless reservable.options.nil? %>
+    <% @reservable.options.each do |option| %>
+      <div class='form-group row'>
+        <div class='col-sm-4 offset-sm-2'>
+          <%= check_box_tag "options[#{option.id}]" %>
+          <%= label_tag "options[#{option.id}]", "#{option.name.humanize}" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
