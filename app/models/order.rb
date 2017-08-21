@@ -130,9 +130,4 @@ class Order < ApplicationRecord
     end
     bookings << child_bookings
   end
-
-  def valuable_bookings
-    children_bookings = bookings.children_bookings
-    children_bookings.present? ? children_bookings : bookings
-  end
 end

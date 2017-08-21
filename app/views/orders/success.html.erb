@@ -48,9 +48,9 @@
           </tr>
         </thead>
         <tbody>
-          <% @order.valuable_bookings.each do |booking| %>
+          <% Booking.valuable_bookings(@order.id).each do |booking| %>
             <tr>
-              <td><%= booking.reservable_name %></td>
+              <td><%= reservable_name(booking) %></td>
               <td><%= present_range_of_time(booking.start_time, booking.end_time) %></td>
               <td><%= booking.number_of_players %></td>
               <td>

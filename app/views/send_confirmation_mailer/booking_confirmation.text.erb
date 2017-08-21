@@ -9,8 +9,8 @@ Place: <%= @order.booking_place %>
 Price: <%= present_booking_price(@order.total_price) %>
 
 Booking Details:
-<% @order.valuable_bookings.each do |booking| %>
-  <%= @order.reservable_type %>: <%= booking.reservable_name %>
+<% Booking.valuable_bookings(@order.id).each do |booking| %>
+  <%= @order.reservable_type %>: <%= reservable_name(booking) %>
   Time: <%= present_range_of_time(booking.start_time, booking.end_time) %>
   # Players: <%= booking.number_of_players %>
   Options:

@@ -54,7 +54,6 @@ class Booking < ApplicationRecord
   }
   scope :past_60_days, -> { where('created_at >= ?', 60.days.ago) }
   scope :active, -> { where(canceled: false) }
-  scope :children_bookings, -> { where('parent_id IS NOT NULL') }
 
   def self.belongs_to_business(business_id)
     activity_ids = Business.find(business_id).activities.pluck(:id)
@@ -76,6 +75,12 @@ class Booking < ApplicationRecord
   def self.revenues_by_date_in_60_days
     group(:booking_date).past_60_days.active.order(:booking_date)
       .sum(:booking_price_cents)
+  end
+
+  def self.valuable_bookings(order_id)
+    where('order_id = ?', order_id)
+      .order(:start_time)
+      .reject { |booking| booking.children.count.positive? }
   end
 
   def number_of_players_cannot_exceed_maximum

@@ -94,6 +94,44 @@ feature 'reserve party room', :js do
       expect_correct_order_price
       expect_lanes_being_allocated_by_priority
     end
+
+    scenario 'reserves party room and lane1' do
+      expect(StripeCharger).to receive(:charge).with(
+        an_instance_of(Money), String
+      ).and_return(81)
+      expect(SendConfirmationOrderService).to receive(:call).with(
+        hash_including(order: an_instance_of(Order),
+                       confirmation_channel: 'email'
+        )
+      )
+
+      user_searchs_for_bowling
+      within "#reservable_#{@party_room.id}" do
+        click_on '11:00'
+      end
+      lane1 = @party_room.sub_reservables.first
+      within "#reservable_#{lane1.id}" do
+        click_on '13:00'
+      end
+      click_on 'Book'
+
+      stub_stripe_checkout_handler
+      fill_in 'order_bookings_0_number_of_players', with: 2
+      fill_in 'order_bookings_1_number_of_players', with: 3
+      click_on 'Complete Reservation'
+
+      expect(page).to have_content 'Reservation Info'
+      expect(page).to have_content 'Tom Cruise'
+      expect(all('tbody tr').count).to eq 2
+      party_room = first('tbody tr')
+      expect(party_room).to have_content 'lane 1(A part of FunRoom)'
+      expect(party_room).to have_content '11:00 AM - 12:00 PM'
+      normal_lane = all('tbody tr')[1]
+      expect(normal_lane).to have_content 'lane 1'
+      expect(normal_lane).to have_content '01:00 PM - 02:00 PM'
+      expect(page).to have_content '$86'
+      expect(Booking.all.count).to eq 3
+    end
   end
 
   def user_searchs_for_bowling
@@ -153,14 +191,9 @@ feature 'reserve party room', :js do
     expect(page).to have_content 'Monday, January 20'
     expect(page).to have_content 'Country Club Lanes'
     expect(page).to have_content 'Tom Cruise'
-    expect_only_children_bookings_being_displayed
-  end
-
-  def expect_only_children_bookings_being_displayed
     expect(all('tbody tr').count).to eq 2
-    expect(page).to_not have_content 'FunRoom'
-    expect(page).to have_content 'lane 1'
-    expect(page).to have_content 'lane 2'
+    expect(page).to have_content 'lane 1(A part of FunRoom)'
+    expect(page).to have_content 'lane 2(A part of FunRoom)'
   end
 
   def expect_parent_booking_being_created
