@@ -15,7 +15,7 @@ class Business < ApplicationRecord
       secret_access_key: ENV['S3_SECRET'],
     },
     s3_protocol: 'https',
-    styles:  { medium: ['300x300>'], larger: '600x600#' }
+    styles:  { medium: '300x300>', large: '600x600>' }
 
   validates_attachment_content_type :profile_picture,
     content_type: /\Aimage\/.*\z/
