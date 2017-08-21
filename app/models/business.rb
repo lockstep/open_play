@@ -24,7 +24,7 @@ class Business < ApplicationRecord
   geocoded_by :geocoding_address
 
   scope :with_activity, -> (activity_type) {
-    return if activity_type.blank?
+    return all if activity_type.blank?
 
     joins(:activities)
     .where('activities.type': activity_type)
