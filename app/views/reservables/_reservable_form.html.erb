@@ -63,7 +63,7 @@
   <%= render 'party_room_form', f: f, action: action %>
 
   <div class="<%= ('has-danger' if @reservable.errors[:maximum_players].any?) %> form-group row">
-    <%= f.label :maximum_players, "Maximum of players per #{@reservable.type.titleize}",
+    <%= f.label :maximum_players, "Maximum of players per #{titleize_text(@reservable.type)}",
       class: 'col-sm-4 offset-sm-2 control-label' %>
     <div class='col-sm-5'>
       <%= f.number_field :maximum_players, { min: 0, class: 'form-control' } %>
