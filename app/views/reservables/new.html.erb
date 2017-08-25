@@ -1,2 +1,2 @@
-<h2 class='text-xs-center'><%= "Create a #{@reservable.type}" %></h2>
+<h2 class='text-xs-center'><%= "Create a #{@reservable.type.titleize}" %></h2>
 <%= render 'reservable_form', reservable: @reservable, action: 'create' %>

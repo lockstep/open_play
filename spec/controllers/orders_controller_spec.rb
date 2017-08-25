@@ -255,7 +255,7 @@ describe OrdersController do
             expect(bookings.first.reservable_options.size).to eq 2
             expect(bookings.first.booking_price).to eq 0
             expect(bookings.first.paid_externally).to eq true
-            expect(response).to redirect_to success_order_path(Order.last)
+            expect(response).to redirect_to business_path(@business.id)
           end
         end
       end
