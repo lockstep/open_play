@@ -47,7 +47,7 @@
 
   <div class="<%= ('has-danger' if @reservable.errors[:maximum_players_per_sub_reservable].any?) %> form-group row">
     <%= f.label :maximum_players_per_sub_reservable,
-      "Maximum of players per #{titleize_text(@reservable.sub_reservables_type)}",
+      "Maximum of players per #{@reservable.sub_reservables_type}",
       class: 'col-sm-4 offset-sm-2 control-label' %>
     <div class='col-sm-5'>
       <%= f.number_field :maximum_players_per_sub_reservable,
