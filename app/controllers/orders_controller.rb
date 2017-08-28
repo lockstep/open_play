@@ -24,8 +24,12 @@ class OrdersController < ApplicationController
       charge_order(params[:token_id])
       SendConfirmationOrderService.call(
         order: @order, confirmation_channel: params[:confirmation_channel])
-      redirect_to success_order_path(@order),
-        notice: thank_you_message(params[:confirmation_channel])
+      if @order.made_by_business_owner?
+        redirect_to business_path(@order.activity_business_id)
+      else
+        redirect_to success_order_path(@order),
+          notice: thank_you_message(params[:confirmation_channel])
+      end
     else
       render :new
     end

@@ -25,5 +25,28 @@ module SubReservablesConcerns
         )
       end
     end
+
+    def allocate_reservables(number_of_players)
+      allocated_reservable = {}
+      total_required_reservables =
+        (number_of_players.to_f / maximum_players_per_sub_reservable).ceil
+      remain_players = number_of_players
+      reservables =
+        children.order(:priority_number).take(total_required_reservables)
+      reservables.each do |reservable|
+        if remain_players / maximum_players_per_sub_reservable >= 1
+          allocated_count = maximum_players_per_sub_reservable
+          remain_players -= maximum_players_per_sub_reservable
+        else
+          allocated_count = remain_players % maximum_players_per_sub_reservable
+        end
+        allocated_reservable[reservable.sub_reservable_id.to_s] = allocated_count
+      end
+      allocated_reservable
+    end
+
+    def sub_reservables_type
+      activity.reservables.first.type
+    end
   end
 end

@@ -24,7 +24,7 @@ module OrderHelper
     ''
   end
 
-  def reservable_name(booking)
+  def order_reservable_name(booking)
     return booking.reservable_name if booking.parent_id.blank?
     "#{booking.reservable_name}(A part of #{booking.parent.reservable_name})"
   end

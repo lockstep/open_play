@@ -36,9 +36,10 @@ feature 'Business Owner Complete Reservation', :js do
       ).and_return(false)
 
       click_on 'Complete Reservation'
-      expect(page).to have_content 'Reservation Info'
-      expect(page).to have_content 'Tom Cruise'
-      expect(page.find('.total_price').text).to eq '-'
+      expect(page).to have_link 'Edit Your Business'
+      expect(current_path).to eq business_path(@business)
+      expect(Order.count).to eq 1
+      expect(Order.first.price_cents).to eq 0
     end
   end
 end
