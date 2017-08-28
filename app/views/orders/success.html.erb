@@ -50,7 +50,7 @@
         <tbody>
           <% Booking.valuable_bookings(@order.id).each do |booking| %>
             <tr>
-              <td><%= reservable_name(booking) %></td>
+              <td><%= order_reservable_name(booking) %></td>
               <td><%= present_range_of_time(booking.start_time, booking.end_time) %></td>
               <td><%= booking.number_of_players %></td>
               <td>
