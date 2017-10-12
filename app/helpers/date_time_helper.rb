@@ -1,5 +1,6 @@
 module DateTimeHelper
   def present_time(time)
+    return nil if time.blank?
     time.strftime("%I:%M %p")
   end
 

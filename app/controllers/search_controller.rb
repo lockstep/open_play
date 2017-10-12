@@ -2,11 +2,12 @@ class SearchController < ApplicationController
   def search
     current_user&.update_session_location(location_params)
     @booking_date = params[:booking_date]
+    redirect_to root_path,
+      alert: 'Date is required.' and return true unless @booking_date.present?
     @booking_time = params[:booking_time]
-    unless @booking_date.present?
-      redirect_to root_path, alert: 'Date is required.'
-    end
-    @activities = Activity.search(location_params)
+    @activities = Activity.search_by_type_within_area(
+      location_params.merge(date: @booking_date)
+    )
   end
 
   def paginate_reservables

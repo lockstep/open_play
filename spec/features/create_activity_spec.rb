@@ -29,6 +29,7 @@ feature 'Create Activity' do
           expect(activity.type).to eq 'Bowling'
           expect(activity.description).to eq 'Enjoy your activity with us'
           expect(activity.picture_file_name).to eq 'avatar.png'
+          expect(activity.lead_time).to eq 5
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
@@ -44,6 +45,7 @@ feature 'Create Activity' do
           expect(activity.type).to eq 'LaserTag'
           expect(activity.description).to eq 'Enjoy your activity with us'
           expect(activity.picture_file_name).to eq 'avatar.png'
+          expect(activity.lead_time).to eq 5
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
@@ -59,6 +61,7 @@ feature 'Create Activity' do
           expect(activity.type).to eq 'EscapeRoom'
           expect(activity.description).to eq 'Enjoy your activity with us'
           expect(activity.picture_file_name).to eq 'avatar.png'
+          expect(activity.lead_time).to eq 5
           expect(page.current_path).to eq(business_activities_path(@business))
         end
 
@@ -139,6 +142,7 @@ feature 'Create Activity' do
       fill_in 'activity_end_time', with: overrides[:end_time] || '16:00'
       fill_in 'activity_description', with: overrides[:description] ||
         'Enjoy your activity with us'
+      fill_in 'activity_lead_time', with: overrides[:lead_time] || 5
       attach_file 'activity_picture', overrides[:picture] ||
         'spec/support/fixtures/paperclip/avatar.png'
       click_button 'Submit'
