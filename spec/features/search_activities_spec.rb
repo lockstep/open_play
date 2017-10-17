@@ -237,6 +237,48 @@ feature 'Search Activities', js: true do
         end
       end
     end
+
+    context 'when bowling has lead time 5 days' do
+      background do
+        @bowling_2.update(lead_time: 5)
+      end
+
+      context 'when booking_date is within the lead time window' do
+        background do
+          visit root_path
+          date = Date.current + 3.days
+          search_activities(booking_date: date.strftime('%d %b %Y'))
+        end
+
+        scenario 'the bowling will not show up in the search result' do
+          expect(page).to_not have_content 'Classic Bowling'
+        end
+      end
+
+      context 'when booking_date exactly match the lead time window' do
+        background do
+          visit root_path
+          date = Date.current + 5.days
+          search_activities(booking_date: date.strftime('%d %b %Y'))
+        end
+
+        scenario 'the bowling will show up in the search result' do
+          expect(page).to have_content 'Classic Bowling'
+        end
+      end
+
+      context 'when booking_date is outside the lead time window' do
+        background do
+          visit root_path
+          date = Date.current + 8.days
+          search_activities(booking_date: date.strftime('%d %b %Y'))
+        end
+
+        scenario 'the bowling will show up in the search result' do
+          expect(page).to have_content 'Classic Bowling'
+        end
+      end
+    end
   end
 
   context 'Laser tag exists' do

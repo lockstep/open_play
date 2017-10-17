@@ -28,6 +28,19 @@ class Activity < ApplicationRecord
   validates :name, presence: true
 
   scope :active, -> { where(archived: false) }
+  scope :by_type, ->(type) { where(type: type).active }
+  scope :by_business, lambda { |business_id|
+    where(business_id: business_id).active
+  }
+  scope :by_location, lambda { |lat, lng|
+    return all if lat.blank? || lng.blank?
+    where(business_id: Business.find_nearest_business(lat, lng).map(&:id))
+  }
+  scope :available_on_date, lambda { |date|
+    days_from_now = (Date.parse(date) - Date.current).to_i
+    where('lead_time <= ?', days_from_now)
+  }
+
   delegate :user, to: :business
   delegate :id, to: :business, prefix: true
 
@@ -35,16 +48,15 @@ class Activity < ApplicationRecord
     %w(bowling laser_tag escape_room)
   end
 
-  def self.search(params)
-    lat = params[:latitude]
-    lng = params[:longitude]
-    if lat.present? && lng.present?
-      businesses_ids = Business.find_nearest_business(lat, lng).map(&:id)
-      Activity.where(business_id: businesses_ids, type: params[:activity_type],
-                     archived: false)
-    else
-      Activity.where(type: params[:activity_type], archived: false)
-    end
+  def self.search_by_type_within_area(query)
+    by_type(query[:activity_type])
+      .available_on_date(query[:date])
+      .by_location(query[:latitude], query[:longitude])
+  end
+
+  def self.search_by_business(business_id, date)
+    by_business(business_id)
+      .available_on_date(date)
   end
 
   def build_reservable(type)

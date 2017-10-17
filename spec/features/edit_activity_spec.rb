@@ -27,6 +27,7 @@ feature 'edit activity' do
         activity = Activity.first
         expect(activity.description).to eq 'so much fun with us'
         expect(activity.picture_file_name).to eq 'avatar.png'
+        expect(activity.lead_time).to eq 5
       end
 
       scenario 'unsuccessfully edited activity' do
@@ -46,6 +47,7 @@ feature 'edit activity' do
     fill_in 'activity_start_time', with: overrides[:start_time] || '08:00'
     fill_in 'activity_end_time', with: overrides[:end_time] || '16:00'
     fill_in 'activity_description', with: overrides[:activity] || 'so much fun with us'
+    fill_in 'activity_lead_time', with: overrides[:lead_time] || 5
     attach_file 'activity_picture', overrides[:picture] ||
       'spec/support/fixtures/paperclip/avatar.png'
     click_button 'Submit'

@@ -75,6 +75,7 @@ class ActivitiesController < ApplicationController
       type
       prevent_back_to_back_booking
       allow_multi_party_bookings
+      lead_time
     ]
     params.require(:activity).permit(permitted_params)
   end

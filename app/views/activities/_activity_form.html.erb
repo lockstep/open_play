@@ -1,4 +1,18 @@
-<%= form_for @activity, as: :activity, url: {action: 'update'} do |f| %>
+<%= form_for @activity, as: :activity,
+  url: { action: @activity.persisted? ? 'update' : 'create' } do |f| %>
+
+  <%- unless @activity.persisted? %>
+    <div class="form-group row">
+      <div class="col-xs-2">
+        <%= f.label :type %>
+      </div>
+      <div class="col-xs-10">
+        <%= f.select :type, Activity.types.collect {|t| [t.humanize, t.camelcase]},
+          {}, { class: 'form-control' } %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="form-group row">
     <div class="col-xs-2">
       <%= f.label :name %>
@@ -42,6 +56,7 @@
       <%= f.text_field :start_time, value: "#{present_time(f.object.start_time)}",
         class: 'form-control'%>
     </div>
+
     <div class="col-xs-2">
       <%= f.label :end_time, class: 'col-form-label' %>
     </div>
@@ -63,6 +78,15 @@
         </div>
       </div>
     <% end %>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-xs-2">
+      <%= f.label :lead_time, 'Lead time(days)' %>
+    </div>
+    <div class="col-xs-10">
+      <%= f.number_field :lead_time, min: 0 %>
+    </div>
   </div>
 
   <div class="row form-group">
