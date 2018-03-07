@@ -40,6 +40,7 @@ class Reservable < ApplicationRecord
   end
 
   def available_players(start_time, end_time, date)
+    return Float::INFINITY if maximum_players.blank?
     maximum_players - number_of_booked_players(start_time, end_time, date)
   end
 

@@ -68,6 +68,50 @@
       }
     }
   }
+
+  &.activity-list__admin {
+    .activity-result {
+      border-bottom: none;
+    }
+    .reservable-name {
+      position: absolute;
+      left: 25px;
+      top: 30px;
+    }
+
+    .reservable {
+      .card {
+        padding-left: 260px;
+      }
+      .card-text {
+        display: none;
+      }
+    }
+    .book-btn {
+      position: fixed;
+      right: 5%;
+      top: 310px;
+    }
+
+    .number-of-players-input {
+      position: fixed;
+      right: 5%;
+      top: 237px;
+      input {
+        width: 85px;
+      }
+    }
+
+    .autocheck-input {
+      position: fixed;
+      right: 5%;
+      top: 281px;
+    }
+
+    .form-check-label {
+      padding-left: 0px;
+    }
+  }
 }
 
 #edit_activity_sidebar {

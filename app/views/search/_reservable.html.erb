@@ -2,9 +2,11 @@
   <div class='card'>
     <div class='card-block'>
       <h5 class="card-title reservable-name"><%= reservable.name %></h5>
-      <h6 class='card-subtitle text-muted'>
-        Max <%= maximum_players(reservable) %> people per reservation
-      </h6>
+      <% if max_players =  maximum_players(reservable) %>
+        <h6 class='card-subtitle text-muted'>
+          Max <%= max_players %> people per reservation
+        </h6>
+      <% end %>
       <p class='card-text'><%= reservable.description %></p>
       <div class="row-times" data-slick='{"initialSlide":
         <%= requested_time_slot_index(reservable, @booking_date, @booking_time) %>}'>

@@ -4,15 +4,15 @@ class ConsolidateBookings
     @date = date
   end
 
-  def call
-    consolidate_bookings(build_slots)
+  def call(number_of_players = 1)
+    consolidate_bookings(build_slots(number_of_players))
   end
 
   private
 
   attr_reader :time_slots, :date
 
-  def build_slots
+  def build_slots(number_of_players)
     slots = {}
     @time_slots.each do |reservable_id, reservable_time_slots|
       reservable_time_slots.each do |time_slot|
@@ -20,7 +20,7 @@ class ConsolidateBookings
           start_time: extract_start_end_times(time_slot, 'start_time'),
           end_time: extract_start_end_times(time_slot, 'end_time'),
           booking_date: @date,
-          number_of_players: 1
+          number_of_players: number_of_players
         }
       end
     end

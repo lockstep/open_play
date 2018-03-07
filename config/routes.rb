@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:new, :create] do
     get :success, on: :member
   end
+  post 'reserver_order', to: 'orders#reserver_order'
   resources :users, only: [:show, :edit, :update]
   resources :closed_schedules, only: [:destroy]
   resources :rate_override_schedules, only: [:destroy]
@@ -52,6 +53,8 @@ Rails.application.routes.draw do
   get 'search/paginate_reservables', to: 'search#paginate_reservables'
   get 'activities/:activity_id/reservations',
     to: 'orders#reservations_for_business_owner', as: 'business_owner_reservations'
+  get 'activities/:activity_id/reserver',
+    to: 'orders#reserver', as: 'business_owner_reserver'
   get 'users/:user_id/reservations', to: 'orders#reservations_for_users',
     as: 'user_reservations'
 end

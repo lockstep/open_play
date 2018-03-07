@@ -1,11 +1,18 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:reservations_for_business_owner,
-    :reservations_for_users]
-  before_action :verify_user_on_reservations_page, only: [:reservations_for_business_owner,
-    :reservations_for_users]
-  before_action :ensure_time_slot_selection_is_present, only: [:new]
-  before_action :set_booking_date, only: [:reservations_for_business_owner,
-    :reservations_for_users]
+    :reservations_for_users, :reserver]
+  before_action :verify_user_on_reservations_page, only: [
+    :reservations_for_business_owner,
+    :reservations_for_users,
+    :reserver
+  ]
+  before_action :ensure_time_slot_selection_is_present,
+    only: [:new, :reserver_order]
+  before_action :set_booking_date, only: [
+    :reservations_for_business_owner,
+    :reservations_for_users,
+    :reserver
+  ]
   before_action :set_order, only: %i[create prepare_complete_order get_order_prices]
 
   def new
@@ -14,6 +21,27 @@ class OrdersController < ApplicationController
     @order.bookings = ConsolidateBookings.new(
       params[:time_slots], params[:date]).call
     @order.set_price_of_bookings
+  end
+
+  def reserver_order
+    # Admins can make orders from the "reserver" page.
+    @order = Order.new(activity_id: params[:activity_id])
+    @order.user = current_user
+    @order.bookings = ConsolidateBookings.new(
+      params[:time_slots], params[:date]
+    ).call(params[:number_of_players].to_i)
+    @order.set_price_of_bookings
+    if @order.valid?
+      @order.allocate_bookings
+      charge_order('no_token_needed')
+      redirect_back(fallback_location: root_path)
+    else
+      error = @order.errors.full_messages.first
+      redirect_back(
+        fallback_location: root_path,
+        alert: "Booking failed, please try again or contact support (#{error})."
+      )
+    end
   end
 
   def create
@@ -53,6 +81,13 @@ class OrdersController < ApplicationController
         headers['Content-Type'] = 'text/csv'
       end
     end
+  end
+
+  def reserver
+    @booking_date = @date.to_date.to_s
+    @booking_time = Time.current.strftime("%H:%M")
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity, :view_analytics?
   end
 
   def reservations_for_users

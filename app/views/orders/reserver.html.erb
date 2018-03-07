@@ -1,0 +1,68 @@
+<div class='row'>
+  <div class='col-xs-12'>
+    <h1 class='text-xs-center'>Booking Manager: <%= @activity.name %></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-xs-center" id="searchbar-container">
+      <%= form_tag(business_owner_reserver_path, method: 'get', class: 'form-inline', id: 'orders-reservations-form') do %>
+        <div class='form-group'>
+          <%= label_tag(:booking_date, 'Date') %>
+          &nbsp;
+          <%= text_field_tag 'booking_date', @date,
+            class: 'form-control', id: 'reservations-booking-date' %>
+          &nbsp;
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= form_tag(reserver_order_path, method: :post) do %>
+<div class="activity-list activity-list__admin">
+  <div class="row">
+    <div class="col-xs-10 offset-xs-1">
+      <% @activity.reservables.each do |reservable| %>
+        <div class='alert alert-success reservable-popup' id="<%= "popup-#{@activity.id}-#{reservable.id}" %>" role='alert' >
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row activity-result">
+    <div class="col-xs-10 offset-xs-1">
+      <div class="activity-info">
+        <div class='reservables'>
+          <div class="spinner">
+            <div class="spinner-icon"></div>
+          </div>
+          <% @reservables = first_set_of_reservables(@activity.reservables) %>
+          <div class="timeslots activity-<%= @activity.id %>">
+            <%= render 'search/pagination', activity_id: @activity.id %>
+          </div>
+        </div>
+      </div>
+
+      <%= hidden_field_tag('date', @booking_date) %>
+      <%= hidden_field_tag("prevent-btb-booking-#{@activity.id}",
+        @activity.prevent_back_to_back_booking) %>
+      <%= hidden_field_tag('activity_id', @activity.id) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-2 book-section">
+      <div class="form-group number-of-players-input">
+        <%= text_field_tag 'number_of_players', '', class: 'form-control',
+          placeholder: 'Player #' %>
+      </div>
+
+      <div class="form-check autocheck-input">
+        <%= check_box_tag 'auto_checkin', '1', false, class: 'form-check-input' %>
+        <label class="form-check-label" for="auto_checkin">Check-In</label>
+      </div>
+      <%= submit_tag 'Book', class: 'btn btn-info book-btn' %>
+    </div>
+  </div>
+</div>
+<% end %>
