@@ -80,7 +80,7 @@ feature 'Complete Reservation', :js do
         end
       end
 
-      context 'books on the weekend' do
+      xcontext 'books on the weekend' do
         scenario 'displays the booking info correctly' do
           visit root_path
           search_activities(booking_date: '28 Oct 2017')
@@ -282,7 +282,7 @@ feature 'Complete Reservation', :js do
         end
       end
 
-      context 'books on the weekend' do
+      xcontext 'books on the weekend' do
         scenario 'displays the booking info correctly' do
           visit root_path
           search_activities(activity_type: 'Laser tag', booking_date: '28 Oct 2017')
