@@ -1,4 +1,16 @@
 $(function() {
+  // Reload admin reserver so staff can work simultaneously
+  if($('.activity-list__admin').length > 0) {
+    var intervalId = window.setInterval(reserverResetFunction, 15000);
+    function reserverResetFunction() {
+      if($('.activity-list__admin').length === 0) clearInterval(intervalId);
+      if($('.timeslot.selected').length == 0) {
+        clearInterval(intervalId);
+        location.reload();
+      }
+    }
+  }
+
   if ($('#closed_on').length > 0) {
     var datePicker = new Pikaday({
       field: document.getElementById('closed_on'),
@@ -32,15 +44,18 @@ $(function() {
   $('#create-schedule-btn').click(function(e) {
     e.preventDefault();
     if ($("#specific-day-checkbox").is(":checked")) {
-      $('#list-of-days input[type=checkbox]').attr('checked', false); }
-    else { $('#closed_on').val(''); }
+      $('#list-of-days input[type=checkbox]').attr('checked', false);
+    } else {
+      $('#closed_on').val('');
+    }
 
     if ($("#all-day-checkbox").is(":checked")) {
       $('#closing_begins_at, #closing_ends_at').val('');
     }
 
     if ($("#all-reservable-checkbox").is(":checked")) {
-      $('#list-of-reservables input[type=checkbox]').attr('checked', false); }
+      $('#list-of-reservables input[type=checkbox]').attr('checked', false);
+    }
 
     $('#new-closing-time-form').submit();
   });

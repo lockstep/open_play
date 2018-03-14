@@ -34,6 +34,9 @@ class OrdersController < ApplicationController
     if @order.valid?
       @order.allocate_bookings
       charge_order('no_token_needed')
+      if params[:auto_checkin] == '1'
+        @order.bookings.update_all(checked_in: true)
+      end
       redirect_back(fallback_location: root_path)
     else
       error = @order.errors.full_messages.first

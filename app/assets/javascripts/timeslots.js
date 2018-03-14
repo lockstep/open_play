@@ -125,6 +125,20 @@ $(function() {
     $popup.hide();
   }
 
+  $('.activity-list__admin .activity-info').on('click', '.timeslot', function(e) {
+    var $timeslot = $(this);
+    if ($timeslot.hasClass('not-checked-in') || $timeslot.hasClass('checked-in')) {
+      $('.reserver-cancel-link')
+        .prop('href', $timeslot.data('cancel-path'))
+        .show();
+    }
+    if ($timeslot.hasClass('not-checked-in')) {
+      $('.reserver-checkin-link')
+        .prop('href', $timeslot.data('checkin-path'))
+        .show();
+    }
+  });
+
   $('.activity-info').on('click', '.timeslot', function() {
     var $timeslot = $(this);
     var activityId = $timeslot.data('activity-id');
@@ -138,6 +152,7 @@ $(function() {
     if($timeslot.hasClass('selected')) {
       $timeslot.addClass('btn-danger btn-3d');
       $timeslot.removeClass('btn-success selected');
+      $('.booking-controls a').hide();
     } else {
       $timeslot.addClass('btn-success selected');
       $timeslot.removeClass('btn-danger btn-3d');
@@ -145,10 +160,12 @@ $(function() {
 
     toggleCheckBox(activityId, reservableId, slot);
     preventBackToBackBooking(activityId, reservableId, slot);
-    showHidePopup(
-      activityId, reservableId, calculateTotalTime(reservableId, interval),
-      selectedReservable, interval, rightSlotNumber, $timeslot
-    );
+    if ($timeslot.hasClass('slot-available')){
+      showHidePopup(
+        activityId, reservableId, calculateTotalTime(reservableId, interval),
+        selectedReservable, interval, rightSlotNumber, $timeslot
+      );
+    };
   });
 
 });

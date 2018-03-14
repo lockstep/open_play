@@ -23,6 +23,18 @@ module TimeSlotsHelper
     time_slots
   end
 
+  def booking_classes(booking_info_hash)
+    returned_class_string =
+      booking_info_hash[:available] ? ' slot-available' : ''
+    return returned_class_string if booking_info_hash[:booking].blank?
+    booking = booking_info_hash[:booking]
+    if booking
+      returned_class_string << ' checked-in'     if booking.checked_in?
+      returned_class_string << ' not-checked-in' if !booking.checked_in?
+    end
+    returned_class_string
+  end
+
   def booked_by_current_user(slot)
     if current_user && (current_user.id == slot[:booking_info][:booked_by])
       return 'current-user-booked-slot'
@@ -62,19 +74,31 @@ module TimeSlotsHelper
     return { available: false } unless reservable_is_open?(reservable,requested_time)
     return { available: false } if reservable.out_of_service?(requested_time)
     requested_date = requested_time.beginning_of_day
-    bookings = reservable.bookings.where(booking_date: requested_date)
+    bookings = reservable.bookings.where(
+      booking_date: requested_date,
+      canceled: false
+    )
     return { available: true } unless bookings.present?
     bookings.each do |booking|
-      return { available: true } if booking.canceled
       start_booking_time = merge_date_and_time(requested_date, booking.start_time)
       end_booking_time = merge_date_and_time(requested_date, booking.end_time)
       time_was_booked = (requested_time >= start_booking_time) &&
         (requested_time < end_booking_time)
       if time_was_booked
-        if reservable_available_for_multi_party?(reservable,booking, requested_date)
-          return { available: true, booked_by: booking.user_id }
+        if reservable_available_for_multi_party?(reservable, booking, requested_date)
+          return {
+            available: true,
+            booked_by: booking.user_id,
+            booking: booking,
+            booking_id: booking.id
+          }
         else
-          return { available: false, booked_by: booking.user_id }
+          return {
+            available: false,
+            booked_by: booking.user_id,
+            booking: booking,
+            booking_id: booking.id
+          }
         end
       end
     end

@@ -111,6 +111,24 @@
     .form-check-label {
       padding-left: 0px;
     }
+
+    .booking-controls {
+      position: fixed;
+      right: 5%;
+      top: 370px;
+      a {
+        display: none;
+      }
+    }
+
+    .timeslot.not-checked-in {
+      background-color: #2fdb5c;
+      background-image: none;
+    }
+    .timeslot.checked-in {
+      background-color: #1b963b;
+      background-image: none;
+    }
   }
 }
 
