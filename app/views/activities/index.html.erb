@@ -43,7 +43,7 @@
                 <td class='text-xs-center'>
                   <div class='row'>
                     <%= link_to 'View reservations',
-                      business_owner_reservations_path(activity),
+                      business_owner_reserver_path(activity),
                       class: 'btn btn-primary btn-sm' %>
                     <%= link_to 'View analytics',
                       view_analytics_activity_path(activity),
@@ -65,6 +65,11 @@
                         activity, type: Reservable::PARTY_ROOM_TYPE),
                         class: 'btn btn-primary btn-sm' %>
                     <% end %>
+                  </div>
+                  <div class="row">
+                    <%= link_to 'Reservation Exports',
+                      business_owner_reservations_path(activity),
+                      class: 'btn btn-primary btn-sm' %>
                   </div>
                 </td>
               </tr>

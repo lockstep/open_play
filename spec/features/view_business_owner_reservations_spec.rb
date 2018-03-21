@@ -57,9 +57,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 13) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@bowling.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@bowling)
+            # within("#activity_#{@bowling.id}") do
+            #   click_link 'View reservations'
+            # end
           end
 
           within(:xpath, "//table/tbody/tr[1]") do
@@ -110,9 +111,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 13) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@bowling.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@bowling)
+            # within("#activity_#{@bowling.id}") do
+            #   click_link 'View reservations'
+            # end
           end
 
           click_link 'Export to CSV'
@@ -124,9 +126,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 13) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@bowling.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@bowling)
+            # within("#activity_#{@bowling.id}") do
+            #   click_link 'View reservations'
+            # end
           end
 
           click_link 'Export to XLS'
@@ -140,9 +143,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 14) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@bowling.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@bowling)
+            # within("#activity_#{@bowling.id}") do
+            #   click_link 'View reservations'
+            # end
           end
           expect(page).to_not have_content @bowling.name
           expect(page).to_not have_content @lane_one.name
@@ -154,9 +158,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 14) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@bowling.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@bowling)
+            # within("#activity_#{@bowling.id}") do
+            #   click_link 'View reservations'
+            # end
           end
           expect(page).to_not have_link 'Export to CSV'
           expect(page).to_not have_link 'Export to XLS'
@@ -167,9 +172,10 @@ feature 'View Business Owner Reservations', :js do
             travel_to Time.new(2016, 10, 14) do
               visit root_path
               click_link 'Manage Business'
-              within("#activity_#{@bowling.id}") do
-                click_link 'View reservations'
-              end
+              visit business_owner_reservations_path(@bowling)
+              # within("#activity_#{@bowling.id}") do
+              #   click_link 'View reservations'
+              # end
               select_a_booking_date('2016-10-13')
             end
 
@@ -225,9 +231,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 22) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@laser_tag.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@laser_tag)
+            # within("#activity_#{@laser_tag.id}") do
+            #   click_link 'View reservations'
+            # end
           end
 
           within(:xpath, "//table/tbody/tr[1]") do
@@ -272,9 +279,10 @@ feature 'View Business Owner Reservations', :js do
           travel_to Time.new(2016, 10, 13) do
             visit root_path
             click_link 'Manage Business'
-            within("#activity_#{@laser_tag.id}") do
-              click_link 'View reservations'
-            end
+            visit business_owner_reservations_path(@laser_tag)
+            # within("#activity_#{@laser_tag.id}") do
+            #   click_link 'View reservations'
+            # end
           end
 
           expect(page).to_not have_content @laser_tag.name
@@ -288,9 +296,10 @@ feature 'View Business Owner Reservations', :js do
             travel_to Time.new(2016, 10, 13) do
               visit root_path
               click_link 'Manage Business'
-              within("#activity_#{@laser_tag.id}") do
-                click_link 'View reservations'
-              end
+              visit business_owner_reservations_path(@laser_tag)
+              # within("#activity_#{@laser_tag.id}") do
+              #   click_link 'View reservations'
+              # end
               select_a_booking_date('2016-10-22')
             end
 

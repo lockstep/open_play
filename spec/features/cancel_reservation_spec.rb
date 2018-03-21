@@ -22,7 +22,7 @@ feature 'Cancel Reservation', :js do
       scenario 'displays the normal reservation correctly' do
         visit root_path
         click_link 'Manage Business'
-        click_link 'View reservations'
+        click_link 'Reservation Exports'
         select_a_booking_date('2016-10-13')
         expect(page).to have_link 'Cancel'
         expect(page).to_not have_css("#booking_#{@booking.id}.table-danger")
@@ -31,7 +31,7 @@ feature 'Cancel Reservation', :js do
         scenario 'displays the canceled reservation correctly' do
           visit root_path
           click_link 'Manage Business'
-          click_link 'View reservations'
+          click_link 'Reservation Exports'
           select_a_booking_date('2016-10-13')
           click_link 'Cancel'
           expect(page).to have_content 'Successfully canceled'
@@ -48,7 +48,7 @@ feature 'Cancel Reservation', :js do
         scenario 'skips the validation and successfully canceled' do
           visit root_path
           click_link 'Manage Business'
-          click_link 'View reservations'
+          click_link 'Reservation Exports'
           select_a_booking_date('2016-10-13')
           click_link 'Cancel'
           expect(@booking.reload.canceled).to eq true

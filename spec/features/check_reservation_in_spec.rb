@@ -25,7 +25,7 @@ feature 'Check Reservation In', :js do
           travel_to Time.new(2016, 10, 11) do
             visit root_path
             click_link 'Manage Business'
-            click_link 'View reservations'
+            click_link 'Reservation Exports'
             select_a_booking_date('2016-10-13')
           end
           expect(page).to have_link 'Check in'
@@ -37,7 +37,7 @@ feature 'Check Reservation In', :js do
           travel_to Time.new(2016, 10, 11) do
             visit root_path
             click_link 'Manage Business'
-            click_link 'View reservations'
+            click_link 'Reservation Exports'
             select_a_booking_date('2016-10-13')
             click_link 'Check in'
           end
@@ -54,7 +54,7 @@ feature 'Check Reservation In', :js do
           scenario 'skips the validation and successfully checked in' do
             visit root_path
             click_link 'Manage Business'
-            click_link 'View reservations'
+            click_link 'Reservation Exports'
             select_a_booking_date('2016-10-13')
             click_link 'Check in'
             expect(@booking.reload.checked_in).to eq true
