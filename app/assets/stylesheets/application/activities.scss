@@ -3,11 +3,18 @@
 }
 
 .activity-list {
+  h3 {
+    margin-bottom: 0px;
+  }
   .activity-result {
-    padding: 1.275rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid rgba(0,0,0,.08);
     .activity-info {
       padding-top: 4px;
+      .card-block {
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
       .activity-name {
         color: #333;
         font-weight: 600;
@@ -76,7 +83,7 @@
     .reservable-name {
       position: absolute;
       left: 25px;
-      top: 30px;
+      top: 15px;
     }
 
     .reservable {
